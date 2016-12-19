@@ -1,0 +1,2 @@
+recursive-include schablone/templates/label/box *.svg
+recursive-include schablone/templates/label/smd_container/mira_1 *.svg
