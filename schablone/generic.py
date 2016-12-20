@@ -2,7 +2,7 @@
 #coding=utf-8
 
 import svgutils.transform as sg
-import svglue 
+import svglue
 #from svglue import svglue
 #import svgwrite
 #import pysvg
@@ -113,7 +113,7 @@ class generic(baseSVG):
         if group is None:
             group = self.layer.default_group
 
-# combine svg-files 
+        # combine svg-files 
         svg_label = sg.fromfile(fi)
         for layer in self.layer.tmpl_lr[group]:
             anker = sg.fromfile(layer.path).getroot()
@@ -134,16 +134,15 @@ class generic(baseSVG):
         tpl = svglue.load(file=self._fn)
 
         for cpt_key, cpt_val in self.cpt_tspan.items():
-            tpl.set_text(cpt_key, cpt_val)
+                tpl.set_text(cpt_key, cpt_val)
 
         for cpt_key, cpt_val in self.cpt_flowpara.items():
-            tpl.set_flowtext(cpt_key, cpt_val)
+                tpl.set_flowtext(cpt_key, cpt_val)
 
         for cpt_key, cpt_val in self.cpt_rect.items():
-            tpl.set_image(cpt_key, file=cpt_val, mimetype='image/png')
+                tpl.set_image(cpt_key, file=cpt_val, mimetype='image/png')
 
-        src = tpl.__str__()#str(tpl) #str(tpl) does not work in python3
-        #src=etree.tostring(tpl._doc, encoding='utf8', method='xml')
+        src = tpl.__str__()  #str(tpl) #str(tpl) does not work in python3
         open(self._fn, 'wb').write(src)
         #from cairosvg.surface import PDFSurface
         #PDFSurface.convert(src, write_to=open('output.pdf', 'w'))

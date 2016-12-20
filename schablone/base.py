@@ -8,6 +8,7 @@ import svgutils.transform as sg
 from gi.repository import Rsvg
 
 import os
+import warnings
 
 
 class baseSVG(object):
@@ -155,7 +156,9 @@ class baseSVG(object):
         # todo Seitenzahlen einfuegen
         if svg_list == None:
             if self._fn_list == []:
-                raise Warning('svg_list is empty. No files available to store to Ax file.'
+                warnings.warn(
+                    'svg_list is empty. No files available to store to Ax file.'
+                )
                 svg_list = []
             else:
                 svg_list = self._fn_list
