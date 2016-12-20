@@ -1,0 +1,371 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>schablone package &mdash; schablone 0.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="schablone 0.1 documentation" href="../index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> schablone
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <!-- Local TOC -->
+                <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">schablone package</a><ul>
+<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-schablone.base">schablone.base module</a></li>
+<li><a class="reference internal" href="#module-schablone.generic">schablone.generic module</a></li>
+<li><a class="reference internal" href="#module-schablone.label">schablone.label module</a></li>
+<li><a class="reference internal" href="#module-schablone">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">schablone</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+    <li>schablone package</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/source/schablone.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="schablone-package">
+<h1>schablone package<a class="headerlink" href="#schablone-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-schablone.base">
+<span id="schablone-base-module"></span><h2>schablone.base module<a class="headerlink" href="#module-schablone.base" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="schablone.base.baseSVG">
+<em class="property">class </em><code class="descclassname">schablone.base.</code><code class="descname">baseSVG</code><a class="reference internal" href="../_modules/schablone/base.html#baseSVG"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schablone.base.baseSVG" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Basic SVG-File creation.</p>
+<p>The baseSVG is able to store basic empty SVG files of given with and height. 
+Files can be stored by the save() method. If the attribute overwrite is set 
+False, overwriting files is prevented. Instead of overwriting files, a new 
+filename (including an index) is being choosed.</p>
+<p>Every instance of the class keeps track on the paths of the history of 
+all stored files using save(). By saveAx() all these files (or a custom
+set of files) can be aranged in a DIN-format file. If the arangement of
+the files expands the file-size, a new file for a new page is stored.</p>
+<dl class="docutils">
+<dt>Note:</dt>
+<dd>This class is used as base functionality for child classes in schablone.</dd>
+<dt>Attributes:</dt>
+<dd>width (str): width of the file - exemplary formats (compatible with SVG standard): &#8220;500&#8221; or &#8220;500px&#8221;, &#8220;132mm&#8221;
+height (str): height of the file - exemplary formats (compatible with SVG standard): &#8220;500&#8221; or &#8220;500px&#8221;, &#8220;132mm&#8221;
+_fn (str): Filename</dd>
+</dl>
+<p>some text here</p>
+<dl class="attribute">
+<dt id="schablone.base.baseSVG.description">
+<code class="descname">description</code><em class="property"> = None</em><a class="headerlink" href="#schablone.base.baseSVG.description" title="Permalink to this definition">¶</a></dt>
+<dd><p>initial value: par1</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="schablone.base.baseSVG.save">
+<code class="descname">save</code><span class="sig-paren">(</span><em>fn=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/schablone/base.html#baseSVG.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schablone.base.baseSVG.save" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="schablone.base.baseSVG.saveAx">
+<code class="descname">saveAx</code><span class="sig-paren">(</span><em>fn=None</em>, <em>ax='a4'</em>, <em>svg_list=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/schablone/base.html#baseSVG.saveAx"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schablone.base.baseSVG.saveAx" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-schablone.generic">
+<span id="schablone-generic-module"></span><h2>schablone.generic module<a class="headerlink" href="#module-schablone.generic" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="schablone.generic.generic">
+<em class="property">class </em><code class="descclassname">schablone.generic.</code><code class="descname">generic</code><a class="reference internal" href="../_modules/schablone/generic.html#generic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schablone.generic.generic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#schablone.base.baseSVG" title="schablone.base.baseSVG"><code class="xref py py-class docutils literal"><span class="pre">schablone.base.baseSVG</span></code></a></p>
+<dl class="method">
+<dt id="schablone.generic.generic.create_qr">
+<code class="descname">create_qr</code><span class="sig-paren">(</span><em>content</em>, <em>fn</em>, <em>x_pos</em>, <em>y_pos</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/schablone/generic.html#generic.create_qr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schablone.generic.generic.create_qr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="schablone.generic.generic.create_sample">
+<code class="descname">create_sample</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/schablone/generic.html#generic.create_sample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schablone.generic.generic.create_sample" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="schablone.generic.generic.save">
+<code class="descname">save</code><span class="sig-paren">(</span><em>fn=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/schablone/generic.html#generic.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schablone.generic.generic.save" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="schablone.generic.generic.save_frame">
+<code class="descname">save_frame</code><span class="sig-paren">(</span><em>fo=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/schablone/generic.html#generic.save_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schablone.generic.generic.save_frame" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="schablone.generic.generic.save_layers">
+<code class="descname">save_layers</code><span class="sig-paren">(</span><em>fo=None</em>, <em>fi=None</em>, <em>group=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/schablone/generic.html#generic.save_layers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schablone.generic.generic.save_layers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="schablone.generic.generic.save_substitutes">
+<code class="descname">save_substitutes</code><span class="sig-paren">(</span><em>fo=None</em>, <em>fi=None</em>, <em>group=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/schablone/generic.html#generic.save_substitutes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schablone.generic.generic.save_substitutes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="schablone.generic.layer_container">
+<em class="property">class </em><code class="descclassname">schablone.generic.</code><code class="descname">layer_container</code><span class="sig-paren">(</span><em>path</em>, <em>x=0.0</em>, <em>y=0.0</em>, <em>scale=1.0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/schablone/generic.html#layer_container"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schablone.generic.layer_container" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="schablone.generic.layer_pack">
+<em class="property">class </em><code class="descclassname">schablone.generic.</code><code class="descname">layer_pack</code><a class="reference internal" href="../_modules/schablone/generic.html#layer_pack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schablone.generic.layer_pack" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="schablone.generic.layer_pack.add">
+<code class="descname">add</code><span class="sig-paren">(</span><em>path</em>, <em>x_pos=0.0</em>, <em>y_pos=0.0</em>, <em>scale=1.0</em>, <em>group=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/schablone/generic.html#layer_pack.add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schablone.generic.layer_pack.add" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="schablone.generic.layer_pack.remove">
+<code class="descname">remove</code><span class="sig-paren">(</span><em>nmb</em>, <em>group=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/schablone/generic.html#layer_pack.remove"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schablone.generic.layer_pack.remove" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="schablone.generic.layer_pack.remove_all">
+<code class="descname">remove_all</code><span class="sig-paren">(</span><em>group=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/schablone/generic.html#layer_pack.remove_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schablone.generic.layer_pack.remove_all" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="schablone.generic.layer_pack.show">
+<code class="descname">show</code><span class="sig-paren">(</span><em>group=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/schablone/generic.html#layer_pack.show"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schablone.generic.layer_pack.show" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-schablone.label">
+<span id="schablone-label-module"></span><h2>schablone.label module<a class="headerlink" href="#module-schablone.label" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="schablone.label.box">
+<em class="property">class </em><code class="descclassname">schablone.label.</code><code class="descname">box</code><a class="reference internal" href="../_modules/schablone/label.html#box"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schablone.label.box" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#schablone.generic.generic" title="schablone.generic.generic"><code class="xref py py-class docutils literal"><span class="pre">schablone.generic.generic</span></code></a></p>
+<dl class="method">
+<dt id="schablone.label.box.save">
+<code class="descname">save</code><span class="sig-paren">(</span><em>fn=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/schablone/label.html#box.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schablone.label.box.save" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="schablone.label.box_content_container">
+<em class="property">class </em><code class="descclassname">schablone.label.</code><code class="descname">box_content_container</code><a class="reference internal" href="../_modules/schablone/label.html#box_content_container"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schablone.label.box_content_container" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="schablone.label.smd_container">
+<em class="property">class </em><code class="descclassname">schablone.label.</code><code class="descname">smd_container</code><a class="reference internal" href="../_modules/schablone/label.html#smd_container"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schablone.label.smd_container" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#schablone.generic.generic" title="schablone.generic.generic"><code class="xref py py-class docutils literal"><span class="pre">schablone.generic.generic</span></code></a></p>
+<dl class="method">
+<dt id="schablone.label.smd_container.save">
+<code class="descname">save</code><span class="sig-paren">(</span><em>fn=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/schablone/label.html#smd_container.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schablone.label.smd_container.save" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="schablone.label.smd_container.saveAx">
+<code class="descname">saveAx</code><span class="sig-paren">(</span><em>fn=None</em>, <em>ax='a4'</em>, <em>svg_list=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/schablone/label.html#smd_container.saveAx"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schablone.label.smd_container.saveAx" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="schablone.label.smd_content_container">
+<em class="property">class </em><code class="descclassname">schablone.label.</code><code class="descname">smd_content_container</code><a class="reference internal" href="../_modules/schablone/label.html#smd_content_container"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schablone.label.smd_content_container" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-schablone">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-schablone" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Andreas Gschossmann.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

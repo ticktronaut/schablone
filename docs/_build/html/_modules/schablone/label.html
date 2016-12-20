@@ -1,0 +1,433 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>schablone.label &mdash; schablone 0.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="schablone 0.1 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> schablone
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <!-- Local TOC -->
+                <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">schablone</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      
+    <li>schablone.label</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for schablone.label</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1">#coding=utf-8</span>
+
+<span class="c1">#import svgutils</span>
+<span class="kn">import</span> <span class="nn">svgutils.transform</span> <span class="k">as</span> <span class="nn">sg</span>
+<span class="kn">import</span> <span class="nn">svglue</span>
+<span class="c1">#import svgwrite</span>
+<span class="c1">#import pysvg</span>
+
+<span class="kn">from</span> <span class="nn">lxml</span> <span class="k">import</span> <span class="n">etree</span>
+
+<span class="c1">#import warnings</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="c1">#import pyqrcode</span>
+
+<span class="kn">import</span> <span class="nn">pkg_resources</span>
+
+<span class="c1">#from .base import</span>
+<span class="kn">from</span> <span class="nn">.generic</span> <span class="k">import</span> <span class="o">*</span>
+
+
+<div class="viewcode-block" id="smd_content_container"><a class="viewcode-back" href="../../source/schablone.html#schablone.label.smd_content_container">[docs]</a><span class="k">class</span> <span class="nc">smd_content_container</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">package</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tolerance</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">temperature_coefficient</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">power</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span></div>
+
+
+<div class="viewcode-block" id="smd_container"><a class="viewcode-back" href="../../source/schablone.html#schablone.label.smd_container">[docs]</a><span class="k">class</span> <span class="nc">smd_container</span><span class="p">(</span><span class="n">generic</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">smd_container</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+
+        <span class="c1">#self.qr_content = &quot;http://www.sappz.de&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="n">smd_content_container</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_type</span> <span class="o">=</span> <span class="s2">&quot;mira_1&quot;</span>  <span class="c1">#todo: link zu quelle #getter setter: remove all layers, reset layers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cut</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1">#todo getter setter: remove all layers, reset layers</span>
+        <span class="c1">#self.__cut_list = []</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cpt_tspan</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;package&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;tolerance&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;temperature_coefficient&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;power&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span>
+        <span class="p">}</span>
+        <span class="c1">#		self.cpt_flowpara = {}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cpt_rect</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;matrix&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">}</span>
+        <span class="c1"># todo: self.cut_list</span>
+
+    <span class="c1"># hier wird die einzige Moeglichkeit der Basisklasse </span>
+    <span class="c1"># die Hoehe und Breite zu setzen ueberschrieben</span>
+    <span class="c1"># Achtung ist überschreibend</span>
+
+<div class="viewcode-block" id="smd_container.save"><a class="viewcode-back" href="../../source/schablone.html#schablone.label.smd_container.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+        <span class="c1"># set width and height (reconfigure everytime time save is called)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="s1">&#39;15mm&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_type</span> <span class="o">==</span> <span class="s1">&#39;mira_1&#39;</span> <span class="ow">or</span> <span class="s1">&#39;mira_1a&#39;</span><span class="p">:</span>  <span class="c1"># type &quot;1&quot; and type &quot;1a&quot; seem to have label same size</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="s1">&#39;15mm&#39;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="s1">&#39;20mm&#39;</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_type</span> <span class="o">==</span> <span class="s1">&#39;mira_2&#39;</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="c1">#print &#39;Todo: raise error Not supported, yet.&#39;</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_type</span> <span class="o">==</span> <span class="s1">&#39;mira_3&#39;</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="c1">#print &#39;Todo: raise error Not supported, yet.&#39;</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_type</span> <span class="o">==</span> <span class="s2">&quot;mira_4&quot;</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="c1">#print &#39;Todo raise error Not supported, yet.&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="c1">#print &#39;Todo: raise Error: type is not known.&#39;</span>
+
+        <span class="c1"># self.fn is set after this point </span>
+        <span class="c1"># todo: better solution for self._fn (explicit is better than implicit) </span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">smd_container</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">save_frame</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+
+        <span class="c1"># save data matrix code with unique id (using bash)</span>
+        <span class="n">fn</span><span class="p">,</span> <span class="n">fext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fn</span><span class="p">)</span>
+        <span class="n">fn_qr</span> <span class="o">=</span> <span class="n">fn</span> <span class="o">+</span> <span class="s1">&#39;_qr&#39;</span> <span class="o">+</span> <span class="s1">&#39;.png&#39;</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span>
+            <span class="s1">&#39;uuidgen | tr [[:upper:]] [[:lower:]] | tr -d </span><span class="se">\&#39;</span><span class="s1">-</span><span class="se">\&#39;</span><span class="s1">  | sed -e </span><span class="se">\&#39;</span><span class="s1">s/\(.\{12\}\).*/</span><span class="se">\\</span><span class="s1">1/</span><span class="se">\&#39;</span><span class="s1"> | dmtxwrite -s 16x16 -o &#39;</span>
+            <span class="o">+</span> <span class="n">fn_qr</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cpt_rect</span><span class="p">[</span><span class="s1">&#39;matrix&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fn_qr</span>
+
+        <span class="c1"># todo: rething the following ...</span>
+        <span class="c1"># two ways to organize addition of layers</span>
+        <span class="c1"># delete all layers and reset them </span>
+        <span class="c1"># - in save function (any time file is saved, as done here)</span>
+        <span class="c1"># - in setter function for self.cut (any time self.cut is changed)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">remove_all</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+            <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span>
+                <span class="s1">&#39;schablone&#39;</span><span class="p">,</span> <span class="s1">&#39;templates/label/smd_container/&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_type</span>
+                <span class="o">+</span> <span class="s1">&#39;/font.svg&#39;</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">cut</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span>
+                    <span class="s1">&#39;schablone&#39;</span><span class="p">,</span> <span class="s1">&#39;templates/label/smd_container/&#39;</span> <span class="o">+</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">label_type</span> <span class="o">+</span> <span class="s1">&#39;/frame.svg&#39;</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1">#			self.layer.default_lr = &#39;cut&#39;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_fn_cut</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">smd_container</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">_fn_sub_str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fn</span><span class="p">,</span>
+                                                                  <span class="s2">&quot;_cut&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span>
+                    <span class="s1">&#39;schablone&#39;</span><span class="p">,</span> <span class="s1">&#39;templates/label/smd_container/&#39;</span> <span class="o">+</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">label_type</span> <span class="o">+</span> <span class="s1">&#39;/frame_cut.svg&#39;</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;cut&#39;</span><span class="p">)</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">smd_container</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">save_layers</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fn_cut</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fn</span><span class="p">,</span>
+                                                   <span class="s1">&#39;cut&#39;</span><span class="p">)</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">smd_container</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">save_layers</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cpt_tspan</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">title</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cpt_tspan</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cpt_tspan</span><span class="p">[</span><span class="s1">&#39;package&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">package</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cpt_tspan</span><span class="p">[</span><span class="s1">&#39;tolerance&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">tolerance</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cpt_tspan</span><span class="p">[</span>
+            <span class="s1">&#39;temperature_coefficient&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">temperature_coefficient</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cpt_tspan</span><span class="p">[</span><span class="s1">&#39;power&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">power</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">smd_container</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">save_substitutes</span><span class="p">()</span></div>
+
+        <span class="c1">#from cairosvg.surface import PDFSurface</span>
+        <span class="c1">#PDFSurface.convert(src, write_to=open(&#39;output.pdf&#39;, &#39;w&#39;))</span>
+
+<div class="viewcode-block" id="smd_container.saveAx"><a class="viewcode-back" href="../../source/schablone.html#schablone.label.smd_container.saveAx">[docs]</a>    <span class="k">def</span> <span class="nf">saveAx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="s1">&#39;a4&#39;</span><span class="p">,</span> <span class="n">svg_list</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">svg_list</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fn_list</span> <span class="o">==</span> <span class="p">[]:</span>
+                <span class="c1">#print &quot;Error, no files given for Ax.&quot;</span>
+                <span class="n">svg_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">svg_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fn_list</span>
+
+<span class="c1">#todo: raise error</span>
+
+        <span class="k">if</span> <span class="n">fn</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">fn</span> <span class="o">=</span> <span class="s2">&quot;default_Ax.svg&quot;</span>
+
+        <span class="n">cut</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">cut_frame</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">sans_cut</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">svg_list</span><span class="p">:</span>
+            <span class="n">f_cut</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fn_sub_str</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s1">&#39;_cut&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">f_cut</span><span class="p">):</span>
+                <span class="n">cut</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+                <span class="n">cut_frame</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f_cut</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">sans_cut</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+        <span class="n">fn_font</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fn_sub_str</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="s1">&#39;_print&#39;</span><span class="p">)</span>
+        <span class="n">fn_cut</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fn_sub_str</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="s1">&#39;_cut&#39;</span><span class="p">)</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">smd_container</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">saveAx</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">sans_cut</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">smd_container</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">saveAx</span><span class="p">(</span><span class="n">fn_cut</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">cut_frame</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">smd_container</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">saveAx</span><span class="p">(</span><span class="n">fn_font</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">cut</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="box_content_container"><a class="viewcode-back" href="../../source/schablone.html#schablone.label.box_content_container">[docs]</a><span class="k">class</span> <span class="nc">box_content_container</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">qr</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">project</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">editor</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">brief_content</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span></div>
+
+
+<div class="viewcode-block" id="box"><a class="viewcode-back" href="../../source/schablone.html#schablone.label.box">[docs]</a><span class="k">class</span> <span class="nc">box</span><span class="p">(</span><span class="n">generic</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="n">box_content_container</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fn_template_default</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span>
+            <span class="s1">&#39;schablone&#39;</span><span class="p">,</span> <span class="s1">&#39;templates/label/box/template_default.svg&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fn_template_extended</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span>
+            <span class="s1">&#39;schablone&#39;</span><span class="p">,</span> <span class="s1">&#39;templates/label/box/template_extended.svg&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_type</span> <span class="o">=</span> <span class="s1">&#39;default&#39;</span>
+        <span class="c1">#self.strict = False</span>
+
+    <span class="c1"># hier wird die einzige Moeglichkeit der Basisklasse </span>
+    <span class="c1"># die Hoehe und Breite zu setzen ueberschrieben</span>
+    <span class="c1"># Achtung ist überschreibend</span>
+
+<div class="viewcode-block" id="box.save"><a class="viewcode-back" href="../../source/schablone.html#schablone.label.box.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">fn</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fn</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">fn</span> <span class="o">=</span> <span class="s2">&quot;label_&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_type</span> <span class="o">+</span> <span class="s2">&quot;.svg&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">fn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fn</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fn</span> <span class="o">=</span> <span class="n">fn</span>
+
+        <span class="c1"># set width and height (reconfigure everytime time save is called)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="s1">&#39;88mm&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_type</span> <span class="o">==</span> <span class="s1">&#39;default&#39;</span><span class="p">:</span>  <span class="c1"># type &quot;1&quot; and type &quot;1a&quot; seem to have label same size</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="s1">&#39;74mm&#39;</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_type</span> <span class="o">==</span> <span class="s1">&#39;extended&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="s1">&#39;138mm&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="c1">#self.height = &#39;74mm&#39;</span>
+        <span class="c1">#self.label_type = &#39;default&#39;</span>
+        <span class="c1">#print &quot;Todo: raise Error: type is not known&quot;</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+            <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span>
+                <span class="s1">&#39;schablone&#39;</span><span class="p">,</span> <span class="s1">&#39;templates/label/box/template_default.svg&#39;</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_type</span> <span class="o">==</span> <span class="s1">&#39;extended&#39;</span><span class="p">:</span>
+            <span class="c1"># save data matrix code with unique id (using bash)</span>
+            <span class="n">fn_qr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fn_sub_str</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="s1">&#39;_qr&#39;</span><span class="p">)</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">create_qr</span><span class="p">(</span><span class="s1">&#39;http://www.sappz.de&#39;</span><span class="p">,</span> <span class="n">fn_qr</span><span class="p">,</span> <span class="mi">280</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span>
+                    <span class="s1">&#39;schablone&#39;</span><span class="p">,</span> <span class="s1">&#39;templates/label/box/template_extended.svg&#39;</span><span class="p">))</span>
+
+            <span class="c1">#self.cpt_tspan[&#39;qr&#39;] = self.content.qr</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cpt_tspan</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">qr</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cpt_tspan</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">title</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cpt_tspan</span><span class="p">[</span><span class="s1">&#39;project&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">project</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cpt_tspan</span><span class="p">[</span><span class="s1">&#39;editor&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">editor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cpt_tspan</span><span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">location</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cpt_flowpara</span><span class="p">[</span><span class="s1">&#39;brief_content&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">brief_content</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Andreas Gschossmann.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

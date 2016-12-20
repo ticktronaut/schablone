@@ -10,7 +10,10 @@ Welcome to schablone's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+.. automodule:: schablone
 
+.. autoclass:: schablone.base.baseSVG
+    :members:
 
 Indices and tables
 ==================

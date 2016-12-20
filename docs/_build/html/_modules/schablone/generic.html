@@ -1,0 +1,390 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>schablone.generic &mdash; schablone 0.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="schablone 0.1 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> schablone
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <!-- Local TOC -->
+                <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">schablone</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      
+    <li>schablone.generic</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for schablone.generic</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1">#coding=utf-8</span>
+
+<span class="c1">#import svgutils</span>
+<span class="kn">import</span> <span class="nn">svgutils.transform</span> <span class="k">as</span> <span class="nn">sg</span>
+<span class="kn">import</span> <span class="nn">svglue</span>
+<span class="c1">#import svgwrite</span>
+<span class="c1">#import pysvg</span>
+
+<span class="kn">from</span> <span class="nn">lxml</span> <span class="k">import</span> <span class="n">etree</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">import</span> <span class="nn">pyqrcode</span>
+
+<span class="kn">import</span> <span class="nn">pkg_resources</span>
+
+<span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">baseSVG</span>
+<span class="c1">#import base</span>
+
+
+<div class="viewcode-block" id="layer_container"><a class="viewcode-back" href="../../source/schablone.html#schablone.generic.layer_container">[docs]</a><span class="k">class</span> <span class="nc">layer_container</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x_pos</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y_pos</span> <span class="o">=</span> <span class="n">y</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">scale</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">path</span></div>
+
+
+<div class="viewcode-block" id="layer_pack"><a class="viewcode-back" href="../../source/schablone.html#schablone.generic.layer_pack">[docs]</a><span class="k">class</span> <span class="nc">layer_pack</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tmpl_lr</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;default&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">layer_container</span><span class="p">]</span> <span class="o">*</span> <span class="mi">0</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_group</span> <span class="o">=</span> <span class="s1">&#39;default&#39;</span>  <span class="c1"># todo: getter/setter for self.default_lr, wenn key nicht existiert  mindestens warning ...</span>
+
+<div class="viewcode-block" id="layer_pack.add"><a class="viewcode-back" href="../../source/schablone.html#schablone.generic.layer_pack.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">x_pos</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">y_pos</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">group</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">group</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_group</span>
+
+        <span class="n">tmp</span> <span class="o">=</span> <span class="n">layer_container</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">x_pos</span><span class="p">,</span> <span class="n">y_pos</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>
+        <span class="c1">#self.tmpl_lr[group].append(tmp)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tmpl_lr</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="layer_pack.remove"><a class="viewcode-back" href="../../source/schablone.html#schablone.generic.layer_pack.remove">[docs]</a>    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nmb</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">group</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">group</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_group</span>
+        <span class="k">elif</span> <span class="n">group</span> <span class="ow">is</span> <span class="s1">&#39;all&#39;</span><span class="p">:</span>
+            <span class="k">pass</span>
+            <span class="c1">#print &#39;reset all layers&#39;</span>
+
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">tmpl_lr</span><span class="p">[</span><span class="n">group</span><span class="p">][</span><span class="n">nmb</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="layer_pack.remove_all"><a class="viewcode-back" href="../../source/schablone.html#schablone.generic.layer_pack.remove_all">[docs]</a>    <span class="k">def</span> <span class="nf">remove_all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">group</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># remove all keys by resetting to default</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tmpl_lr</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;default&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">layer_container</span><span class="p">]</span> <span class="o">*</span> <span class="mi">0</span><span class="p">}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">tmpl_lr</span><span class="p">[</span><span class="n">group</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="layer_pack.show"><a class="viewcode-back" href="../../source/schablone.html#schablone.generic.layer_pack.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">group</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">group</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_group</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">lrs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">group</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tmpl_lr</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">lr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tmpl_lr</span><span class="p">[</span><span class="n">group</span><span class="p">]:</span>
+                <span class="n">lrs</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">idx</span><span class="p">,</span> <span class="n">lr</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">lr</span><span class="o">.</span><span class="n">x_pos</span><span class="p">,</span> <span class="n">lr</span><span class="o">.</span><span class="n">y_pos</span><span class="p">,</span> <span class="n">lr</span><span class="o">.</span><span class="n">scale</span><span class="p">])</span>
+                <span class="n">idx</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="k">return</span> <span class="n">lrs</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">pass</span></div></div>
+            <span class="c1"># raise warning</span>
+            <span class="c1">#print &#39;todo: raise warning, key does not exist&#39;</span>
+
+
+        <span class="c1"># Ueberlegung anstatt template-id evtl. direkt id verwenden</span>
+<div class="viewcode-block" id="generic"><a class="viewcode-back" href="../../source/schablone.html#schablone.generic.generic">[docs]</a><span class="k">class</span> <span class="nc">generic</span><span class="p">(</span><span class="n">baseSVG</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">generic</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+
+        <span class="c1">#self.qr_content = &quot;http://www.sappz.de&quot;</span>
+
+        <span class="c1"># lists of paths to template layers</span>
+        <span class="c1"># hier eigentlich dictionary von lists</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer</span> <span class="o">=</span> <span class="n">layer_pack</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__tmpl_layers</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># captions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cpt_tspan</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cpt_flowpara</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cpt_rect</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1">#qr or img</span>
+
+<div class="viewcode-block" id="generic.create_sample"><a class="viewcode-back" href="../../source/schablone.html#schablone.generic.generic.create_sample">[docs]</a>    <span class="k">def</span> <span class="nf">create_sample</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+        <span class="c1">#print &quot;create svg&quot;</span>
+        <span class="c1">#print &quot;append captions&quot;</span>
+
+<div class="viewcode-block" id="generic.create_qr"><a class="viewcode-back" href="../../source/schablone.html#schablone.generic.generic.create_qr">[docs]</a>    <span class="k">def</span> <span class="nf">create_qr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="n">x_pos</span><span class="p">,</span> <span class="n">y_pos</span><span class="p">):</span>
+        <span class="c1"># size depends on content</span>
+        <span class="n">qr</span> <span class="o">=</span> <span class="n">pyqrcode</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>  <span class="c1">#, version=17)</span>
+        <span class="n">qr</span><span class="o">.</span><span class="n">svg</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+        <span class="c1"># todo: save, add layer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">x_pos</span><span class="p">,</span> <span class="n">y_pos</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="generic.save_frame"><a class="viewcode-back" href="../../source/schablone.html#schablone.generic.generic.save_frame">[docs]</a>    <span class="k">def</span> <span class="nf">save_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fo</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">generic</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">fo</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="generic.save_layers"><a class="viewcode-back" href="../../source/schablone.html#schablone.generic.generic.save_layers">[docs]</a>    <span class="k">def</span> <span class="nf">save_layers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fo</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fi</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">fi</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">fi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fn</span>
+        <span class="k">if</span> <span class="n">fo</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">fo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fn</span>
+
+        <span class="k">if</span> <span class="n">group</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">group</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">default_group</span>
+
+<span class="c1"># combine svg-files </span>
+        <span class="n">svg_label</span> <span class="o">=</span> <span class="n">sg</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="n">fi</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">tmpl_lr</span><span class="p">[</span><span class="n">group</span><span class="p">]:</span>
+            <span class="n">anker</span> <span class="o">=</span> <span class="n">sg</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
+            <span class="n">anker</span><span class="o">.</span><span class="n">moveto</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">x_pos</span><span class="p">,</span> <span class="n">layer</span><span class="o">.</span><span class="n">y_pos</span><span class="p">,</span> <span class="n">layer</span><span class="o">.</span><span class="n">scale</span><span class="p">)</span>
+            <span class="n">svg_label</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">anker</span><span class="p">)</span>
+
+        <span class="n">svg_label</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">fo</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="generic.save_substitutes"><a class="viewcode-back" href="../../source/schablone.html#schablone.generic.generic.save_substitutes">[docs]</a>    <span class="k">def</span> <span class="nf">save_substitutes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fo</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fi</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">fi</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">fi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fn</span>
+        <span class="k">if</span> <span class="n">fo</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">fo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fn</span>
+
+        <span class="k">if</span> <span class="n">group</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">group</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">default_group</span>
+
+        <span class="n">tpl</span> <span class="o">=</span> <span class="n">svglue</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_fn</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">cpt_key</span><span class="p">,</span> <span class="n">cpt_val</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cpt_tspan</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">tpl</span><span class="o">.</span><span class="n">set_text</span><span class="p">(</span><span class="n">cpt_key</span><span class="p">,</span> <span class="n">cpt_val</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">cpt_key</span><span class="p">,</span> <span class="n">cpt_val</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cpt_flowpara</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">tpl</span><span class="o">.</span><span class="n">set_flowtext</span><span class="p">(</span><span class="n">cpt_key</span><span class="p">,</span> <span class="n">cpt_val</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">cpt_key</span><span class="p">,</span> <span class="n">cpt_val</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cpt_rect</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="c1">#tpl.set_image(cpt_key, file=cpt_val, mimetype=&#39;image/png&#39;)</span>
+            <span class="n">mimetype</span><span class="o">=</span><span class="s1">&#39;image/png&#39;</span>
+            <span class="n">HREF_ATTR</span> <span class="o">=</span> <span class="s1">&#39;{http://www.w3.org/1999/xlink}href&#39;</span>
+            <span class="n">IMAGE_TAG</span> <span class="o">=</span> <span class="s1">&#39;{http://www.w3.org/2000/svg}image&#39;</span>
+
+            <span class="n">elem</span> <span class="o">=</span> <span class="n">tpl</span><span class="o">.</span><span class="n">_rect_subs</span><span class="p">[</span><span class="n">cpt_key</span><span class="p">]</span>
+            <span class="n">elem</span><span class="o">.</span><span class="n">tag</span> <span class="o">=</span> <span class="n">IMAGE_TAG</span>
+
+            <span class="n">ALLOWED_ATTRS</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="s1">&#39;style&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">elem</span><span class="o">.</span><span class="n">attrib</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">ALLOWED_ATTRS</span><span class="p">:</span>
+                    <span class="k">del</span> <span class="n">elem</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span>
+
+            <span class="n">elem</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;preserveAspectRatio&#39;</span><span class="p">,</span> <span class="s1">&#39;none&#39;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">cpt_val</span><span class="p">,</span> <span class="s1">&#39;read&#39;</span><span class="p">):</span>
+                <span class="kn">import</span> <span class="nn">base64</span>
+               
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">cpt_val</span><span class="p">,</span> <span class="s1">&#39;read&#39;</span><span class="p">):</span>
+                    <span class="n">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">cpt_val</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span>
+                <span class="n">fc</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+                <span class="n">src</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">encodestring</span><span class="p">(</span><span class="n">fc</span><span class="p">)</span>
+                <span class="n">src</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+          
+            <span class="n">elem</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">HREF_ATTR</span><span class="p">,</span> <span class="s1">&#39;data:</span><span class="si">%s</span><span class="s1">;base64,</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">mimetype</span><span class="p">,</span> <span class="n">src</span><span class="p">))</span>
+
+        <span class="c1">#src = str(tpl)</span>
+        <span class="c1">#src = tpl</span>
+        <span class="c1">#todo: move this hack to svglue library</span>
+        <span class="n">src</span><span class="o">=</span><span class="n">etree</span><span class="o">.</span><span class="n">tostring</span><span class="p">(</span><span class="n">tpl</span><span class="o">.</span><span class="n">_doc</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf8&#39;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;xml&#39;</span><span class="p">)</span>
+        <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fn</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">src</span><span class="p">)</span></div>
+        <span class="c1">#from cairosvg.surface import PDFSurface</span>
+        <span class="c1">#PDFSurface.convert(src, write_to=open(&#39;output.pdf&#39;, &#39;w&#39;))</span>
+
+    <span class="c1"># hier wird die einzige Moeglichkeit der Basisklasse </span>
+    <span class="c1"># die Hoehe und Breite zu setzen ueberschrieben</span>
+
+<div class="viewcode-block" id="generic.save"><a class="viewcode-back" href="../../source/schablone.html#schablone.generic.generic.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+        <span class="c1"># save basic frame layer	</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_frame</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+        <span class="c1"># combine layers from template svg-files (svgutils)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_layers</span><span class="p">()</span>
+        <span class="c1"># substitute text (svglue)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_substitutes</span><span class="p">()</span></div></div>
+
+
+<span class="c1">#todo: saveAX(self, ax=&quot;a4&quot;, fn=None, svg_list=None):</span>
+<span class="c1">#	def saveAx(self, fn=None, svg_list=None):</span>
+<span class="c1">#		fn, fext = os.path.splitext(self._fnAx)	</span>
+<span class="c1">#	def saveA4(self, fn=None, svg_list=None):</span>
+<span class="c1">#		super(generic, self).saveA4(fn, svg_list)</span>
+<span class="c1">#		fn, fext = os.path.splitext(self._fnA4)</span>
+<span class="c1">#		fn_cut = fn + &#39;_cut&#39; + fext	</span>
+<span class="c1">#		super(generic, self).saveA4(fn_cut, self._fn_cut_list)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Andreas Gschossmann.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

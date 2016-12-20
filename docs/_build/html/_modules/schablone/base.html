@@ -1,0 +1,424 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>schablone.base &mdash; schablone 0.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="schablone 0.1 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> schablone
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <!-- Local TOC -->
+                <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">schablone</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      
+    <li>schablone.base</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for schablone.base</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1">#coding=utf-8</span>
+
+<span class="kn">from</span> <span class="nn">lxml</span> <span class="k">import</span> <span class="n">etree</span>
+<span class="kn">import</span> <span class="nn">svgutils.transform</span> <span class="k">as</span> <span class="nn">sg</span>
+
+<span class="c1">#import rsvg</span>
+<span class="kn">from</span> <span class="nn">gi.repository</span> <span class="k">import</span> <span class="n">Rsvg</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+
+
+<div class="viewcode-block" id="baseSVG"><a class="viewcode-back" href="../../source/schablone.html#schablone.base.baseSVG">[docs]</a><span class="k">class</span> <span class="nc">baseSVG</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Basic SVG-File creation.</span>
+
+<span class="sd">    The baseSVG is able to store basic empty SVG files of given with and height. </span>
+<span class="sd">    Files can be stored by the save() method. If the attribute overwrite is set </span>
+<span class="sd">    False, overwriting files is prevented. Instead of overwriting files, a new </span>
+<span class="sd">    filename (including an index) is being choosed. </span>
+
+<span class="sd">    Every instance of the class keeps track on the paths of the history of </span>
+<span class="sd">    all stored files using save(). By saveAx() all these files (or a custom</span>
+<span class="sd">    set of files) can be aranged in a DIN-format file. If the arangement of</span>
+<span class="sd">    the files expands the file-size, a new file for a new page is stored.</span>
+<span class="sd">    </span>
+<span class="sd">    Note:</span>
+<span class="sd">        This class is used as base functionality for child classes in schablone.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        width (str): width of the file - exemplary formats (compatible with SVG standard): &quot;500&quot; or &quot;500px&quot;, &quot;132mm&quot;</span>
+<span class="sd">        height (str): height of the file - exemplary formats (compatible with SVG standard): &quot;500&quot; or &quot;500px&quot;, &quot;132mm&quot;</span>
+<span class="sd">        _fn (str): Filename</span>
+
+<span class="sd">    some text here</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>  <span class="c1">#: initial value: par1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">author</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+        <span class="c1">#todo: write getter/setter with better control</span>
+        <span class="c1">#on svg-compatible layout of width and height</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="s2">&quot;500&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="s2">&quot;500&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fn</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># self._fnA4 = None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fnAx</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fn_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">landscapeAx</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="mf">0.1</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">overwrite</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="c1">#todo: viewBox=&quot;0 0 100 100&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_svg_content</span> <span class="o">=</span> <span class="s2">&quot;&lt;?xml version=</span><span class="se">\&quot;</span><span class="s2">1.0</span><span class="se">\&quot;</span><span class="s2"> encoding=</span><span class="se">\&quot;</span><span class="s2">UTF-8</span><span class="se">\&quot;</span><span class="s2"> standalone=</span><span class="se">\&quot;</span><span class="s2">no</span><span class="se">\&quot;</span><span class="s2">?&gt;</span><span class="se">\n</span><span class="s2">&lt;svg xmlns=</span><span class="se">\&quot;</span><span class="s2">http://www.w3.org/2000/svg</span><span class="se">\&quot;</span><span class="s2"> width=</span><span class="se">\&quot;</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2"> height=</span><span class="se">\&quot;</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">&gt;</span><span class="se">\n</span><span class="s2">&lt;/svg&gt;&quot;</span>
+
+        <span class="c1">#self.__create(fn, overwrite)</span>
+
+    <span class="k">def</span> <span class="nf">_check_fn_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">):</span>
+        <span class="n">ext</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">fp</span><span class="p">,</span> <span class="n">fe</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+        <span class="n">fn_tmp</span> <span class="o">=</span> <span class="n">fn</span>
+        <span class="k">while</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">fn_tmp</span><span class="p">):</span>
+            <span class="n">ext</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">fn_tmp</span> <span class="o">=</span> <span class="n">fp</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ext</span><span class="p">)</span> <span class="o">+</span> <span class="n">fe</span>
+
+        <span class="k">return</span> <span class="n">fn_tmp</span>
+
+    <span class="k">def</span> <span class="nf">_fn_sub_str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="n">sub_str</span><span class="p">):</span>
+        <span class="n">fnbase</span><span class="p">,</span> <span class="n">fext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">fnbase</span> <span class="o">+</span> <span class="n">sub_str</span> <span class="o">+</span> <span class="n">fext</span>
+
+    <span class="k">def</span> <span class="nf">__create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="s2">&quot;500&quot;</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="s2">&quot;500&quot;</span><span class="p">):</span>
+        <span class="c1"># alternativer Ansatz: </span>
+        <span class="c1"># existiert bereits ein SVG-Label, pruefen, ob es sich um ein SVG-Label handelt</span>
+        <span class="c1"># und dessen Werte in Klassenrumpf (etree) übernehmen  </span>
+        <span class="n">ext</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fn</span> <span class="o">=</span> <span class="n">fn</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_svg_content</span> <span class="o">=</span> <span class="s2">&quot;&lt;?xml version=</span><span class="se">\&quot;</span><span class="s2">1.0</span><span class="se">\&quot;</span><span class="s2"> encoding=</span><span class="se">\&quot;</span><span class="s2">UTF-8</span><span class="se">\&quot;</span><span class="s2"> standalone=</span><span class="se">\&quot;</span><span class="s2">no</span><span class="se">\&quot;</span><span class="s2">?&gt;</span><span class="se">\n</span><span class="s2">&lt;svg xmlns=</span><span class="se">\&quot;</span><span class="s2">http://www.w3.org/2000/svg</span><span class="se">\&quot;</span><span class="s2"> width=</span><span class="se">\&quot;</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span>
+            <span class="n">width</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2"> height=</span><span class="se">\&quot;</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">height</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">&gt;</span><span class="se">\n</span><span class="s2">&lt;/svg&gt;&quot;</span>
+        <span class="k">if</span> <span class="n">fn</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.svg&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">overwrite</span><span class="p">:</span>
+                <span class="c1"># alternativer Ansatz: </span>
+                <span class="c1"># existiert bereits ein SVG-Label, prüfen, ob es sich um ein SVG-Label handelt</span>
+                <span class="c1"># und dessen werte in Klassenrumpf übernehmen</span>
+                <span class="c1">#tree = etree.parse(self._fn)</span>
+                <span class="c1">#self._svg_root = tree.getroot()</span>
+                <span class="c1">#if contains pySVGfile:</span>
+                <span class="c1">#   Daten in Klassenrumpf übernhemen</span>
+                <span class="c1">#else: </span>
+                <span class="n">fn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_fn_exists</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_fn</span> <span class="o">=</span> <span class="n">fn</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_svg_content</span><span class="p">)</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">pass</span>
+                <span class="c1">#print &#39;Something went wrong.&#39;</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">pass</span>
+            <span class="c1">#print &quot;Filename argument must be a valid svg-file (.svg).&quot;</span>
+
+        <span class="c1">#	def open(self, fn):</span>
+        <span class="c1">#		#todo: preufen ob svg extension</span>
+        <span class="c1">#		#todo: pruefen ob pfad existiert</span>
+        <span class="c1">#		self._fn = fn</span>
+
+<div class="viewcode-block" id="baseSVG.save"><a class="viewcode-back" href="../../source/schablone.html#schablone.base.baseSVG.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">fn</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fn</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_fn</span> <span class="o">=</span> <span class="s2">&quot;defaul.svg&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_fn</span> <span class="o">=</span> <span class="n">fn</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__create</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fn</span><span class="p">)</span>
+
+        <span class="n">tree</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fn</span><span class="p">)</span>
+        <span class="n">root</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
+
+        <span class="n">root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;height&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
+        <span class="n">root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;width&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">)</span>
+
+        <span class="n">tree</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fn</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fn_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fn</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="baseSVG.saveAx"><a class="viewcode-back" href="../../source/schablone.html#schablone.base.baseSVG.saveAx">[docs]</a>    <span class="k">def</span> <span class="nf">saveAx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="s1">&#39;a4&#39;</span><span class="p">,</span> <span class="n">svg_list</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">widthAx</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;a10&#39;</span><span class="p">:</span> <span class="mi">92</span><span class="p">,</span>
+            <span class="s1">&#39;a9&#39;</span><span class="p">:</span> <span class="mi">131</span><span class="p">,</span>
+            <span class="s1">&#39;a8&#39;</span><span class="p">:</span> <span class="mi">184</span><span class="p">,</span>
+            <span class="s1">&#39;a7&#39;</span><span class="p">:</span> <span class="mi">262</span><span class="p">,</span>
+            <span class="s1">&#39;a6&#39;</span><span class="p">:</span> <span class="mi">372</span><span class="p">,</span>
+            <span class="s1">&#39;a5&#39;</span><span class="p">:</span> <span class="mi">524</span><span class="p">,</span>
+            <span class="s1">&#39;a4&#39;</span><span class="p">:</span> <span class="mi">744</span><span class="p">,</span>
+            <span class="s1">&#39;a3&#39;</span><span class="p">:</span> <span class="mi">1052</span><span class="p">,</span>
+            <span class="s1">&#39;a2&#39;</span><span class="p">:</span> <span class="mi">1488</span><span class="p">,</span>
+            <span class="s1">&#39;a1&#39;</span><span class="p">:</span> <span class="mi">2104</span><span class="p">,</span>
+            <span class="s1">&#39;a0&#39;</span><span class="p">:</span> <span class="mi">2979</span>
+        <span class="p">}</span>
+        <span class="n">heightAx</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;a10&#39;</span><span class="p">:</span> <span class="mi">131</span><span class="p">,</span>
+            <span class="s1">&#39;a9&#39;</span><span class="p">:</span> <span class="mi">184</span><span class="p">,</span>
+            <span class="s1">&#39;a8&#39;</span><span class="p">:</span> <span class="mi">262</span><span class="p">,</span>
+            <span class="s1">&#39;a7&#39;</span><span class="p">:</span> <span class="mi">372</span><span class="p">,</span>
+            <span class="s1">&#39;a6&#39;</span><span class="p">:</span> <span class="mi">524</span><span class="p">,</span>
+            <span class="s1">&#39;a5&#39;</span><span class="p">:</span> <span class="mi">524</span><span class="p">,</span>
+            <span class="s1">&#39;a4&#39;</span><span class="p">:</span> <span class="mi">1052</span><span class="p">,</span>
+            <span class="s1">&#39;a3&#39;</span><span class="p">:</span> <span class="mi">1488</span><span class="p">,</span>
+            <span class="s1">&#39;a2&#39;</span><span class="p">:</span> <span class="mi">2104</span><span class="p">,</span>
+            <span class="s1">&#39;a1&#39;</span><span class="p">:</span> <span class="mi">2979</span><span class="p">,</span>
+            <span class="s1">&#39;a0&#39;</span><span class="p">:</span> <span class="mi">4212</span>
+        <span class="p">}</span>
+        <span class="c1"># todo Seitenzahlen einfuegen</span>
+        <span class="k">if</span> <span class="n">svg_list</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fn_list</span> <span class="o">==</span> <span class="p">[]:</span>
+                <span class="c1">#print &quot;Error, no files given for Ax.&quot;</span>
+                <span class="n">svg_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">svg_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fn_list</span>
+
+            <span class="c1">#todo: raise error</span>
+
+        <span class="k">if</span> <span class="n">fn</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">fn</span> <span class="o">=</span> <span class="s2">&quot;default_Ax.svg&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">overwrite</span><span class="p">:</span>
+            <span class="n">fn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_fn_exists</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fnAx</span> <span class="o">=</span> <span class="n">fn</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">landscapeAx</span><span class="p">:</span>
+            <span class="n">width</span> <span class="o">=</span> <span class="n">heightAx</span><span class="p">[</span><span class="n">ax</span><span class="p">]</span>  <span class="c1">#744#&quot;210mm&quot;</span>
+            <span class="n">height</span> <span class="o">=</span> <span class="n">widthAx</span><span class="p">[</span><span class="n">ax</span><span class="p">]</span>  <span class="c1">#1052#&quot;297mm&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">width</span> <span class="o">=</span> <span class="n">widthAx</span><span class="p">[</span><span class="n">ax</span><span class="p">]</span>  <span class="c1">#1052#&quot;297mm&quot;</span>
+            <span class="n">height</span> <span class="o">=</span> <span class="n">heightAx</span><span class="p">[</span><span class="n">ax</span><span class="p">]</span>  <span class="c1">#744#&quot;210mm&quot;</span>
+
+        <span class="n">pg_nmb</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fnAx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fn_sub_str</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;_pg&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">pg_nmb</span><span class="p">)))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__create</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fnAx</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
+
+        <span class="n">x_pos</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">y_pos</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="n">svg_label</span> <span class="o">=</span> <span class="n">sg</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fnAx</span><span class="p">)</span>
+
+        <span class="c1"># derzeit noch suboptimal, da nur gut fuer gleich Hoehen (todo: besseren Algorithmus entwickeln)</span>
+        <span class="k">for</span> <span class="n">svg_file</span> <span class="ow">in</span> <span class="n">svg_list</span><span class="p">:</span>
+            <span class="n">handle</span> <span class="o">=</span> <span class="n">Rsvg</span><span class="o">.</span><span class="n">Handle</span><span class="p">()</span>
+            <span class="n">svg</span> <span class="o">=</span> <span class="n">handle</span><span class="o">.</span><span class="n">new_from_file</span><span class="p">(</span><span class="n">svg_file</span><span class="p">)</span>
+            <span class="n">h</span> <span class="o">=</span> <span class="n">svg</span><span class="o">.</span><span class="n">get_dimensions</span><span class="p">()</span><span class="o">.</span><span class="n">height</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="n">svg</span><span class="o">.</span><span class="n">get_dimensions</span><span class="p">()</span><span class="o">.</span><span class="n">width</span>
+            <span class="c1">#rsvg_anker = Rsvg.Handle(file=svg_file)</span>
+            <span class="c1">#(w, h, w2, h2) = rsvg_anker.get_dimension_data()</span>
+            <span class="n">anker</span> <span class="o">=</span> <span class="n">sg</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="n">svg_file</span><span class="p">)</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
+            <span class="n">anker</span><span class="o">.</span><span class="n">moveto</span><span class="p">(</span><span class="n">x_pos</span><span class="p">,</span> <span class="n">y_pos</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+            <span class="n">svg_label</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">anker</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">width</span> <span class="o">-</span> <span class="p">(</span><span class="n">x_pos</span> <span class="o">+</span> <span class="n">w</span><span class="p">))</span> <span class="o">&gt;</span> <span class="n">w</span><span class="p">:</span>
+                <span class="n">x_pos</span> <span class="o">+=</span> <span class="n">w</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">height</span> <span class="o">-</span> <span class="p">(</span><span class="n">y_pos</span> <span class="o">+</span> <span class="n">h</span><span class="p">))</span> <span class="o">&gt;</span> <span class="n">h</span><span class="p">:</span>
+                    <span class="n">y_pos</span> <span class="o">+=</span> <span class="n">h</span>
+                    <span class="n">x_pos</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">else</span><span class="p">:</span>  <span class="c1"># new page</span>
+                    <span class="c1"># store current page -&gt; todo: check if file exists</span>
+                    <span class="n">svg_label</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fnAx</span><span class="p">)</span>
+                    <span class="c1"># reset positions</span>
+                    <span class="n">x_pos</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="n">y_pos</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="c1"># increase page number</span>
+                    <span class="n">pg_nmb</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="c1"># create new page</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_fnAx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fn_sub_str</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;_pg&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">pg_nmb</span><span class="p">)))</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">__create</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fnAx</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
+                    <span class="n">svg_label</span> <span class="o">=</span> <span class="n">sg</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fnAx</span><span class="p">)</span>
+
+            <span class="c1">#if h&gt;max_height:</span>
+            <span class="c1">#	max_height=h</span>
+
+            <span class="c1">#self._fnAx = self._fn_sub_str( fn, ( &#39;_pg&#39; + str(pg_nmb+1) ) )</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fnAx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fn_sub_str</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;_pg&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">pg_nmb</span> <span class="o">+</span> <span class="mi">0</span><span class="p">)))</span>
+        <span class="n">svg_label</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fnAx</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Andreas Gschossmann.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
