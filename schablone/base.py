@@ -101,17 +101,10 @@ class baseSVG(object):
                 file.write(self._svg_content)
                 file.close()
             except:
-                pass
-                #print 'Something went wrong.'
+                raise RuntimeError('Could not create/open file ' + fn)
 
         else:
-            pass
-            #print "Filename argument must be a valid svg-file (.svg)."
-
-        #	def open(self, fn):
-        #		#todo: preufen ob svg extension
-        #		#todo: pruefen ob pfad existiert
-        #		self._fn = fn
+            raise RuntimeError('File extension must be a valid svg file.')
 
     def save(self, fn=None):
         if fn == None:
@@ -162,12 +155,10 @@ class baseSVG(object):
         # todo Seitenzahlen einfuegen
         if svg_list == None:
             if self._fn_list == []:
-                #print "Error, no files given for Ax."
+                raise Warning('svg_list is empty. No files available to store to Ax file.'
                 svg_list = []
             else:
                 svg_list = self._fn_list
-
-            #todo: raise error
 
         if fn == None:
             fn = "default_Ax.svg"
