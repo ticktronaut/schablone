@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 #coding=utf-8
 
-#import svgutils
 import svgutils.transform as sg
 import svglue 
 #from svglue import svglue
@@ -17,9 +16,6 @@ import pyqrcode
 import pkg_resources
 
 from .base import baseSVG
-
-#sys.path.append('/home/usappz/make/code_projects/schablone/schablone/svglue_git/svglue')
-#sys.path.append('/home/usappz/make/code_projects/schablone/schablone/svglue_git')
 
 
 class layer_container(object):
