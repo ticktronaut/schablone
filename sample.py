@@ -6,8 +6,8 @@ import os
 import schablone
 #import schablone.box
 #import schablone.smd_container
-import schablone.generic
-import schablone.label
+from schablone import generic 
+from schablone import label 
 
 base_dir = 'samples'
 single_dir = base_dir + '/' + 'single_files'

@@ -4,7 +4,8 @@
 from lxml import etree
 import svgutils.transform as sg
 
-import rsvg
+#import rsvg
+from gi.repository import Rsvg
 
 import os
 
@@ -30,10 +31,11 @@ class baseSVG(object):
         height (str): height of the file - exemplary formats (compatible with SVG standard): "500" or "500px", "132mm"
         _fn (str): Filename
 
+    some text here
     """
 
     def __init__(self):
-        self.description = "" #: initial value: par1
+        self.description = ""  #: initial value: par1
         self.author = ""
 
         #todo: write getter/setter with better control
@@ -99,15 +101,17 @@ class baseSVG(object):
                 file.write(self._svg_content)
                 file.close()
             except:
-                print 'Something went wrong.'
+                pass
+                #print 'Something went wrong.'
 
         else:
-            print "Filename argument must be a valid svg-file (.svg)."
+            pass
+            #print "Filename argument must be a valid svg-file (.svg)."
 
-#	def open(self, fn):
-#		#todo: preufen ob svg extension
-#		#todo: pruefen ob pfad existiert
-#		self._fn = fn
+        #	def open(self, fn):
+        #		#todo: preufen ob svg extension
+        #		#todo: pruefen ob pfad existiert
+        #		self._fn = fn
 
     def save(self, fn=None):
         if fn == None:
@@ -158,7 +162,7 @@ class baseSVG(object):
         # todo Seitenzahlen einfuegen
         if svg_list == None:
             if self._fn_list == []:
-                print "Error, no files given for Ax."
+                #print "Error, no files given for Ax."
                 svg_list = []
             else:
                 svg_list = self._fn_list
@@ -191,8 +195,12 @@ class baseSVG(object):
 
         # derzeit noch suboptimal, da nur gut fuer gleich Hoehen (todo: besseren Algorithmus entwickeln)
         for svg_file in svg_list:
-            rsvg_anker = rsvg.Handle(file=svg_file)
-            (w, h, w2, h2) = rsvg_anker.get_dimension_data()
+            handle = Rsvg.Handle()
+            svg = handle.new_from_file(svg_file)
+            h = svg.get_dimensions().height
+            w = svg.get_dimensions().width
+            #rsvg_anker = Rsvg.Handle(file=svg_file)
+            #(w, h, w2, h2) = rsvg_anker.get_dimension_data()
             anker = sg.fromfile(svg_file).getroot()
             anker.moveto(x_pos, y_pos, scale=1.0)
             svg_label.append(anker)

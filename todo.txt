@@ -26,3 +26,7 @@ Schablone extensively exploits the flexibility of xml formats like svg and html 
 
 Dokumentation Inhaltsverzeichnis erstellen ähnlich wie:
 http://goldilocks.readthedocs.io/en/latest/readme.html
+
+Find out, what is a good way to render SVG
+get text-size using pango
+http://stackoverflow.com/questions/2675217/gtk-how-to-calculate-width-of-the-string-in-pixels

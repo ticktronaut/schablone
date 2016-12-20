@@ -15,144 +15,177 @@ import pyqrcode
 
 import pkg_resources
 
-import base
+from .base import baseSVG
+#import base
 
 
 class layer_container(object):
-	def __init__(self, path, x=0.0, y=0.0, scale=1.0):
-		self.x_pos = x 
-		self.y_pos = y 
-		self.scale = scale 
-		self.path = path 
+    def __init__(self, path, x=0.0, y=0.0, scale=1.0):
+        self.x_pos = x
+        self.y_pos = y
+        self.scale = scale
+        self.path = path
+
 
 class layer_pack(object):
-	def __init__(self):
-		self.tmpl_lr={'default':[layer_container]*0}
-		self.default_group='default' # todo: getter/setter for self.default_lr, wenn key nicht existiert  mindestens warning ...
+    def __init__(self):
+        self.tmpl_lr = {'default': [layer_container] * 0}
+        self.default_group = 'default'  # todo: getter/setter for self.default_lr, wenn key nicht existiert  mindestens warning ...
 
-	def add(self, path, x_pos=0.0, y_pos=0.0, scale=1.0, group=None):
-		if group is None:
-			group=self.default_group
+    def add(self, path, x_pos=0.0, y_pos=0.0, scale=1.0, group=None):
+        if group is None:
+            group = self.default_group
 
-		tmp=layer_container(path, x_pos, y_pos, scale)
-		#self.tmpl_lr[group].append(tmp)
-		self.tmpl_lr.setdefault(group,[]).append(tmp)
+        tmp = layer_container(path, x_pos, y_pos, scale)
+        #self.tmpl_lr[group].append(tmp)
+        self.tmpl_lr.setdefault(group, []).append(tmp)
 
-	def remove(self, nmb, group=None):
-		if group is None:
-			group=self.default_group
-		elif group is 'all':
-			print 'reset all layers'
-	
-		del self.tmpl_lr[group][nmb]
+    def remove(self, nmb, group=None):
+        if group is None:
+            group = self.default_group
+        elif group is 'all':
+            pass
+            #print 'reset all layers'
 
-	def remove_all(self, group=None):
-		if group is None:
-			# remove all keys by resetting to default
-			self.tmpl_lr={'default':[layer_container]*0}
-		else:
-			del self.tmpl_lr[group]
+        del self.tmpl_lr[group][nmb]
 
-	def show(self, group=None):
-		if group is None:
-			group=self.default_group
-		idx=0
-		lrs=[]
-		if group in self.tmpl_lr.keys():
-			for lr in self.tmpl_lr[group]:
-				lrs.append([idx, lr.path, lr.x_pos, lr.y_pos, lr.scale])
-				idx +=1
-	
-			return lrs
-		else:
-			print 'todo: raise warning, key does not exist'
+    def remove_all(self, group=None):
+        if group is None:
+            # remove all keys by resetting to default
+            self.tmpl_lr = {'default': [layer_container] * 0}
+        else:
+            del self.tmpl_lr[group]
 
-# Ueberlegung anstatt template-id evtl. direkt id verwenden
-class generic(base.baseSVG):
-	
-	def __init__(self):
-		super(generic, self).__init__()
+    def show(self, group=None):
+        if group is None:
+            group = self.default_group
+        idx = 0
+        lrs = []
+        if group in self.tmpl_lr.keys():
+            for lr in self.tmpl_lr[group]:
+                lrs.append([idx, lr.path, lr.x_pos, lr.y_pos, lr.scale])
+                idx += 1
 
-		#self.qr_content = "http://www.sappz.de"
-
-		# lists of paths to template layers
-		# hier eigentlich dictionary von lists
-		self.layer = layer_pack()
-		self.__tmpl_layers=[]
-
-		# captions
-		self.cpt_tspan = {}
-		self.cpt_flowpara = {}
-		self.cpt_rect = {} #qr or img
-
-	def create_sample(self):
-		print "create svg"
-		print "append captions"
-
-	def create_qr(self, content, fn, x_pos, y_pos):
-		# size depends on content
-		qr = pyqrcode.create(content)#, version=17)
-		qr.svg(fn)
-		# todo: save, add layer
-		self.layer.add(fn, x_pos, y_pos)
-
-	def save_frame(self, fo=None):
-		super(generic, self).save(fo)
-
-	def save_layers(self, fo=None, fi=None, group=None):
-		if fi is None:
-			fi = self._fn
-		if fo is None:
-			fo = self._fn
-
-		if group is None:
-			group = self.layer.default_group
-
-                # combine svg-files 
-		svg_label = sg.fromfile(fi)
-		for layer in self.layer.tmpl_lr[group]:
-			anker = sg.fromfile(layer.path).getroot()
-			anker.moveto(layer.x_pos, layer.y_pos, layer.scale)
-			svg_label.append(anker)
-
-		svg_label.save(fo)
-
-	def save_substitutes(self, fo=None, fi=None, group=None):
-		if fi==None:
-			fi = self._fn
-		if fo==None:
-			fo = self._fn
-
-		if group is None:
-			group = self.layer.default_group
-
-		tpl = svglue.load(file=self._fn)
-
-		for cpt_key, cpt_val in self.cpt_tspan.iteritems():
-			tpl.set_text(cpt_key, cpt_val)
-
-		for cpt_key, cpt_val in self.cpt_flowpara.iteritems():
-			tpl.set_flowtext(cpt_key, cpt_val)
-
-		for cpt_key, cpt_val in self.cpt_rect.iteritems():
-			tpl.set_image(cpt_key, file=cpt_val, mimetype='image/png')
-
-		src = str(tpl)
-		open(self._fn, 'w').write(src)
-		#from cairosvg.surface import PDFSurface
-		#PDFSurface.convert(src, write_to=open('output.pdf', 'w'))
+            return lrs
+        else:
+            pass
+            # raise warning
+            #print 'todo: raise warning, key does not exist'
 
 
-	# hier wird die einzige Moeglichkeit der Basisklasse 
-	# die Hoehe und Breite zu setzen ueberschrieben
-	def save(self, fn = None):
+        # Ueberlegung anstatt template-id evtl. direkt id verwenden
+class generic(baseSVG):
+    def __init__(self):
+        super(generic, self).__init__()
 
-		# save basic frame layer	
-		self.save_frame(fn)
-		# combine layers from template svg-files (svgutils)
-		self.save_layers()
-		# substitute text (svglue)
-		self.save_substitutes()
+        #self.qr_content = "http://www.sappz.de"
+
+        # lists of paths to template layers
+        # hier eigentlich dictionary von lists
+        self.layer = layer_pack()
+        self.__tmpl_layers = []
+
+        # captions
+        self.cpt_tspan = {}
+        self.cpt_flowpara = {}
+        self.cpt_rect = {}  #qr or img
+
+    def create_sample(self):
+        pass
+        #print "create svg"
+        #print "append captions"
+
+    def create_qr(self, content, fn, x_pos, y_pos):
+        # size depends on content
+        qr = pyqrcode.create(content)  #, version=17)
+        qr.svg(fn)
+        # todo: save, add layer
+        self.layer.add(fn, x_pos, y_pos)
+
+    def save_frame(self, fo=None):
+        super(generic, self).save(fo)
+
+    def save_layers(self, fo=None, fi=None, group=None):
+        if fi is None:
+            fi = self._fn
+        if fo is None:
+            fo = self._fn
+
+        if group is None:
+            group = self.layer.default_group
+
+# combine svg-files 
+        svg_label = sg.fromfile(fi)
+        for layer in self.layer.tmpl_lr[group]:
+            anker = sg.fromfile(layer.path).getroot()
+            anker.moveto(layer.x_pos, layer.y_pos, layer.scale)
+            svg_label.append(anker)
+
+        svg_label.save(fo)
+
+    def save_substitutes(self, fo=None, fi=None, group=None):
+        if fi == None:
+            fi = self._fn
+        if fo == None:
+            fo = self._fn
+
+        if group is None:
+            group = self.layer.default_group
+
+        tpl = svglue.load(file=self._fn)
+
+        for cpt_key, cpt_val in self.cpt_tspan.items():
+            tpl.set_text(cpt_key, cpt_val)
+
+        for cpt_key, cpt_val in self.cpt_flowpara.items():
+            tpl.set_flowtext(cpt_key, cpt_val)
+
+        for cpt_key, cpt_val in self.cpt_rect.items():
+            #tpl.set_image(cpt_key, file=cpt_val, mimetype='image/png')
+            mimetype='image/png'
+            HREF_ATTR = '{http://www.w3.org/1999/xlink}href'
+            IMAGE_TAG = '{http://www.w3.org/2000/svg}image'
+
+            elem = tpl._rect_subs[cpt_key]
+            elem.tag = IMAGE_TAG
+
+            ALLOWED_ATTRS = ('x', 'y', 'width', 'height', 'style')
+            for attr in elem.attrib.keys():
+                if not attr in ALLOWED_ATTRS:
+                    del elem.attrib[attr]
+
+            elem.set('preserveAspectRatio', 'none')
+
+            if not hasattr(cpt_val, 'read'):
+                import base64
+               
+                if not hasattr(cpt_val, 'read'):
+                    file = open(cpt_val, 'rb')
+                fc = file.read()
+                src = base64.encodestring(fc)
+                src = src.decode('utf-8')
+          
+            elem.set(HREF_ATTR, 'data:%s;base64,%s' % (mimetype, src))
+
+        #src = str(tpl)
+        #src = tpl
+        #todo: move this hack to svglue library
+        src=etree.tostring(tpl._doc, encoding='utf8', method='xml')
+        open(self._fn, 'wb').write(src)
+        #from cairosvg.surface import PDFSurface
+        #PDFSurface.convert(src, write_to=open('output.pdf', 'w'))
+
+    # hier wird die einzige Moeglichkeit der Basisklasse 
+    # die Hoehe und Breite zu setzen ueberschrieben
+
+    def save(self, fn=None):
+
+        # save basic frame layer	
+        self.save_frame(fn)
+        # combine layers from template svg-files (svgutils)
+        self.save_layers()
+        # substitute text (svglue)
+        self.save_substitutes()
 
 
 #todo: saveAX(self, ax="a4", fn=None, svg_list=None):
