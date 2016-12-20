@@ -146,10 +146,8 @@ class generic(baseSVG):
         for cpt_key, cpt_val in self.cpt_rect.items():
             tpl.set_image(cpt_key, file=cpt_val, mimetype='image/png')
 
-        #src = str(tpl)
-        #src = tpl
-        #todo: move this hack to svglue library
-        src=etree.tostring(tpl._doc, encoding='utf8', method='xml')
+        src = tpl.__str__()#str(tpl) #str(tpl) does not work in python3
+        #src=etree.tostring(tpl._doc, encoding='utf8', method='xml')
         open(self._fn, 'wb').write(src)
         #from cairosvg.surface import PDFSurface
         #PDFSurface.convert(src, write_to=open('output.pdf', 'w'))
