@@ -3,7 +3,8 @@
 
 #import svgutils
 import svgutils.transform as sg
-import svglue
+import svglue 
+#from svglue import svglue
 #import svgwrite
 #import pysvg
 
@@ -16,7 +17,9 @@ import pyqrcode
 import pkg_resources
 
 from .base import baseSVG
-#import base
+
+#sys.path.append('/home/usappz/make/code_projects/schablone/schablone/svglue_git/svglue')
+#sys.path.append('/home/usappz/make/code_projects/schablone/schablone/svglue_git')
 
 
 class layer_container(object):
@@ -141,31 +144,32 @@ class generic(baseSVG):
             tpl.set_flowtext(cpt_key, cpt_val)
 
         for cpt_key, cpt_val in self.cpt_rect.items():
-            #tpl.set_image(cpt_key, file=cpt_val, mimetype='image/png')
-            mimetype='image/png'
-            HREF_ATTR = '{http://www.w3.org/1999/xlink}href'
-            IMAGE_TAG = '{http://www.w3.org/2000/svg}image'
-
-            elem = tpl._rect_subs[cpt_key]
-            elem.tag = IMAGE_TAG
-
-            ALLOWED_ATTRS = ('x', 'y', 'width', 'height', 'style')
-            for attr in elem.attrib.keys():
-                if not attr in ALLOWED_ATTRS:
-                    del elem.attrib[attr]
-
-            elem.set('preserveAspectRatio', 'none')
-
-            if not hasattr(cpt_val, 'read'):
-                import base64
-               
-                if not hasattr(cpt_val, 'read'):
-                    file = open(cpt_val, 'rb')
-                fc = file.read()
-                src = base64.encodestring(fc)
-                src = src.decode('utf-8')
-          
-            elem.set(HREF_ATTR, 'data:%s;base64,%s' % (mimetype, src))
+            tpl.set_image(cpt_key, file=cpt_val, mimetype='image/png')
+            # todo: move this hack to the code of svglue
+#            mimetype='image/png'
+#            HREF_ATTR = '{http://www.w3.org/1999/xlink}href'
+#            IMAGE_TAG = '{http://www.w3.org/2000/svg}image'
+#
+#            elem = tpl._rect_subs[cpt_key]
+#            elem.tag = IMAGE_TAG
+#
+#            ALLOWED_ATTRS = ('x', 'y', 'width', 'height', 'style')
+#            for attr in elem.attrib.keys():
+#                if not attr in ALLOWED_ATTRS:
+#                    del elem.attrib[attr]
+#
+#            elem.set('preserveAspectRatio', 'none')
+#
+#            #if not hasattr(cpt_val, 'read'):
+#            import base64
+#               
+#            if not hasattr(cpt_val, 'read'):
+#                file = open(cpt_val, 'rb')
+#            fc = file.read()
+#            src = base64.encodestring(fc).decode('utf-8)')
+#            #src = src.decode('utf-8')
+#          
+#            elem.set(HREF_ATTR, 'data:%s;base64,%s' % (mimetype, src))
 
         #src = str(tpl)
         #src = tpl
