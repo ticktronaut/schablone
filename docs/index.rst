@@ -6,13 +6,18 @@
 Welcome to schablone's documentation!
 =====================================
 
+contents:
+
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
 
-.. automodule:: schablone
+   readme
+   installation
+   architecture
 
-.. autoclass:: schablone.base.baseSVG
+.. .. automodule:: schablone
+
+.. .. autoclass:: schablone.base.baseSVG
     :members:
 
 Indices and tables
