@@ -10,14 +10,23 @@ import schablone.generic
 import schablone.label
 
 base_dir = 'samples'
-single_dir = base_dir + '/' + 'single_files'
-Ax_dir = base_dir + '/'  +'Ax_files'
+smd_container_dir = base_dir + '/' + 'smd_container'
+box_label_dir = base_dir + '/' + 'box_label'
+generic_label_dir = base_dir + '/' + 'generic'
+single_dir = smd_container_dir + '/' + 'single_files'
+Ax_dir = smd_container_dir + '/'  +'Ax_files'
 
 if not os.path.exists(single_dir):
     os.makedirs(single_dir)
 
 if not os.path.exists(Ax_dir):
     os.makedirs(Ax_dir)
+
+if not os.path.exists(box_label_dir):
+    os.makedirs(box_label_dir)
+
+if not os.path.exists(generic_label_dir):
+    os.makedirs(generic_label_dir)
 
 genLabel = schablone.generic.generic()
 genLabel.overwrite = True
@@ -33,7 +42,8 @@ genLabel.create_qr('http://www.sappz.de', 'test.svg', 160, 160)
 #print genLabel.layer.show()
 genLabel.layer.remove(1)
 #print genLabel.layer.show()
-genLabel.save()
+fn = generic_label_dir + '/' + 'generic.svg'
+genLabel.save(fn)
 
 smdLabel = schablone.label.smd_container()
 smdLabel.overwrite = True
@@ -72,6 +82,8 @@ boxLabel.content.project = 'Projekt A'
 boxLabel.content.editor = 'A.G.'
 boxLabel.content.location = 'Regal A, Reihe A'
 boxLabel.content.brief_content = 'Einige Dinge die sich in der Box befinden ...'
-boxLabel.save('test_1.svg')
+fn = box_label_dir + '/' + 'default_label.svg'
+boxLabel.save(fn)
 boxLabel.label_type = 'extended'
-boxLabel.save('test_2.svg')
+vn = box_label_dir + '/' + 'extended_label.svg'
+boxLabel.save(fn)
