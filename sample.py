@@ -37,7 +37,8 @@ genLabel.cpt_flowpara['flow_txt'] = u'Also flow text may be replaced.'
 genLabel.layer.add('tmpl_layer/tmpl_layer_1.svg')
 genLabel.layer.add('tmpl_layer/tmpl_layer_2.svg')
 genLabel.layer.add('tmpl_layer/tmpl_layer_2.svg')
-genLabel.create_qr('http://www.sappz.de', 'test.svg', 160, 160)
+fn = generic_label_dir + '/generic_qr.svg'
+genLabel.create_qr('http://www.sappz.de', fn, 160, 160)
 
 #print genLabel.layer.show()
 genLabel.layer.remove(1)
