@@ -14,11 +14,8 @@ contents:
    readme
    installation
    architecture
-
-.. .. automodule:: schablone
-
-.. .. autoclass:: schablone.base.baseSVG
-    :members:
+   reference/index.rst
+   contributing
 
 Indices and tables
 ==================

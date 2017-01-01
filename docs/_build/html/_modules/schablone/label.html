@@ -83,8 +83,14 @@
           
             
             
-                <!-- Local TOC -->
-                <div class="local-toc"></div>
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">schablone</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+</ul>
+
             
           
         </div>
@@ -196,20 +202,16 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="s1">&#39;15mm&#39;</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="s1">&#39;20mm&#39;</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_type</span> <span class="o">==</span> <span class="s1">&#39;mira_2&#39;</span><span class="p">:</span>
-            <span class="k">pass</span>
-        <span class="c1">#print &#39;Todo: raise error Not supported, yet.&#39;</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Label type mira_2 not supported, yet.&#39;</span><span class="p">)</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_type</span> <span class="o">==</span> <span class="s1">&#39;mira_3&#39;</span><span class="p">:</span>
-            <span class="k">pass</span>
-        <span class="c1">#print &#39;Todo: raise error Not supported, yet.&#39;</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Label type mira_3 not supported, yet.&#39;</span><span class="p">)</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_type</span> <span class="o">==</span> <span class="s2">&quot;mira_4&quot;</span><span class="p">:</span>
-            <span class="k">pass</span>
-        <span class="c1">#print &#39;Todo raise error Not supported, yet.&#39;</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Label type mira_4 not supported, yet.&#39;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">pass</span>
-        <span class="c1">#print &#39;Todo: raise Error: type is not known.&#39;</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Unknown type of label: &#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_type</span><span class="p">)</span>
 
         <span class="c1"># self.fn is set after this point </span>
-        <span class="c1"># todo: better solution for self._fn (explicit is better than implicit) </span>
+        <span class="c1"># todo: think about better solution for self._fn (explicit is better than implicit) </span>
         <span class="nb">super</span><span class="p">(</span><span class="n">smd_container</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">save_frame</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
 
         <span class="c1"># save data matrix code with unique id (using bash)</span>
@@ -220,7 +222,7 @@
             <span class="o">+</span> <span class="n">fn_qr</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cpt_rect</span><span class="p">[</span><span class="s1">&#39;matrix&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fn_qr</span>
 
-        <span class="c1"># todo: rething the following ...</span>
+        <span class="c1"># todo: rethink the following ...</span>
         <span class="c1"># two ways to organize addition of layers</span>
         <span class="c1"># delete all layers and reset them </span>
         <span class="c1"># - in save function (any time file is saved, as done here)</span>
@@ -264,8 +266,8 @@
 <div class="viewcode-block" id="smd_container.saveAx"><a class="viewcode-back" href="../../source/schablone.html#schablone.label.smd_container.saveAx">[docs]</a>    <span class="k">def</span> <span class="nf">saveAx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="s1">&#39;a4&#39;</span><span class="p">,</span> <span class="n">svg_list</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">svg_list</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fn_list</span> <span class="o">==</span> <span class="p">[]:</span>
-                <span class="c1">#print &quot;Error, no files given for Ax.&quot;</span>
                 <span class="n">svg_list</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;List of svg_list is empty&#39;</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">svg_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fn_list</span>
 
@@ -339,10 +341,9 @@
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_type</span> <span class="o">==</span> <span class="s1">&#39;extended&#39;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="s1">&#39;138mm&#39;</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">pass</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Unknown type of label: &#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_type</span><span class="p">)</span>
         <span class="c1">#self.height = &#39;74mm&#39;</span>
         <span class="c1">#self.label_type = &#39;default&#39;</span>
-        <span class="c1">#print &quot;Todo: raise Error: type is not known&quot;</span>
 
         <span class="nb">super</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
 

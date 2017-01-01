@@ -17,11 +17,13 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# import os
+import os
 import sys
 import sphinx_rtd_theme
 # sys.path.insert(0, os.path.abspath('.'))
-sys.path.insert(0, '/home/usappz/make/code_projects/schablone/')
+sys.path.insert(0, '/home/usappz/make/code_projects/schablone/schablone/')
+sys.path.append('/home/usappz/make/code_projects/schablone/')
+sys.path.append('/home/usappz/make/code_projects/')
 
 
 # -- General configuration ------------------------------------------------
@@ -34,6 +36,7 @@ sys.path.insert(0, '/home/usappz/make/code_projects/schablone/')
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = ['sphinx.ext.autodoc',
+    'sphinx.ext.napoleon',
     'sphinx.ext.doctest',
     'sphinx.ext.intersphinx',
     'sphinx.ext.todo',
@@ -41,7 +44,11 @@ extensions = ['sphinx.ext.autodoc',
     'sphinx.ext.mathjax',
     'sphinx.ext.ifconfig',
     'sphinx.ext.viewcode',
-    'sphinx.ext.githubpages']
+    'sphinx.ext.githubpages'
+]
+napoleon_google_docstring = False
+napoleon_use_param = False
+napoleon_use_ivar = True
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

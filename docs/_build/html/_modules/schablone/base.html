@@ -83,8 +83,14 @@
           
             
             
-                <!-- Local TOC -->
-                <div class="local-toc"></div>
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">schablone</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+</ul>
+
             
           
         </div>
@@ -138,35 +144,66 @@
 <span class="kn">from</span> <span class="nn">gi.repository</span> <span class="k">import</span> <span class="n">Rsvg</span>
 
 <span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
 
 
 <div class="viewcode-block" id="baseSVG"><a class="viewcode-back" href="../../source/schablone.html#schablone.base.baseSVG">[docs]</a><span class="k">class</span> <span class="nc">baseSVG</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Basic SVG-File creation.</span>
+    <span class="sd">&quot;&quot;&quot;Functionality for basic SVG-File creation.</span>
 
-<span class="sd">    The baseSVG is able to store basic empty SVG files of given with and height. </span>
-<span class="sd">    Files can be stored by the save() method. If the attribute overwrite is set </span>
-<span class="sd">    False, overwriting files is prevented. Instead of overwriting files, a new </span>
-<span class="sd">    filename (including an index) is being choosed. </span>
+<span class="sd">    The class **baseSVG** is able to store basic empty SVG files of given width </span>
+<span class="sd">    and height. Files can be stored by the save() method. If the attribute </span>
+<span class="sd">    overwrite is set False, overwriting files is prevented, by extending the </span>
+<span class="sd">    filename with an index.</span>
 
-<span class="sd">    Every instance of the class keeps track on the paths of the history of </span>
-<span class="sd">    all stored files using save(). By saveAx() all these files (or a custom</span>
-<span class="sd">    set of files) can be aranged in a DIN-format file. If the arangement of</span>
-<span class="sd">    the files expands the file-size, a new file for a new page is stored.</span>
-<span class="sd">    </span>
-<span class="sd">    Note:</span>
-<span class="sd">        This class is used as base functionality for child classes in schablone.</span>
+<span class="sd">    Every instance of **baseSVG** keeps track on the history of all paths to</span>
+<span class="sd">    formerly stored files using save(). By saveAx() all these files (or a custom</span>
+<span class="sd">    set of files) can be arranged in a DIN-format file. If the arrangement of</span>
+<span class="sd">    the files expands the page size of the DIN file, a new file for a new page </span>
+<span class="sd">    is stored.</span>
 
-<span class="sd">    Attributes:</span>
-<span class="sd">        width (str): width of the file - exemplary formats (compatible with SVG standard): &quot;500&quot; or &quot;500px&quot;, &quot;132mm&quot;</span>
-<span class="sd">        height (str): height of the file - exemplary formats (compatible with SVG standard): &quot;500&quot; or &quot;500px&quot;, &quot;132mm&quot;</span>
-<span class="sd">        _fn (str): Filename</span>
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    ::    </span>
 
-<span class="sd">    some text here</span>
+<span class="sd">        from base import baseSVG</span>
+<span class="sd">     </span>
+<span class="sd">        sample_svg = baseSVG() </span>
+<span class="sd">        sample_svg.width = &#39;20mm&#39;</span>
+<span class="sd">        sample_svg.height = &#39;20mm&#39;</span>
+<span class="sd">        sample_svg.save(&#39;sample.svg&#39;)</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    **baseSVG** class is used as base functionality for the class **generic**. </span>
+<span class="sd">    All further derived classes are children of **generic**.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    description : str</span>
+<span class="sd">        Optional description of the svg file. </span>
+<span class="sd">    author : str</span>
+<span class="sd">        Optional author of the file.</span>
+<span class="sd">    version : str</span>
+<span class="sd">        Optional version of the file. </span>
+<span class="sd">    width : str</span>
+<span class="sd">        width of the file - exemplary formats (compatible with SVG standard): &quot;500&quot; or &quot;500px&quot;, &quot;132mm&quot;</span>
+<span class="sd">    height : str </span>
+<span class="sd">        height of the file - exemplary formats (compatible with SVG standard): &quot;500&quot; or &quot;500px&quot;, &quot;132mm&quot;</span>
+<span class="sd">    _fn : str</span>
+<span class="sd">        Filename of the svg corresponding file.</span>
+<span class="sd">    _fnAx : str</span>
+<span class="sd">        Filename of svg file to gather formerly stored svg files.</span>
+<span class="sd">    landscapeAx : bool</span>
+<span class="sd">        Format for _fnAx file.</span>
+<span class="sd">    _svg_content : str</span>
+<span class="sd">        Content of the svg file. it is not recommended to change this. </span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>  <span class="c1">#: initial value: par1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span> 
         <span class="bp">self</span><span class="o">.</span><span class="n">author</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="mf">0.1</span>
 
         <span class="c1">#todo: write getter/setter with better control</span>
         <span class="c1">#on svg-compatible layout of width and height</span>
@@ -180,8 +217,6 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">landscapeAx</span> <span class="o">=</span> <span class="kc">True</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="mf">0.1</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">overwrite</span> <span class="o">=</span> <span class="kc">False</span>
 
         <span class="c1">#todo: viewBox=&quot;0 0 100 100&quot;</span>
@@ -191,6 +226,15 @@
         <span class="c1">#self.__create(fn, overwrite)</span>
 
     <span class="k">def</span> <span class="nf">_check_fn_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check if filename exists. If so, extend the filename with an index.</span>
+<span class="sd">  </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        fn</span>
+<span class="sd">            Filename to be checked for existence. </span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">ext</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">fp</span><span class="p">,</span> <span class="n">fe</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
         <span class="n">fn_tmp</span> <span class="o">=</span> <span class="n">fn</span>
@@ -201,6 +245,17 @@
         <span class="k">return</span> <span class="n">fn_tmp</span>
 
     <span class="k">def</span> <span class="nf">_fn_sub_str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="n">sub_str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Place a substring between filename and extension.</span>
+<span class="sd">  </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        fn </span>
+<span class="sd">            Filename to be extended. </span>
+<span class="sd">        sub_str</span>
+<span class="sd">            Substring to be placed between filename and extension.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">fnbase</span><span class="p">,</span> <span class="n">fext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">fnbase</span> <span class="o">+</span> <span class="n">sub_str</span> <span class="o">+</span> <span class="n">fext</span>
 
@@ -221,7 +276,6 @@
                 <span class="c1">#self._svg_root = tree.getroot()</span>
                 <span class="c1">#if contains pySVGfile:</span>
                 <span class="c1">#   Daten in Klassenrumpf übernhemen</span>
-                <span class="c1">#else: </span>
                 <span class="n">fn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_fn_exists</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">_fn</span> <span class="o">=</span> <span class="n">fn</span>
@@ -231,19 +285,26 @@
                 <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_svg_content</span><span class="p">)</span>
                 <span class="n">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
             <span class="k">except</span><span class="p">:</span>
-                <span class="k">pass</span>
-                <span class="c1">#print &#39;Something went wrong.&#39;</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Could not create/open file &#39;</span> <span class="o">+</span> <span class="n">fn</span><span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">pass</span>
-            <span class="c1">#print &quot;Filename argument must be a valid svg-file (.svg).&quot;</span>
-
-        <span class="c1">#	def open(self, fn):</span>
-        <span class="c1">#		#todo: preufen ob svg extension</span>
-        <span class="c1">#		#todo: pruefen ob pfad existiert</span>
-        <span class="c1">#		self._fn = fn</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;File extension must be a valid svg file.&#39;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="baseSVG.save"><a class="viewcode-back" href="../../source/schablone.html#schablone.base.baseSVG.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Store content to svg-file.</span>
+<span class="sd">  </span>
+<span class="sd">        Note</span>
+<span class="sd">        ----</span>
+<span class="sd">        The save function may be called more than once, with different filenames.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        fn</span>
+<span class="sd">            Filename of the saved file. If left blank, the filename of the previously saved file is taken. </span>
+<span class="sd">            If there is no filename, it defaults to default.svg. The filename will be stored in the _fn </span>
+<span class="sd">            class member.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">fn</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fn</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_fn</span> <span class="o">=</span> <span class="s2">&quot;defaul.svg&quot;</span>
@@ -263,6 +324,27 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_fn_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fn</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="baseSVG.saveAx"><a class="viewcode-back" href="../../source/schablone.html#schablone.base.baseSVG.saveAx">[docs]</a>    <span class="k">def</span> <span class="nf">saveAx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="s1">&#39;a4&#39;</span><span class="p">,</span> <span class="n">svg_list</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Store history of previously files in a DIN-format file.</span>
+
+<span class="sd">        Note</span>
+<span class="sd">        ----</span>
+<span class="sd">        In the optional parameter svg_list, a custom list of file paths may be used instead of the </span>
+<span class="sd">        history of previously stored files.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        fn</span>
+<span class="sd">            Filename of the saved file. If left blank, the filename defaults to the existing filename </span>
+<span class="sd">            saved in the class members. If there is no filename, it defaults to default_Ax.svg. </span>
+<span class="sd">            The filename will be stored in the _fnAx class member.</span>
+<span class="sd">        ax</span>
+<span class="sd">            String to define the size of the DIN format document. Allowed is &#39;a0&#39;, &#39;a1&#39;, ..., &#39;a10&#39;.</span>
+<span class="sd">        svg_list</span>
+<span class="sd">            Custom list of paths to files, which should be aranged to the DIN format svg file. By default </span>
+<span class="sd">            the history of paths to all files stored by the save() function, stored in the class member </span>
+<span class="sd">            _fn_list is stored.</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">widthAx</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;a10&#39;</span><span class="p">:</span> <span class="mi">92</span><span class="p">,</span>
             <span class="s1">&#39;a9&#39;</span><span class="p">:</span> <span class="mi">131</span><span class="p">,</span>
@@ -289,15 +371,14 @@
             <span class="s1">&#39;a1&#39;</span><span class="p">:</span> <span class="mi">2979</span><span class="p">,</span>
             <span class="s1">&#39;a0&#39;</span><span class="p">:</span> <span class="mi">4212</span>
         <span class="p">}</span>
-        <span class="c1"># todo Seitenzahlen einfuegen</span>
         <span class="k">if</span> <span class="n">svg_list</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fn_list</span> <span class="o">==</span> <span class="p">[]:</span>
-                <span class="c1">#print &quot;Error, no files given for Ax.&quot;</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                    <span class="s1">&#39;svg_list is empty. No files available to store to Ax file.&#39;</span>
+                <span class="p">)</span>
                 <span class="n">svg_list</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">svg_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fn_list</span>
-
-            <span class="c1">#todo: raise error</span>
 
         <span class="k">if</span> <span class="n">fn</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">fn</span> <span class="o">=</span> <span class="s2">&quot;default_Ax.svg&quot;</span>
@@ -308,11 +389,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_fnAx</span> <span class="o">=</span> <span class="n">fn</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">landscapeAx</span><span class="p">:</span>
-            <span class="n">width</span> <span class="o">=</span> <span class="n">heightAx</span><span class="p">[</span><span class="n">ax</span><span class="p">]</span>  <span class="c1">#744#&quot;210mm&quot;</span>
-            <span class="n">height</span> <span class="o">=</span> <span class="n">widthAx</span><span class="p">[</span><span class="n">ax</span><span class="p">]</span>  <span class="c1">#1052#&quot;297mm&quot;</span>
+            <span class="n">width</span> <span class="o">=</span> <span class="n">heightAx</span><span class="p">[</span><span class="n">ax</span><span class="p">]</span> 
+            <span class="n">height</span> <span class="o">=</span> <span class="n">widthAx</span><span class="p">[</span><span class="n">ax</span><span class="p">]</span> 
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">width</span> <span class="o">=</span> <span class="n">widthAx</span><span class="p">[</span><span class="n">ax</span><span class="p">]</span>  <span class="c1">#1052#&quot;297mm&quot;</span>
-            <span class="n">height</span> <span class="o">=</span> <span class="n">heightAx</span><span class="p">[</span><span class="n">ax</span><span class="p">]</span>  <span class="c1">#744#&quot;210mm&quot;</span>
+            <span class="n">width</span> <span class="o">=</span> <span class="n">widthAx</span><span class="p">[</span><span class="n">ax</span><span class="p">]</span>  
+            <span class="n">height</span> <span class="o">=</span> <span class="n">heightAx</span><span class="p">[</span><span class="n">ax</span><span class="p">]</span> 
 
         <span class="n">pg_nmb</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_fnAx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fn_sub_str</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;_pg&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">pg_nmb</span><span class="p">)))</span>
@@ -357,7 +438,6 @@
             <span class="c1">#if h&gt;max_height:</span>
             <span class="c1">#	max_height=h</span>
 
-            <span class="c1">#self._fnAx = self._fn_sub_str( fn, ( &#39;_pg&#39; + str(pg_nmb+1) ) )</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_fnAx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fn_sub_str</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;_pg&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">pg_nmb</span> <span class="o">+</span> <span class="mi">0</span><span class="p">)))</span>
         <span class="n">svg_label</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fnAx</span><span class="p">)</span></div></div>
 </pre></div>

@@ -1,0 +1,290 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>schablone &mdash; schablone 0.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="schablone 0.1 documentation" href="index.html"/>
+        <link rel="next" title="Installation" href="installation.html"/>
+        <link rel="prev" title="Welcome to schablone’s documentation!" href="index.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> schablone
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">schablone</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#what-it-is">What it is?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#what-can-i-use-it-for">What can I use it for?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#why-should-i-use-it">Why should I use it?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#store-frame-svg-file-which-has-the-wished-size">store frame SVG file which has the wished size</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#stack-layers-of-svg-file-templates">stack layers of svg file templates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fill-in-texts-and-images">fill in texts and images</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#license">License</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">schablone</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>schablone</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/readme.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="schablone">
+<h1>schablone<a class="headerlink" href="#schablone" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="what-it-is">
+<h2>What it is?<a class="headerlink" href="#what-it-is" title="Permalink to this headline">¶</a></h2>
+<p>schablone is a library to create structured printed formulars in svg format and fill them with information. Its main purpose is to create labels for boxes in a storage system (for instance your local hacker space). Beyond that it is flexible enough to create many other structured documents, like for example resumes or business cards. Schablone broadly exploits the flexibility the xml formats, especially svg. In future development also other xml formats like html might be deployed. It relies on the libraries svglue, svgutils and lxml (currently indirectly). Occasionally also the library Rsvg (gi.repository) is utilized.</p>
+</div>
+<div class="section" id="what-can-i-use-it-for">
+<h2>What can I use it for?<a class="headerlink" href="#what-can-i-use-it-for" title="Permalink to this headline">¶</a></h2>
+<p>schablone is a very flexible library to create structured svg files. The user must specify -template layers- of svg files with fields of images and text to fill in. The library stacks these layers and fills in the wished texts and images. The library might, for instance, be used to automize the creation of address labels in a django based e-commerce system.</p>
+<div class="figure">
+<a class="reference internal image-reference" href="_images/smd_container.png"><img alt="_images/smd_container.png" src="_images/smd_container.png" style="width: 172.5px; height: 217.79999999999998px;" /></a>
+</div>
+<p>The library also can be used for some special tasks like creating box labels or labels of smd containers (as seen in the image above).</p>
+</div>
+<div class="section" id="why-should-i-use-it">
+<h2>Why should I use it?<a class="headerlink" href="#why-should-i-use-it" title="Permalink to this headline">¶</a></h2>
+<p>schablone simplifies the process of automatically creating labels and fill them in. Whenever structured documents should be created and filled in by python, schablone is a good workflow. Also qr-codes can be created. The basic procedure is a three steps process:</p>
+<ol class="arabic simple">
+<li><a class="reference internal" href="#store-frame-svg-file-which-has-the-wished-size">store frame SVG file which has the wished size</a></li>
+<li><a class="reference internal" href="#stack-layers-of-svg-file-templates">stack layers of svg file templates</a></li>
+<li><a class="reference internal" href="#fill-in-texts-and-images">fill in texts and images</a></li>
+</ol>
+<div class="figure">
+<a class="reference internal image-reference" href="_images/layers.png"><img alt="_images/layers.png" src="_images/layers.png" style="width: 6533.099999999999px; height: 2800.0px;" /></a>
+</div>
+</div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="store-frame-svg-file-which-has-the-wished-size">
+<h3>store frame SVG file which has the wished size<a class="headerlink" href="#store-frame-svg-file-which-has-the-wished-size" title="Permalink to this headline">¶</a></h3>
+<p>tbc</p>
+</div>
+<div class="section" id="stack-layers-of-svg-file-templates">
+<h3>stack layers of svg file templates<a class="headerlink" href="#stack-layers-of-svg-file-templates" title="Permalink to this headline">¶</a></h3>
+<p>tbc</p>
+</div>
+<div class="section" id="fill-in-texts-and-images">
+<h3>fill in texts and images<a class="headerlink" href="#fill-in-texts-and-images" title="Permalink to this headline">¶</a></h3>
+<p>tbc</p>
+</div>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<p>It relies on the libraries</p>
+<ul class="simple">
+<li><strong>svglue</strong>,</li>
+<li><strong>svgutils</strong></li>
+<li>and <strong>lxml</strong> (currently indirectly).</li>
+</ul>
+<p>Occasionally also the library <strong>Rsvg</strong> (gi.repository) is utilized. Installation using pip:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ pip install svglue svgutils lxml
+</pre></div>
+</div>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ pip install schablone
+</pre></div>
+</div>
+</div>
+<div class="section" id="license">
+<h2>License<a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h2>
+<p>todo</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="installation.html" class="btn btn-neutral float-right" title="Installation" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Welcome to schablone’s documentation!" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Andreas Gschossmann.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

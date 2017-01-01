@@ -1,0 +1,348 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>generic &mdash; schablone 0.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="schablone 0.1 documentation" href="../index.html"/>
+        <link rel="up" title="Reference" href="index.html"/>
+        <link rel="next" title="label" href="label.html"/>
+        <link rel="prev" title="baseSVG" href="base.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> schablone
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../readme.html">schablone</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="base.html">baseSVG</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">generic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="label.html">label</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">schablone</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Reference</a> &raquo;</li>
+      
+    <li>generic</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/reference/generic.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-schablone.generic">
+<span id="generic"></span><h1>generic<a class="headerlink" href="#module-schablone.generic" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="schablone.generic.generic">
+<em class="property">class </em><code class="descclassname">schablone.generic.</code><code class="descname">generic</code><a class="reference internal" href="../_modules/schablone/generic.html#generic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schablone.generic.generic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stack layers svg file templates and replace text.</p>
+<p>The <strong>generic</strong> class contains core functionality of the <strong>schablone</strong>
+library. It can create SVG files from sets of SVG file templates and
+fill them in with text. Though, the steps (exceppt the first step) may
+be mixed and executed redundantly, in general this is a three step process:</p>
+<ol class="arabic simple">
+<li>store frame SVG file</li>
+<li>stack layers of svg file templates</li>
+<li>fill in texts and images</li>
+</ol>
+<p><strong>generic</strong> inherits from <strong>baseSVG</strong>.</p>
+<p>For stacking the template layers, <strong>schablone</strong> depends on svgutils. To fill
+the resulting file with content the texts are substituted. For this purpose
+svglue is being used. The Templates containing content intended to be filled in,
+must have tags representing them (rect, tspan, flowpara) with a custom attribute
+template-id. Each template-id must have a unique identifier. These identifiers
+are represented by the class members cpt_tspan, cpt_flowpara, cpt_rect.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">schablone.generic</span>
+
+<span class="n">generic_svg</span> <span class="o">=</span> <span class="n">schablone</span><span class="o">.</span><span class="n">generic</span><span class="o">.</span><span class="n">generic</span><span class="p">()</span>
+<span class="n">generic_svg</span><span class="o">.</span><span class="n">overwrite</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">genLabel</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="s1">&#39;200&#39;</span>
+<span class="n">genLabel</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="s1">&#39;200&#39;</span>
+<span class="n">genLabel</span><span class="o">.</span><span class="n">cpt_tspan</span><span class="p">[</span><span class="s1">&#39;static_txt&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">u&#39;Replace some text here.&#39;</span>
+<span class="n">genLabel</span><span class="o">.</span><span class="n">cpt_flowpara</span><span class="p">[</span><span class="s1">&#39;flow_txt&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">u&#39;Also flow text may be replaced.&#39;</span>
+<span class="n">genLabel</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s1">&#39;tmpl_layer/tmpl_layer_1.svg&#39;</span><span class="p">)</span>
+<span class="n">genLabel</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s1">&#39;tmpl_layer/tmpl_layer_2.svg&#39;</span><span class="p">)</span>
+<span class="n">genLabel</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s1">&#39;tmpl_layer/tmpl_layer_2.svg&#39;</span><span class="p">)</span>
+<span class="n">genLabel</span><span class="o">.</span><span class="n">create_qr</span><span class="p">(</span><span class="s1">&#39;http://www.samp.le&#39;</span><span class="p">,</span> <span class="s1">&#39;qr.svg&#39;</span><span class="p">,</span> <span class="mi">160</span><span class="p">,</span> <span class="mi">160</span><span class="p">)</span>
+<span class="n">genLabel</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">genLabel</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;sample.svg&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <strong>generic</strong> class contains the core functionality of <strong>schablone</strong>. All further
+classes are derived from <strong>generic</strong>.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>layer</strong> (<a class="reference internal" href="../source/schablone.html#schablone.generic.layer_pack" title="schablone.generic.layer_pack"><em>layer_pack</em></a><em>(</em><em></em><em>)</em><em></em>) &#8211; Paths to the layers of templates.</li>
+<li><strong>cpt_span</strong> (<em>dictionary</em>) &#8211; Pairs of name of the template-id and the corresponding text intended to substitute.</li>
+<li><strong>cpt_flowpara</strong> (<em>dictionary</em>) &#8211; Pairs of name of the template-id and the corresponding text intended to substitute.</li>
+<li><strong>cpt_rect</strong> (<em>dictionary</em>) &#8211; Pairs of name of the template-id and the corresponding path to the image intended
+to substitute.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="schablone.generic.generic.create_qr">
+<code class="descname">create_qr</code><span class="sig-paren">(</span><em>content</em>, <em>fn</em>, <em>x_pos</em>, <em>y_pos</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/schablone/generic.html#generic.create_qr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schablone.generic.generic.create_qr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save qr-code, which can be used as template.</p>
+<p>Stores a qr-code and adds it to the layers by layer.add.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>content</strong> &#8211; Content of the qr-code.</li>
+<li><strong>fn</strong> &#8211; Filename of the qr-code SVG template.</li>
+<li><strong>x_pos</strong> &#8211; Intended x-position of the layer.</li>
+<li><strong>y_pos</strong> &#8211; Intended y-position of the layer.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="schablone.generic.generic.create_sample">
+<code class="descname">create_sample</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/schablone/generic.html#generic.create_sample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schablone.generic.generic.create_sample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented, yet.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="schablone.generic.generic.save_frame">
+<code class="descname">save_frame</code><span class="sig-paren">(</span><em>fo=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/schablone/generic.html#generic.save_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schablone.generic.generic.save_frame" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the frame SVG-file.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This is the basic frame of the SVG file. It is recommended to be called only once per file,
+except you know what you do.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="schablone.generic.generic.save_layers">
+<code class="descname">save_layers</code><span class="sig-paren">(</span><em>fo=None</em>, <em>fi=None</em>, <em>group=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/schablone/generic.html#generic.save_layers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schablone.generic.generic.save_layers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stack all template layers to the frame SVG file.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In most cases it is convenient to skip the arguments fi and fo.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>fo</strong> &#8211; Output filename (defaults to classmember _fn).</li>
+<li><strong>fi</strong> &#8211; Input filename (defaults to classmember _fn).</li>
+<li><strong>group</strong> &#8211; Template layer group. Defaults to classmember default_group.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="schablone.generic.generic.save_substitutes">
+<code class="descname">save_substitutes</code><span class="sig-paren">(</span><em>fo=None</em>, <em>fi=None</em>, <em>group=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/schablone/generic.html#generic.save_substitutes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schablone.generic.generic.save_substitutes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Substitute texts and store the substitutions to SVG file.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In most cases it is convenient to skip the arguments fi and fo.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="label.html" class="btn btn-neutral float-right" title="label" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="base.html" class="btn btn-neutral" title="baseSVG" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Andreas Gschossmann.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
