@@ -17,8 +17,8 @@
    inkscape:version="0.48.4 r9939"
    sodipodi:docname="smd_container.svg"
    inkscape:export-filename="/home/usappz/make/code_projects/schablone/docs/images/smd_container.png"
-   inkscape:export-xdpi="1200"
-   inkscape:export-ydpi="1200">
+   inkscape:export-xdpi="416.42001"
+   inkscape:export-ydpi="416.42001">
   <defs
      id="defs4269" />
   <sodipodi:namedview
@@ -38,7 +38,7 @@
      fit-margin-left="0"
      fit-margin-right="0"
      fit-margin-bottom="0"
-     inkscape:window-width="958"
+     inkscape:window-width="862"
      inkscape:window-height="1059"
      inkscape:window-x="0"
      inkscape:window-y="19"
@@ -51,7 +51,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
