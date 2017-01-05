@@ -13,7 +13,7 @@ What can I use it for?
 schablone is a very flexible library to create structured svg files. The user must specify -template layers- of svg files with fields of images and text to fill in. The library stacks these layers and fills in the wished texts and images. The library might, for instance, be used to automize the creation of address labels in a django based e-commerce system.
 
 .. figure:: images/smd_container.png
-   :scale: 15 %
+   :scale: 100 %
 
 The library also can be used for some special tasks like creating box labels or labels of smd containers (as seen in the image above).
 
