@@ -65,16 +65,17 @@ save A4
 Examples
 --------
 
-In the following some example on using the examples are given. A more detailed example, concluding all these examples can be found in sample.py.
+The following examples show the usage of schablone's key features. A more detailed example, concluding all these features can be found in sample.py.
    
-Create generic label
-````````````````````
+Create a generic label
+``````````````````````
 
 schablone can create generic templates. The result can be seen in samples/generic/generic.svg.
 
 ::
 
     import schablone.generic
+    import os
 
     if not os.path.exists(generic_label_dir):
         os.makedirs(generic_label_dir)
@@ -87,7 +88,6 @@ schablone can create generic templates. The result can be seen in samples/generi
     genLabel.cpt_flowpara['flow_txt'] = u'Also flow text may be replaced.'
     genLabel.layer.add('tmpl_layer/tmpl_layer_1.svg')
     genLabel.layer.add('tmpl_layer/tmpl_layer_2.svg')
-    genLabel.layer.add('tmpl_layer/tmpl_layer_2.svg')
     fn = generic_label_dir + '/generic_qr.svg'
     genLabel.create_qr('http://www.sappz.de', fn, 160, 160)
     
@@ -95,14 +95,15 @@ schablone can create generic templates. The result can be seen in samples/generi
     fn = generic_label_dir + '/' + 'generic.svg'
     genLabel.save(fn)
 
-Create smd container
-````````````````````
+Create smd container labels
+```````````````````````````
 
 There are also some specialized applications of schablone. One of them is to create labels for **mira** smd containers. Exemplary outputs can be found in the image in chapter `What can I use it for?`_.
 
 ::
 
     import schablone.label
+    import os
 
     if not os.path.exists(single_dir):
         os.makedirs(single_dir)
@@ -127,14 +128,15 @@ There are also some specialized applications of schablone. One of them is to cre
     smdLabel.save(fn)
 
 
-Create box label 
-````````````````
+Create a box label 
+``````````````````
 
 Another special application is the creation of box labels. The exemplary result can be seen in samples/box_label/default_label.svg.
 
 ::
 
     import schablone.label
+    import os
 
     if not os.path.exists(box_label_dir):
         os.makedirs(box_label_dir)

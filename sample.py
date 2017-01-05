@@ -3,9 +3,8 @@
 
 import os
 
-import schablone
-#import schablone.box
-#import schablone.smd_container
+#import schablone
+import schablone.label
 import schablone.generic
 import schablone.label
 
@@ -35,7 +34,6 @@ genLabel.height = '200'
 genLabel.cpt_tspan['static_txt'] = u'Replace some text here.'
 genLabel.cpt_flowpara['flow_txt'] = u'Also flow text may be replaced.'
 genLabel.layer.add('tmpl_layer/tmpl_layer_1.svg')
-genLabel.layer.add('tmpl_layer/tmpl_layer_2.svg')
 genLabel.layer.add('tmpl_layer/tmpl_layer_2.svg')
 fn = generic_label_dir + '/generic_qr.svg'
 genLabel.create_qr('http://www.sappz.de', fn, 160, 160)
