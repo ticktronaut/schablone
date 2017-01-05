@@ -42,24 +42,25 @@ schablone simplifies the process of automatically creating labels and fill them 
    :scale: 70 %
 
 
-.. Usage
-   -----
+Usage
+-----
 
-   store frame SVG file which has the wished size
-   ``````````````````````````````````````````````
+store frame SVG file which has the wished size
+``````````````````````````````````````````````
    
-   tbc
+tbc
    
-   stack layers of svg file templates
-   ``````````````````````````````````
+stack layers of svg file templates
+``````````````````````````````````
+
+tbc   
    
    
+fill in texts and images 
+````````````````````````
    
-   fill in texts and images 
-   ````````````````````````
-   
-   tbc
-   save A4
+tbc
+save A4
    
 Examples
 --------
