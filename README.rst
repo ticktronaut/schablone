@@ -5,7 +5,7 @@ schablone
 What it is?
 -----------
 
-schablone is a library to create structured printed formulars in svg format and fill them with information. Its main purpose is to create labels for boxes in a storage system (for instance your local hacker space). Beyond that it is flexible enough to create many other structured documents, like for example resumes or business cards. Schablone broadly exploits the flexibility the xml formats, especially svg. In future development also other xml formats like html might be deployed. It relies on the libraries svglue, svgutils and lxml (currently indirectly). Occasionally also the library Rsvg (gi.repository) is utilized.
+schablone is a library to create structured printed forms (svg format) and fill them with information. Its main purpose is to create labels for boxes in a storage system (for instance your local hacker space). Beyond that it is flexible enough to create many other structured documents, like for example resumes or business cards. Schablone broadly exploits the flexibility the xml formats, especially svg. In future development also other xml formats like html might be deployed. It relies on the libraries svglue, svgutils and lxml (currently indirectly). Occasionally also the library Rsvg (gi.repository) is utilized.
 
 What can I use it for?
 ----------------------
@@ -30,7 +30,9 @@ The library also can be used for some special tasks like creating box labels or 
 Why should I use it?
 --------------------
 
-schablone simplifies the process of automatically creating labels and fill them in. Whenever structured documents should be created and filled in by python, schablone is a good workflow. Also the inclusion of qr-codes is supported (using the library pyqrcode). The basic procedure is a three steps process:
+schablone simplifies the process of automatically creating labels and fill them in. Whenever structured documents should be created and filled in by python, schablone is a good workflow. Also the inclusion of qr-codes is supported (using the library pyqrcode_). The basic procedure is a three steps process:
+
+.. _pyqrcode: https://pypi.python.org/pypi/PyQRCode/1.2.1
 
 1. `store frame SVG file which has the wished size`_
 2. `stack layers of svg file templates`_
@@ -66,13 +68,18 @@ Requirements
 
 It relies on the libraries 
 
-* **svglue**, 
-* **svgutils**
-* and **lxml** (currently indirectly). 
+* svglue_,
+* svgutils_
+* and lxml_ (currently indirectly). 
 
-Occasionally also the library **Rsvg** (gi.repository) is utilized. Installation using pip: ::
+.. _svglue: https://pypi.python.org/pypi/svglue/0.2.1
+.. _svgutils: https://pypi.python.org/pypi/svgutils/0.2.0
+.. _lxml: https://pypi.python.org/pypi/lxml/3.7.1 
+
+Occasionally also the library **Rsvg** (gi.repository) is utilized. Installation using pip and aptitude (tested on Ubuntu 14.04): ::
 
     $ pip install svglue svgutils lxml 
+    $ apt-get install gir1.2-rsvg-2.0 python3-cairo
 
 Installation
 ------------
