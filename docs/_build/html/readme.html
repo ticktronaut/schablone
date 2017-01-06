@@ -95,7 +95,13 @@
 <li class="toctree-l3"><a class="reference internal" href="#fill-in-texts-and-images">fill in texts and images</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#create-a-generic-label">Create a generic label</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create-smd-container-labels">Create smd container labels</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create-a-box-label">Create a box label</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#save-history-of-stored-files-in-one-a4-file">Save history of stored files in one A4 file</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#license">License</a></li>
@@ -153,19 +159,19 @@
 <h1>schablone<a class="headerlink" href="#schablone" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="what-it-is">
 <h2>What it is?<a class="headerlink" href="#what-it-is" title="Permalink to this headline">¶</a></h2>
-<p>schablone is a library to create structured printed formulars in svg format and fill them with information. Its main purpose is to create labels for boxes in a storage system (for instance your local hacker space). Beyond that it is flexible enough to create many other structured documents, like for example resumes or business cards. Schablone broadly exploits the flexibility the xml formats, especially svg. In future development also other xml formats like html might be deployed. It relies on the libraries svglue, svgutils and lxml (currently indirectly). Occasionally also the library Rsvg (gi.repository) is utilized.</p>
+<p>schablone is a library to create structured printed forms (svg format) and fill them with information. Its main purpose is to create labels for boxes in a storage system (for instance your local hacker space). Beyond that it is flexible enough to create many other structured documents, like for example resumes or business cards. Schablone broadly exploits the flexibility the xml formats, especially svg. In future development also other xml formats like html might be deployed. It relies on the libraries svglue, svgutils and lxml (currently indirectly). Occasionally also the library Rsvg (gi.repository) is utilized.</p>
 </div>
 <div class="section" id="what-can-i-use-it-for">
 <h2>What can I use it for?<a class="headerlink" href="#what-can-i-use-it-for" title="Permalink to this headline">¶</a></h2>
 <p>schablone is a very flexible library to create structured svg files. The user must specify -template layers- of svg files with fields of images and text to fill in. The library stacks these layers and fills in the wished texts and images. The library might, for instance, be used to automize the creation of address labels in a django based e-commerce system.</p>
 <div class="figure">
-<a class="reference internal image-reference" href="_images/smd_container.png"><img alt="_images/smd_container.png" src="_images/smd_container.png" style="width: 172.5px; height: 217.79999999999998px;" /></a>
+<a class="reference internal image-reference" href="_images/smd_container.png"><img alt="_images/smd_container.png" src="_images/smd_container.png" style="width: 200.0px; height: 252.0px;" /></a>
 </div>
 <p>The library also can be used for some special tasks like creating box labels or labels of smd containers (as seen in the image above).</p>
 </div>
 <div class="section" id="why-should-i-use-it">
 <h2>Why should I use it?<a class="headerlink" href="#why-should-i-use-it" title="Permalink to this headline">¶</a></h2>
-<p>schablone simplifies the process of automatically creating labels and fill them in. Whenever structured documents should be created and filled in by python, schablone is a good workflow. Also qr-codes can be created. The basic procedure is a three steps process:</p>
+<p>schablone simplifies the process of automatically creating labels and fill them in. Whenever structured documents should be created and filled in by python, schablone is a good workflow. Also the inclusion of qr-codes is supported (using the library <a class="reference external" href="https://pypi.python.org/pypi/PyQRCode/1.2.1">pyqrcode</a>). The basic procedure is a three steps process:</p>
 <ol class="arabic simple">
 <li><a class="reference internal" href="#store-frame-svg-file-which-has-the-wished-size">store frame SVG file which has the wished size</a></li>
 <li><a class="reference internal" href="#stack-layers-of-svg-file-templates">stack layers of svg file templates</a></li>
@@ -187,34 +193,192 @@
 </div>
 <div class="section" id="fill-in-texts-and-images">
 <h3>fill in texts and images<a class="headerlink" href="#fill-in-texts-and-images" title="Permalink to this headline">¶</a></h3>
-<p>tbc</p>
+<p>tbc
+save A4</p>
 </div>
 </div>
 <div class="section" id="examples">
 <h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>The following examples show the basic usage of schablone&#8217;s key features. A more detailed example, concluding all these features can be found in sample.py. The examples imply, that the schablone library has bin installed as decribed in <a class="reference internal" href="#installation">Installation</a>.</p>
+<div class="section" id="create-a-generic-label">
+<h3>Create a generic label<a class="headerlink" href="#create-a-generic-label" title="Permalink to this headline">¶</a></h3>
+<p>schablone can create generic templates. The result can be seen in samples/generic/generic.svg.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">schablone.generic</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">generic_label_dir</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">generic_label_dir</span><span class="p">)</span>
+
+<span class="n">genLabel</span> <span class="o">=</span> <span class="n">schablone</span><span class="o">.</span><span class="n">generic</span><span class="o">.</span><span class="n">generic</span><span class="p">()</span>
+<span class="n">genLabel</span><span class="o">.</span><span class="n">overwrite</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">genLabel</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="s1">&#39;200&#39;</span>
+<span class="n">genLabel</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="s1">&#39;200&#39;</span>
+<span class="n">genLabel</span><span class="o">.</span><span class="n">cpt_tspan</span><span class="p">[</span><span class="s1">&#39;static_txt&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">u&#39;Replace some text here.&#39;</span>
+<span class="n">genLabel</span><span class="o">.</span><span class="n">cpt_flowpara</span><span class="p">[</span><span class="s1">&#39;flow_txt&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">u&#39;Also flow text may be replaced.&#39;</span>
+<span class="n">genLabel</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s1">&#39;tmpl_layer/tmpl_layer_1.svg&#39;</span><span class="p">)</span>
+<span class="n">genLabel</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s1">&#39;tmpl_layer/tmpl_layer_2.svg&#39;</span><span class="p">)</span>
+<span class="n">fn</span> <span class="o">=</span> <span class="n">generic_label_dir</span> <span class="o">+</span> <span class="s1">&#39;/generic_qr.svg&#39;</span>
+<span class="n">genLabel</span><span class="o">.</span><span class="n">create_qr</span><span class="p">(</span><span class="s1">&#39;http://www.sappz.de&#39;</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="mi">160</span><span class="p">,</span> <span class="mi">160</span><span class="p">)</span>
+
+<span class="n">genLabel</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">fn</span> <span class="o">=</span> <span class="n">generic_label_dir</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="s1">&#39;generic.svg&#39;</span>
+<span class="n">genLabel</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The files <strong>tmpl_layer_1.svg</strong> and <strong>tmpl_layer_1.svg</strong> can be found in the folder <strong>tmpl_layer</strong>. It is important that a template-id-tag is added to all tags that should be changeable later (similar to the documented way of <a class="reference external" href="https://pypi.python.org/pypi/svglue/0.2.1">svglue</a>). In this case these are:</p>
+<p><strong>static text:</strong></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">tspan</span>
+    <span class="o">...</span>
+    <span class="n">template</span><span class="o">-</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;static_txt&quot;</span>
+    <span class="o">...</span>
+<span class="o">&lt;/</span><span class="n">tspan</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p><strong>floating text:</strong></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">flowRoot</span>
+    <span class="o">...</span>
+    <span class="n">template</span><span class="o">-</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;static_txt&quot;</span>
+    <span class="o">...</span>
+<span class="o">&lt;/</span><span class="n">flowRoot</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="create-smd-container-labels">
+<h3>Create smd container labels<a class="headerlink" href="#create-smd-container-labels" title="Permalink to this headline">¶</a></h3>
+<p>There are also some specialized applications of schablone. One of them is to create labels for <strong>mira</strong> smd containers. Exemplary outputs can be found in the image in chapter <a class="reference internal" href="#what-can-i-use-it-for">What can I use it for?</a>.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">schablone.label</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">single_dir</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">single_dir</span><span class="p">)</span>
+
+<span class="n">smdLabel</span> <span class="o">=</span> <span class="n">schablone</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">smd_container</span><span class="p">()</span>
+<span class="n">smdLabel</span><span class="o">.</span><span class="n">overwrite</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">smdLabel</span><span class="o">.</span><span class="n">cut</span> <span class="o">=</span> <span class="kc">False</span> <span class="c1"># if True, the frame is</span>
+                     <span class="c1"># put in a separate file</span>
+                     <span class="c1"># in red (for laser cutter).</span>
+<span class="n">smdLabel</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;SMD-Wid.&#39;</span>
+<span class="n">smdLabel</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">package</span> <span class="o">=</span> <span class="s1">&#39;0805&#39;</span>
+<span class="n">smdLabel</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">tolerance</span> <span class="o">=</span> <span class="s1">&#39;1%&#39;</span>
+<span class="n">smdLabel</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">temperature_coefficient</span> <span class="o">=</span> <span class="s1">&#39;TK100&#39;</span>
+<span class="n">smdLabel</span><span class="o">.</span><span class="n">power</span> <span class="o">=</span> <span class="s1">&#39;1/8W&#39;</span>
+
+<span class="n">smdLabel</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;120k&#39;</span>
+<span class="n">fn</span> <span class="o">=</span> <span class="n">single_dir</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="s1">&#39;smd_caption_&#39;</span> <span class="o">+</span> <span class="s1">&#39;120k&#39;</span> <span class="o">+</span> <span class="s1">&#39;.svg&#39;</span>
+<span class="n">smdLabel</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+
+<span class="n">smdLabel</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;180k&#39;</span>
+<span class="n">fn</span> <span class="o">=</span> <span class="n">single_dir</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="s1">&#39;smd_caption_&#39;</span> <span class="o">+</span> <span class="s1">&#39;180k&#39;</span> <span class="o">+</span> <span class="s1">&#39;.svg&#39;</span>
+<span class="n">smdLabel</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="create-a-box-label">
+<h3>Create a box label<a class="headerlink" href="#create-a-box-label" title="Permalink to this headline">¶</a></h3>
+<p>Another special application is the creation of box labels. The exemplary result can be seen in samples/box_label/default_label.svg.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">schablone.label</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">box_label_dir</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">box_label_dir</span><span class="p">)</span>
+
+<span class="n">boxLabel</span> <span class="o">=</span> <span class="n">schablone</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">box</span><span class="p">()</span>
+<span class="n">boxLabel</span><span class="o">.</span><span class="n">overwrite</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">boxLabel</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Ein Box Label&#39;</span>
+<span class="n">boxLabel</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">project</span> <span class="o">=</span> <span class="s1">&#39;Projekt A&#39;</span>
+<span class="n">boxLabel</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">editor</span> <span class="o">=</span> <span class="s1">&#39;A.G.&#39;</span>
+<span class="n">boxLabel</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="s1">&#39;Regal A, Reihe A&#39;</span>
+<span class="n">boxLabel</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">brief_content</span> <span class="o">=</span> <span class="s1">&#39;Einige Dinge die sich in der Box befinden ...&#39;</span>
+<span class="n">fn</span> <span class="o">=</span> <span class="n">box_label_dir</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="s1">&#39;default_label.svg&#39;</span>
+<span class="n">boxLabel</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+<span class="n">boxLabel</span><span class="o">.</span><span class="n">label_type</span> <span class="o">=</span> <span class="s1">&#39;extended&#39;</span>
+<span class="n">vn</span> <span class="o">=</span> <span class="n">box_label_dir</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="s1">&#39;extended_label.svg&#39;</span>
+<span class="n">boxLabel</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="save-history-of-stored-files-in-one-a4-file">
+<h3>Save history of stored files in one A4 file<a class="headerlink" href="#save-history-of-stored-files-in-one-a4-file" title="Permalink to this headline">¶</a></h3>
+<p>The function &#8212;-todo: link to function reference&#8212;&#8211; saves the history of all stored svg files in one DIN format file. The following example shows this on smd containers.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">schablone.label</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">single_dir</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">single_dir</span><span class="p">)</span>
+
+<span class="n">smdLabel</span> <span class="o">=</span> <span class="n">schablone</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">smd_container</span><span class="p">()</span>
+<span class="n">smdLabel</span><span class="o">.</span><span class="n">overwrite</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">smdLabel</span><span class="o">.</span><span class="n">cut</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">smdLabel</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;SMD-Wid.&#39;</span>
+<span class="n">smdLabel</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">package</span> <span class="o">=</span> <span class="s1">&#39;0805&#39;</span>
+<span class="n">smdLabel</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">tolerance</span> <span class="o">=</span> <span class="s1">&#39;1%&#39;</span>
+<span class="n">smdLabel</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">temperature_coefficient</span> <span class="o">=</span> <span class="s1">&#39;TK100&#39;</span>
+<span class="n">smdLabel</span><span class="o">.</span><span class="n">power</span> <span class="o">=</span> <span class="s1">&#39;1/8W&#39;</span>
+
+<span class="n">res_e12</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;1.2&#39;</span><span class="p">,</span> <span class="s1">&#39;1.5&#39;</span><span class="p">,</span> <span class="s1">&#39;1.6&#39;</span><span class="p">,</span> <span class="s1">&#39;1.8&#39;</span><span class="p">,</span> <span class="s1">&#39;2.2&#39;</span><span class="p">,</span> <span class="s1">&#39;2.7&#39;</span><span class="p">,</span> <span class="s1">&#39;3.3&#39;</span><span class="p">,</span> <span class="s1">&#39;3.9&#39;</span><span class="p">,</span> <span class="s1">&#39;4.7&#39;</span><span class="p">,</span> <span class="s1">&#39;5.6&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;6.8&#39;</span><span class="p">,</span> <span class="s1">&#39;8.2&#39;</span><span class="p">,</span> <span class="s1">&#39;10&#39;</span><span class="p">,</span> <span class="s1">&#39;12&#39;</span><span class="p">,</span> <span class="s1">&#39;15&#39;</span><span class="p">,</span> <span class="s1">&#39;18&#39;</span><span class="p">,</span> <span class="s1">&#39;22&#39;</span><span class="p">,</span> <span class="s1">&#39;27&#39;</span><span class="p">,</span> <span class="s1">&#39;33&#39;</span><span class="p">,</span> <span class="s1">&#39;39&#39;</span><span class="p">,</span> <span class="s1">&#39;47&#39;</span><span class="p">,</span> <span class="s1">&#39;56&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;68&#39;</span><span class="p">,</span> <span class="s1">&#39;82&#39;</span><span class="p">,</span> <span class="s1">&#39;100&#39;</span><span class="p">,</span> <span class="s1">&#39;120&#39;</span><span class="p">,</span> <span class="s1">&#39;150&#39;</span><span class="p">,</span> <span class="s1">&#39;180&#39;</span><span class="p">,</span> <span class="s1">&#39;220&#39;</span><span class="p">,</span> <span class="s1">&#39;270&#39;</span><span class="p">,</span> <span class="s1">&#39;330&#39;</span><span class="p">,</span> <span class="s1">&#39;390&#39;</span><span class="p">,</span> <span class="s1">&#39;470&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;560&#39;</span><span class="p">,</span> <span class="s1">&#39;680&#39;</span><span class="p">,</span> <span class="s1">&#39;820&#39;</span><span class="p">,</span> <span class="s1">&#39;1k&#39;</span><span class="p">,</span> <span class="s1">&#39;1k2&#39;</span><span class="p">,</span> <span class="s1">&#39;1k5&#39;</span><span class="p">,</span> <span class="s1">&#39;1k8&#39;</span><span class="p">,</span> <span class="s1">&#39;2k2&#39;</span><span class="p">,</span> <span class="s1">&#39;2k7&#39;</span><span class="p">,</span> <span class="s1">&#39;3k3&#39;</span><span class="p">,</span> <span class="s1">&#39;3k9&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;4k7&#39;</span><span class="p">,</span> <span class="s1">&#39;5k6&#39;</span><span class="p">,</span> <span class="s1">&#39;6k8&#39;</span><span class="p">,</span> <span class="s1">&#39;8k2&#39;</span><span class="p">,</span> <span class="s1">&#39;10k&#39;</span><span class="p">,</span> <span class="s1">&#39;12k&#39;</span><span class="p">,</span> <span class="s1">&#39;15k&#39;</span><span class="p">,</span> <span class="s1">&#39;18k&#39;</span><span class="p">,</span> <span class="s1">&#39;22k&#39;</span><span class="p">,</span> <span class="s1">&#39;27k&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;33k&#39;</span><span class="p">,</span> <span class="s1">&#39;39k&#39;</span><span class="p">,</span> <span class="s1">&#39;47k&#39;</span><span class="p">,</span> <span class="s1">&#39;56k&#39;</span><span class="p">,</span> <span class="s1">&#39;68k&#39;</span><span class="p">,</span> <span class="s1">&#39;82k&#39;</span><span class="p">,</span> <span class="s1">&#39;100k&#39;</span><span class="p">,</span> <span class="s1">&#39;120k&#39;</span><span class="p">,</span> <span class="s1">&#39;150k&#39;</span><span class="p">,</span> <span class="s1">&#39;180k&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;220k&#39;</span><span class="p">,</span> <span class="s1">&#39;330k&#39;</span><span class="p">,</span> <span class="s1">&#39;390k&#39;</span><span class="p">,</span> <span class="s1">&#39;470k&#39;</span><span class="p">,</span> <span class="s1">&#39;560k&#39;</span><span class="p">,</span> <span class="s1">&#39;680k&#39;</span><span class="p">,</span> <span class="s1">&#39;820k&#39;</span>
+<span class="p">]</span>
+<span class="n">cap</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;100n&#39;</span><span class="p">]</span>
+<span class="n">cpt_vals</span> <span class="o">=</span> <span class="n">res_e12</span> <span class="o">+</span> <span class="n">cap</span>
+
+<span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">cpt_vals</span><span class="p">:</span>
+        <span class="n">smdLabel</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="n">fn</span> <span class="o">=</span> <span class="n">single_dir</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="s1">&#39;smd_caption_&#39;</span> <span class="o">+</span> <span class="n">val</span> <span class="o">+</span> <span class="s1">&#39;.svg&#39;</span>
+        <span class="n">smdLabel</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+
+<span class="n">din</span> <span class="o">=</span> <span class="s1">&#39;a4&#39;</span>
+<span class="n">fn_Ax</span> <span class="o">=</span> <span class="n">Ax_dir</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">din</span> <span class="o">+</span> <span class="s1">&#39;.svg&#39;</span>
+<span class="n">smdLabel</span><span class="o">.</span><span class="n">saveAx</span><span class="p">(</span><span class="n">fn_Ax</span><span class="p">,</span> <span class="n">din</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
 </div>
 <div class="section" id="requirements">
 <h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
 <p>It relies on the libraries</p>
 <ul class="simple">
-<li><strong>svglue</strong>,</li>
-<li><strong>svgutils</strong></li>
-<li>and <strong>lxml</strong> (currently indirectly).</li>
+<li><a class="reference external" href="https://pypi.python.org/pypi/svglue/0.2.1">svglue</a>,</li>
+<li><a class="reference external" href="https://pypi.python.org/pypi/svgutils/0.2.0">svgutils</a>,</li>
+<li><a class="reference external" href="https://pypi.python.org/pypi/PyQRCode/1.2.1">pyqrcode</a> (if you wish to include qr-codes),</li>
+<li>and <a class="reference external" href="https://pypi.python.org/pypi/lxml/3.7.1">lxml</a> (currently indirectly).</li>
 </ul>
-<p>Occasionally also the library <strong>Rsvg</strong> (gi.repository) is utilized. Installation using pip:</p>
+<p>Occasionally also the library <strong>Rsvg</strong> (gi.repository) is utilized. Installation using pip and aptitude (tested on Ubuntu 14.04):</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>$ pip install svglue svgutils lxml
+$ pip install pyqrcode
+$ apt-get install gir1.2-rsvg-2.0 python3-cairo
 </pre></div>
 </div>
 </div>
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>Install all <a class="reference internal" href="#requirements">Requirements</a> and then:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>$ pip install schablone
 </pre></div>
 </div>
 </div>
 <div class="section" id="license">
 <h2>License<a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h2>
-<p>todo</p>
+<p>Copyright (c) 2016 Andreas Gschossmann</p>
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the &#8220;Software&#8221;), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:</p>
+<p>The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.</p>
+<p>THE SOFTWARE IS PROVIDED &#8220;AS IS&#8221;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</p>
 </div>
 </div>
 
