@@ -8,7 +8,7 @@ setup(
     name='schablone',
     version=schablone.__version__,
     description='Create labels of different types and render them to svg.',
-    long_description='tbc',
+    long_description='schablone is a library to create structured printed forms (svg format) and fill them with information.',
     author='Andreas Gschossmann',
     author_email='ghandi_84@hotmail.com',
     url='http://github.com/ticktronaut/schablone',

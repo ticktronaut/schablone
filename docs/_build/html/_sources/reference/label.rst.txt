@@ -5,7 +5,8 @@ label
 box label
 ---------
 
-tbc 
+.. automodule:: schablone.label.box
+    :members:
 
 smd container
 -------------

@@ -66,20 +66,16 @@ class smd_container(generic):
             self.width = '15mm'
             self.height = '20mm'
         elif self.label_type == 'mira_2':
-            pass
-        #print 'Todo: raise error Not supported, yet.'
+            raise RuntimeError('Label type mira_2 not supported, yet.')
         elif self.label_type == 'mira_3':
-            pass
-        #print 'Todo: raise error Not supported, yet.'
+            raise RuntimeError('Label type mira_3 not supported, yet.')
         elif self.label_type == "mira_4":
-            pass
-        #print 'Todo raise error Not supported, yet.'
+            raise RuntimeError('Label type mira_4 not supported, yet.')
         else:
-            pass
-        #print 'Todo: raise Error: type is not known.'
+            raise RuntimeError('Unknown type of label: ' + self.label_type)
 
         # self.fn is set after this point 
-        # todo: better solution for self._fn (explicit is better than implicit) 
+        # todo: think about better solution for self._fn (explicit is better than implicit) 
         super(smd_container, self).save_frame(fn)
 
         # save data matrix code with unique id (using bash)
@@ -90,7 +86,7 @@ class smd_container(generic):
             + fn_qr)
         self.cpt_rect['matrix'] = fn_qr
 
-        # todo: rething the following ...
+        # todo: rethink the following ...
         # two ways to organize addition of layers
         # delete all layers and reset them 
         # - in save function (any time file is saved, as done here)
@@ -134,8 +130,8 @@ class smd_container(generic):
     def saveAx(self, fn=None, ax='a4', svg_list=None):
         if svg_list is None:
             if self._fn_list == []:
-                #print "Error, no files given for Ax."
                 svg_list = []
+                raise RuntimeError('List of svg_list is empty')
             else:
                 svg_list = self._fn_list
 
@@ -209,10 +205,9 @@ class box(generic):
         elif self.label_type == 'extended':
             self.height = '138mm'
         else:
-            pass
+            raise RuntimeError('Unknown type of label: ' + self.label_type)
         #self.height = '74mm'
         #self.label_type = 'default'
-        #print "Todo: raise Error: type is not known"
 
         super(box, self).save(fn)
 

@@ -39,7 +39,7 @@ fn = generic_label_dir + '/generic_qr.svg'
 genLabel.create_qr('http://www.sappz.de', fn, 160, 160)
 
 #print genLabel.layer.show()
-genLabel.layer.remove(1)
+#genLabel.layer.remove(1)
 #print genLabel.layer.show()
 fn = generic_label_dir + '/' + 'generic.svg'
 genLabel.save(fn)
