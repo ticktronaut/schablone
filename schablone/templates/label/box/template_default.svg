@@ -86,7 +86,7 @@
          sodipodi:role="line"
          x="29.008757"
          y="1033.4879"
-         id="tspan3000-6-7-6-1-9"
+         id="location"
          template-id="location">H0101</tspan></text>
     <flowRoot
        xml:space="preserve"
@@ -101,7 +101,7 @@
            y="107.12283"
            style="line-height:94.99999881%" /></flowRegion><flowPara
          style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:94.99999881%;font-family:Trebuchet MS;-inkscape-font-specification:Trebuchet MS"
-         id="flowPara3122"
+         id="brief_content"
          template-id="brief_content">hier Inhalt reinschreiben</flowPara></flowRoot>    <path
        style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 311.607,790.17767 0.2039,9.84991"
@@ -121,7 +121,7 @@
        sodipodi:linespacing="125%"
        inkscape:label="#title"><tspan
          sodipodi:role="line"
-         id="tspan3023"
+         id="title"
          template-id="title"
          x="13.821959"
          y="833.45959"
@@ -144,7 +144,7 @@
        id="text3111"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
-         id="tspan3113"
+         id="project"
          template-id="project"
          x="14.025265"
          y="884.37939"
@@ -157,7 +157,7 @@
        id="text3115"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
-         id="tspan3117"
+         id="editor"
          template-id="editor"
          x="14.249855"
          y="933.99188"

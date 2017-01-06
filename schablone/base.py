@@ -12,32 +12,62 @@ import warnings
 
 
 class baseSVG(object):
-    """Basic SVG-File creation.
+    """Functionality for basic SVG-File creation.
 
-    The baseSVG is able to store basic empty SVG files of given with and height. 
-    Files can be stored by the save() method. If the attribute overwrite is set 
-    False, overwriting files is prevented. Instead of overwriting files, a new 
-    filename (including an index) is being choosed. 
+    The class **baseSVG** is able to store basic empty SVG files of given width 
+    and height. Files can be stored by the save() method. If the attribute 
+    overwrite is set False, overwriting files is prevented, by extending the 
+    filename with an index.
 
-    Every instance of the class keeps track on the paths of the history of 
-    all stored files using save(). By saveAx() all these files (or a custom
-    set of files) can be aranged in a DIN-format file. If the arangement of
-    the files expands the file-size, a new file for a new page is stored.
-    
-    Note:
-        This class is used as base functionality for child classes in schablone.
+    Every instance of **baseSVG** keeps track on the history of all paths to
+    formerly stored files using save(). By saveAx() all these files (or a custom
+    set of files) can be arranged in a DIN-format file. If the arrangement of
+    the files expands the page size of the DIN file, a new file for a new page 
+    is stored.
 
-    Attributes:
-        width (str): width of the file - exemplary formats (compatible with SVG standard): "500" or "500px", "132mm"
-        height (str): height of the file - exemplary formats (compatible with SVG standard): "500" or "500px", "132mm"
-        _fn (str): Filename
+    Example
+    -------
+    ::    
 
-    some text here
+        from base import baseSVG
+     
+        sample_svg = baseSVG() 
+        sample_svg.width = '20mm'
+        sample_svg.height = '20mm'
+        sample_svg.save('sample.svg')
+
+    Note
+    ----
+    **baseSVG** class is used as base functionality for the class **generic**. 
+    All further derived classes are children of **generic**.
+
+    Attributes
+    ----------
+    description : str
+        Optional description of the svg file. 
+    author : str
+        Optional author of the file.
+    version : str
+        Optional version of the file. 
+    width : str
+        width of the file - exemplary formats (compatible with SVG standard): "500" or "500px", "132mm"
+    height : str 
+        height of the file - exemplary formats (compatible with SVG standard): "500" or "500px", "132mm"
+    _fn : str
+        Filename of the svg corresponding file.
+    _fnAx : str
+        Filename of svg file to gather formerly stored svg files.
+    landscapeAx : bool
+        Format for _fnAx file.
+    _svg_content : str
+        Content of the svg file. it is not recommended to change this. 
+
     """
 
     def __init__(self):
-        self.description = ""  #: initial value: par1
+        self.description = "" 
         self.author = ""
+        self.version = 0.1
 
         #todo: write getter/setter with better control
         #on svg-compatible layout of width and height
@@ -51,8 +81,6 @@ class baseSVG(object):
 
         self.landscapeAx = True
 
-        self.version = 0.1
-
         self.overwrite = False
 
         #todo: viewBox="0 0 100 100"
@@ -62,6 +90,15 @@ class baseSVG(object):
         #self.__create(fn, overwrite)
 
     def _check_fn_exists(self, fn):
+        """Check if filename exists. If so, extend the filename with an index.
+  
+        Parameters
+        ----------
+        fn
+            Filename to be checked for existence. 
+
+        """
+
         ext = 0
         fp, fe = os.path.splitext(fn)
         fn_tmp = fn
@@ -72,6 +109,17 @@ class baseSVG(object):
         return fn_tmp
 
     def _fn_sub_str(self, fn, sub_str):
+        """Place a substring between filename and extension.
+  
+        Parameters
+        ----------
+        fn 
+            Filename to be extended. 
+        sub_str
+            Substring to be placed between filename and extension.
+
+        """
+
         fnbase, fext = os.path.splitext(fn)
         return fnbase + sub_str + fext
 
@@ -92,7 +140,6 @@ class baseSVG(object):
                 #self._svg_root = tree.getroot()
                 #if contains pySVGfile:
                 #   Daten in Klassenrumpf übernhemen
-                #else: 
                 fn = self._check_fn_exists(fn)
 
             self._fn = fn
@@ -108,6 +155,20 @@ class baseSVG(object):
             raise RuntimeError('File extension must be a valid svg file.')
 
     def save(self, fn=None):
+        """Store content to svg-file.
+  
+        Note
+        ----
+        The save function may be called more than once, with different filenames.
+
+        Parameters
+        ----------
+        fn
+            Filename of the saved file. If left blank, the filename of the previously saved file is taken. 
+            If there is no filename, it defaults to default.svg. The filename will be stored in the _fn 
+            class member.
+
+        """
         if fn == None:
             if self._fn == None:
                 self._fn = "defaul.svg"
@@ -127,6 +188,27 @@ class baseSVG(object):
         self._fn_list.append(self._fn)
 
     def saveAx(self, fn=None, ax='a4', svg_list=None):
+        """Store history of previously files in a DIN-format file.
+
+        Note
+        ----
+        In the optional parameter svg_list, a custom list of file paths may be used instead of the 
+        history of previously stored files.
+
+        Parameters
+        ----------
+        fn
+            Filename of the saved file. If left blank, the filename defaults to the existing filename 
+            saved in the class members. If there is no filename, it defaults to default_Ax.svg. 
+            The filename will be stored in the _fnAx class member.
+        ax
+            String to define the size of the DIN format document. Allowed is 'a0', 'a1', ..., 'a10'.
+        svg_list
+            Custom list of paths to files, which should be aranged to the DIN format svg file. By default 
+            the history of paths to all files stored by the save() function, stored in the class member 
+            _fn_list is stored.
+        
+        """
         widthAx = {
             'a10': 92,
             'a9': 131,
@@ -153,7 +235,6 @@ class baseSVG(object):
             'a1': 2979,
             'a0': 4212
         }
-        # todo Seitenzahlen einfuegen
         if svg_list == None:
             if self._fn_list == []:
                 warnings.warn(
@@ -172,11 +253,11 @@ class baseSVG(object):
         self._fnAx = fn
 
         if self.landscapeAx:
-            width = heightAx[ax]  #744#"210mm"
-            height = widthAx[ax]  #1052#"297mm"
+            width = heightAx[ax] 
+            height = widthAx[ax] 
         else:
-            width = widthAx[ax]  #1052#"297mm"
-            height = heightAx[ax]  #744#"210mm"
+            width = widthAx[ax]  
+            height = heightAx[ax] 
 
         pg_nmb = 0
         self._fnAx = self._fn_sub_str(fn, ('_pg' + str(pg_nmb)))
@@ -221,6 +302,5 @@ class baseSVG(object):
             #if h>max_height:
             #	max_height=h
 
-            #self._fnAx = self._fn_sub_str( fn, ( '_pg' + str(pg_nmb+1) ) )
         self._fnAx = self._fn_sub_str(fn, ('_pg' + str(pg_nmb + 0)))
         svg_label.save(self._fnAx)

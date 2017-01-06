@@ -76,7 +76,7 @@
            style="font-size:9.21413517px;font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;text-align:center;text-anchor:middle;font-family:Century Schoolbook L;-inkscape-font-specification:Century Schoolbook L Medium"
            y="1006.4243"
            x="28.849426"
-           id="tspan7742-6"
+           id="value"
            template-id="value"
            sodipodi:role="line">270k</tspan></text>
       <text
@@ -89,7 +89,7 @@
            style="font-size:4.86547804px;font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;text-align:center;text-anchor:middle;font-family:Century Schoolbook L;-inkscape-font-specification:Century Schoolbook L Medium"
            y="995.38837"
            x="27.248718"
-           id="tspan7742-6-7"
+           id="title"
            template-id="title"
            sodipodi:role="line">SMD-Wid.</tspan></text>
       <text
@@ -102,7 +102,7 @@
            style="font-size:5.45495653px;font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:Century Schoolbook L;-inkscape-font-specification:Century Schoolbook L Medium"
            y="1016.5999"
            x="9.1385498"
-           id="tspan7742-6-7-6"
+           id="package"
            template-id="package"
            sodipodi:role="line">0805</tspan></text>
       <text
@@ -115,7 +115,7 @@
            style="font-size:5.45495653px;font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:Century Schoolbook L;-inkscape-font-specification:Century Schoolbook L Medium"
            y="1016.6898"
            x="25.325813"
-           id="tspan7742-6-7-6-5"
+           id="tolerance"
            template-id="tolerance"
            sodipodi:role="line">1%</tspan></text>
       <text
@@ -128,7 +128,7 @@
            style="font-size:5.45495653px;font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:Century Schoolbook L;-inkscape-font-specification:Century Schoolbook L Medium"
            y="1023.6588"
            x="8.7609863"
-           id="tspan7742-6-7-6-7"
+           id="temperature_coefficient"
            template-id="temperature_coefficient"
            sodipodi:role="line">TK100</tspan></text>
       <text
@@ -141,12 +141,12 @@
            style="font-size:5.45495653px;font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:Century Schoolbook L;-inkscape-font-specification:Century Schoolbook L Medium"
            y="1023.6969"
            x="28.660522"
-           id="tspan7742-6-7-6-7-9"
+           id="power"
            template-id="power"
            sodipodi:role="line">1/8W</tspan></text>
       <rect
          style="fill:#ffcc00;fill-opacity:1;stroke:none"
-         id="rect2997"
+         id="matrix"
          template-id="matrix"
          width="23"
          height="23"
