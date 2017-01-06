@@ -32,7 +32,6 @@ Why should I use it?
 
 schablone simplifies the process of automatically creating labels and fill them in. Whenever structured documents should be created and filled in by python, schablone is a good workflow. Also the inclusion of qr-codes is supported (using the library pyqrcode_). The basic procedure is a three steps process:
 
-.. _pyqrcode: https://pypi.python.org/pypi/PyQRCode/1.2.1
 
 1. `store frame SVG file which has the wished size`_
 2. `stack layers of svg file templates`_
@@ -65,7 +64,7 @@ save A4
 Examples
 --------
 
-The following examples show the usage of schablone's key features. A more detailed example, concluding all these features can be found in sample.py.
+The following examples show the basic usage of schablone's key features. A more detailed example, concluding all these features can be found in sample.py. The examples imply, that the schablone library has bin installed as decribed in `Installation`_.
    
 Create a generic label
 ``````````````````````
@@ -94,6 +93,29 @@ schablone can create generic templates. The result can be seen in samples/generi
     genLabel.layer.remove(1)
     fn = generic_label_dir + '/' + 'generic.svg'
     genLabel.save(fn)
+
+The files **tmpl_layer_1.svg** and **tmpl_layer_1.svg** can be found in the folder **tmpl_layer**. It is important that a template-id-tag is added to all tags that should be changeable later (similar to the documented way of svglue_). In this case these are:
+
+**static text:**
+
+::
+
+    <tspan
+        ...
+        template-id="static_txt"
+        ...
+    </tspan>
+
+**floating text:**
+
+::
+
+    <flowRoot
+        ...
+        template-id="static_txt"
+        ...
+    </flowRoot>
+          
 
 Create smd container labels
 ```````````````````````````
@@ -202,7 +224,8 @@ Requirements
 It relies on the libraries 
 
 * svglue_,
-* svgutils_
+* svgutils_,
+* pyqrcode_ (if you wish to include qr-codes),
 * and lxml_ (currently indirectly). 
 
 .. _svglue: https://pypi.python.org/pypi/svglue/0.2.1
@@ -212,10 +235,13 @@ It relies on the libraries
 Occasionally also the library **Rsvg** (gi.repository) is utilized. Installation using pip and aptitude (tested on Ubuntu 14.04): ::
 
     $ pip install svglue svgutils lxml 
+    $ pip install pyqrcode
     $ apt-get install gir1.2-rsvg-2.0 python3-cairo
 
 Installation
 ------------
+
+Install all `Requirements`_ and then:
 
 ::
 
@@ -224,4 +250,24 @@ Installation
 License
 -------
 
-todo 
+Copyright (c) 2016 Andreas Gschossmann
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+.. _pyqrcode: https://pypi.python.org/pypi/PyQRCode/1.2.1
