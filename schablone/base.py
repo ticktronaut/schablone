@@ -5,7 +5,9 @@ from lxml import etree
 import svgutils.transform as sg
 
 #import rsvg
-from gi.repository import Rsvg
+import gi
+gi.require_version('Rsvg', '2.0') # FixMe: select required version to supress warning
+from gi.repository import Rsvg # gi.repository is a special Python package that dynamically generates objects
 
 import os
 import warnings
