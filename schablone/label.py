@@ -6,6 +6,8 @@ import svgutils.transform as sg
 import svglue
 #import svgwrite
 #import pysvg
+import uuid
+import pyqrcode
 
 from lxml import etree
 
@@ -80,10 +82,18 @@ class smd_container(generic):
 
         # save data matrix code with unique id (using bash)
         fn, fext = os.path.splitext(self._fn)
-        fn_qr = fn + '_qr' + '.png'
-        os.system(
-            'uuidgen | tr [[:upper:]] [[:lower:]] | tr -d \'-\'  | sed -e \'s/\(.\{12\}\).*/\\1/\' | dmtxwrite -s 16x16 -o '
-            + fn_qr)
+        fn_qr = fn + '_qr' + '.svg'#'.png'
+        r_uuid = str(uuid.uuid4())
+        qr = pyqrcode.create(r_uuid, error='L', version=5, mode='binary')
+        qr.svg(fn_qr, scale=5)
+        #with open(fn_qr, 'w') as fstream:
+        #    qr.png(fstream, scale=5)
+        #qr.png(fn_qr, scale=5)
+        #qr.show()
+        #qr.png(fn_qr, scale=6)
+        #os.system(
+        #    'uuidgen | tr [[:upper:]] [[:lower:]] | tr -d \'-\'  | sed -e \'s/\(.\{12\}\).*/\\1/\' | dmtxwrite -s 16x16 -o '
+        #    + fn_qr)
         self.cpt_rect['matrix'] = fn_qr
 
         # todo: rethink the following ...

@@ -235,13 +235,13 @@ class generic(baseSVG):
         tpl = svglue.load(file=self._fn)
 
         for cpt_key, cpt_val in self.cpt_tspan.items():
-                tpl.set_text(cpt_key, cpt_val)
+            tpl.set_text(cpt_key, cpt_val)
 
         for cpt_key, cpt_val in self.cpt_flowpara.items():
-                tpl.set_flowtext(cpt_key, cpt_val)
+            tpl.set_flowtext(cpt_key, cpt_val)
 
         for cpt_key, cpt_val in self.cpt_rect.items():
-                tpl.set_image(cpt_key, file=cpt_val, mimetype='image/png')
+            tpl.set_image(cpt_key, file=cpt_val)
 
         src = tpl.__str__()  #str(tpl) #str(tpl) does not work in python3
         open(self._fn, 'wb').write(src)
