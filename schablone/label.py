@@ -54,10 +54,31 @@ class smd_container(generic):
         self.cpt_rect = {'matrix': ''}
         # todo: self.cut_list
 
+
+#     def create_qr(self, content, fn, x_pos, y_pos):
+#        """Save qr-code, for label containers.
+#
+#        Parameters
+#        ----------
+#        content 
+#            Content of the qr-code. 
+#        fn
+#            Filename of the qr-code SVG template. 
+#        x_pos
+#            Intended x-position of the layer. 
+#        y_pos
+#            Intended y-position of the layer. 
+#
+#        """
+#        # size depends on content
+#        qr = pyqrcode.create(content)  #, version=17)
+#        qr.svg(fn)
+#        # todo: save, add layer
+#        self.layer.add(fn, x_pos, y_pos)
+
     # hier wird die einzige Moeglichkeit der Basisklasse 
     # die Hoehe und Breite zu setzen ueberschrieben
     # Achtung ist überschreibend
-
     def save(self, fn=None):
 
         # set width and height (reconfigure everytime time save is called)
