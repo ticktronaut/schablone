@@ -39,7 +39,7 @@ schablone simplifies the process of automatically creating labels and fill them 
 .. figure:: images/layers.png
    :scale: 70 %
 
-Layers are served as SVG-files and may be created by hand-coding or by vector programs like inkscape_. If it is wished to `fill in texts and images`_ the according tags in the svg-file must contain a unique *template-id*. The creation of own templates is documented in Chapter `create templates`_.
+Layers are served as SVG-files and may be created by hand-coding or by vector programs like inkscape_. If it is wished to `fill in texts and images`_ in a layer, the according tags in the svg-file must contain a unique *template-id*. The creation of own templates is documented in Chapter `create templates`_.
 
 .. _inkscape: https://inkscape.org
 
@@ -67,6 +67,8 @@ create templates
 ````````````````
 
 tbc
+
+The procedure may also be  
    
 Examples
 --------
