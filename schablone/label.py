@@ -1,29 +1,23 @@
 #!/usr/bin/env python
 #coding=utf-8
 
-#import svgutils
+import os
 import svgutils.transform as sg
 import svglue
-#import svgwrite
-#import pysvg
 import uuid
 import pyqrcode
 
 from lxml import etree
-
-#import warnings
-import os
-
-#import pyqrcode
-
 import pkg_resources
-
-#from .base import
 from .generic import *
 
+import logging
+
+log = logging.getLogger("schablone.label")
 
 class smd_content_container(object):
     def __init__(self):
+        log.debug("Instantiating class 'smd_content_container'.")
         self.title = ''
         self.value = ''
         self.package = ''
@@ -34,6 +28,7 @@ class smd_content_container(object):
 
 class smd_container(generic):
     def __init__(self):
+        log.debug("Instantiating class 'smd_content'.")
         super(smd_container, self).__init__()
 
         #self.qr_content = "http://www.sappz.de"
@@ -51,6 +46,7 @@ class smd_container(generic):
             'tolerance': '',
             'temperature_coefficient': '',
             'power': ''
+            # FixMe: Add voltage
         }
         #		self.cpt_flowpara = {}
         self.cpt_rect = {'matrix': ''}
@@ -75,6 +71,7 @@ class smd_container(generic):
             raise RuntimeError('Label type mira_4 not supported, yet.')
         else:
             raise RuntimeError('Unknown type of label: ' + self.label_type)
+        log.debug("Label Type is " + self.label_type + " with size w=" + self.width + ", h=" + self.height)
 
         # self.fn is set after this point 
         # todo: think about better solution for self._fn (explicit is better than implicit) 
@@ -84,6 +81,7 @@ class smd_container(generic):
         fn, fext = os.path.splitext(self._fn)
         fn_qr = fn + '_qr' + '.svg'#'.png'
         r_uuid = str(uuid.uuid4())
+        log.debug("UUID: " + r_uuid)
         qr = pyqrcode.create(r_uuid, error='L', version=5, mode='binary')
         qr.svg(fn_qr, scale=5)
         #with open(fn_qr, 'w') as fstream:
@@ -172,6 +170,7 @@ class smd_container(generic):
 
 class box_content_container(object):
     def __init__(self):
+        log.debug("Instantiating class 'box_content_container'.")
         self.qr = ''
         self.title = ''
         self.project = ''
@@ -182,6 +181,7 @@ class box_content_container(object):
 
 class box(generic):
     def __init__(self):
+        log.debug("Instantiating class 'box'.")
         super(box, self).__init__()
 
         self.content = box_content_container()

@@ -12,6 +12,9 @@ from gi.repository import Rsvg # gi.repository is a special Python package that 
 import os
 import warnings
 
+import logging
+
+log = logging.getLogger('schablone.base')
 
 class baseSVG(object):
     """Functionality for basic SVG-File creation.
@@ -67,6 +70,7 @@ class baseSVG(object):
     """
 
     def __init__(self):
+        log.debug("Instantiating class 'baseSVG'.")
         self.description = "" 
         self.author = ""
         self.version = 0.1
@@ -107,6 +111,8 @@ class baseSVG(object):
         while os.path.isfile(fn_tmp):
             ext += 1
             fn_tmp = fp + '_' + str(ext) + fe
+
+        log.debug(fn_tmp)
 
         return fn_tmp
 
@@ -176,6 +182,7 @@ class baseSVG(object):
                 self._fn = "defaul.svg"
         else:
             self._fn = fn
+        log.debug("Saving content to svg-file " + str(fn))
 
         self.__create(self._fn)
 
