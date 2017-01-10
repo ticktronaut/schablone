@@ -16,6 +16,9 @@ import os
 
 import pkg_resources
 
+import uuid
+from pystrich.datamatrix import DataMatrixEncoder
+
 #from .base import
 from .generic import *
 
@@ -28,6 +31,7 @@ class smd_content_container(object):
         self.tolerance = ''
         self.temperature_coefficient = ''
         self.power = ''
+        self.tmpl_path = 'templates/label/smd_container/'
 
 
 class smd_container(generic):
@@ -54,28 +58,6 @@ class smd_container(generic):
         self.cpt_rect = {'matrix': ''}
         # todo: self.cut_list
 
-
-#     def create_qr(self, content, fn, x_pos, y_pos):
-#        """Save qr-code, for label containers.
-#
-#        Parameters
-#        ----------
-#        content 
-#            Content of the qr-code. 
-#        fn
-#            Filename of the qr-code SVG template. 
-#        x_pos
-#            Intended x-position of the layer. 
-#        y_pos
-#            Intended y-position of the layer. 
-#
-#        """
-#        # size depends on content
-#        qr = pyqrcode.create(content)  #, version=17)
-#        qr.svg(fn)
-#        # todo: save, add layer
-#        self.layer.add(fn, x_pos, y_pos)
-
     # hier wird die einzige Moeglichkeit der Basisklasse 
     # die Hoehe und Breite zu setzen ueberschrieben
     # Achtung ist überschreibend
@@ -99,13 +81,27 @@ class smd_container(generic):
         # todo: think about better solution for self._fn (explicit is better than implicit) 
         super(smd_container, self).save_frame(fn)
 
-        # save data matrix code with unique id (using bash)
+#        # save data matrix code with unique id (using bash)
+#        fn, fext = os.path.splitext(self._fn)
+#        fn_qr = fn + '_qr' + '.png'
+#        os.system(
+#            'uuidgen | tr [[:upper:]] [[:lower:]] | tr -d \'-\'  | sed -e \'s/\(.\{12\}\).*/\\1/\' | dmtxwrite -s 16x16 -o '
+#            + fn_qr)
+
+        # save data matrix code with unique id (python3 solution)
         fn, fext = os.path.splitext(self._fn)
         fn_qr = fn + '_qr' + '.png'
-        os.system(
-            'uuidgen | tr [[:upper:]] [[:lower:]] | tr -d \'-\'  | sed -e \'s/\(.\{12\}\).*/\\1/\' | dmtxwrite -s 16x16 -o '
-            + fn_qr)
+
+        uuid_str = str( uuid.uuid4() )
+        uuid_str = uuid_str.replace('-','') # remove '-' from uuid
+        uuid_str = uuid_str.lower() # make uuid lower case
+        uuid_str = uuid_str[0:12] # first 12 bytes of uuid
+
+        encoder = DataMatrixEncoder(uuid_str)
+        encoder.save(fn_qr)
+        
         self.cpt_rect['matrix'] = fn_qr
+        
 
         # todo: rethink the following ...
         # two ways to organize addition of layers
