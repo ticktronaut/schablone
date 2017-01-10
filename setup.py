@@ -13,7 +13,7 @@ setup(
     author_email='ghandi_84@hotmail.com',
     url='http://github.com/ticktronaut/schablone',
     license='MIT',
-    install_requires=['lxml', 'svglue', 'svgutils', 'pyqrcode', 'pystrich', 'uuid', 'base64'],
+    install_requires=['lxml', 'svglue', 'svgutils', 'pyqrcode', 'pystrich', 'uuid'],
     include_package_data=True,
     packages=find_packages(exclude=('docs'))
 )
