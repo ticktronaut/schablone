@@ -247,7 +247,7 @@ Occasionally also the library **Rsvg** (gi.repository) is utilized. Installation
     $ pip install pyqrcode
     $ apt-get install gir1.2-rsvg-2.0 python3-cairo
 
-Until the newest commits are published on PyPi prefer to install svglue from its github repository: ::
+Until its newest commits are published on PyPi prefer to install svglue from its github repository: ::
 
     $ pip install git+https://github.com/mbr/svblue.git@master
 
