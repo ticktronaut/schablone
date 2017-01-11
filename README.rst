@@ -243,9 +243,13 @@ It relies on the libraries
 
 Occasionally also the library **Rsvg** (gi.repository) is utilized. Installation using pip and aptitude (tested on Ubuntu 14.04): ::
 
-    $ pip install svglue svgutils lxml 
+    $ pip install svgutils lxml 
     $ pip install pyqrcode
     $ apt-get install gir1.2-rsvg-2.0 python3-cairo
+
+Until the newest commits are published on PyPi prefer to install svglue from its github repository: ::
+
+    $ pip install git+https://github.com/mbr/svblue.git@master
 
 Installation
 ------------
