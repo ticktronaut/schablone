@@ -249,7 +249,7 @@ Occasionally also the library **Rsvg** (gi.repository) is utilized. Installation
 
 Until its newest commits are published on PyPi prefer to install svglue from its github repository: ::
 
-    $ pip install git+https://github.com/mbr/svblue.git@master
+    $ pip install git+https://github.com/mbr/svglue.git@master
 
 Installation
 ------------
