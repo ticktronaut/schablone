@@ -238,7 +238,7 @@ class box(generic):
         if self.label_type == 'extended':
             # save data matrix code with unique id (using bash)
             fn_qr = self._fn_sub_str(fn, '_qr')
-            super(box, self).create_qr(self.content.qr, fn_qr, 280, 20)
+            super(box, self).create_qr(self.content.qr, fn_qr, 280, 220)
 
             self.layer.add(
                 pkg_resources.resource_filename(
