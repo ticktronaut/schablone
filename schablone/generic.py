@@ -69,7 +69,6 @@ class layer_pack(object):
             #print 'todo: raise warning, key does not exist'
 
 
-        # Ueberlegung anstatt template-id evtl. direkt id verwenden
 class generic(baseSVG):
     """Stack layers svg file templates and replace text.
 
