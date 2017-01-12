@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 """
 The schablone package exports the following modules and subpackages:
 
@@ -9,4 +8,5 @@ The schablone package exports the following modules and subpackages:
 
 version_info = (0, 2, 'dev3')
 __version__ = '%d.%d.%s' % version_info
+
 __all__ = ['base', 'generic', 'label']

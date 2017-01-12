@@ -1,25 +1,21 @@
 #!/usr/bin/env python
 #coding=utf-8
 
+import os
 import svgutils.transform as sg
 import svglue
-#from svglue import svglue
-#import svgwrite
-#import pysvg
-
 from lxml import etree
-
-import os
-
 import pyqrcode
-
 import pkg_resources
-
 from .base import baseSVG
 
+import logging
+
+log = logging.getLogger('schablone.generic')
 
 class layer_container(object):
     def __init__(self, path, x=0.0, y=0.0, scale=1.0):
+        log.debug("Instantiating class 'layer_container'.")
         self.x_pos = x
         self.y_pos = y
         self.scale = scale
@@ -28,6 +24,7 @@ class layer_container(object):
 
 class layer_pack(object):
     def __init__(self):
+        log.debug("Instantiating class 'layer_pack'.")
         self.tmpl_lr = {'default': [layer_container] * 0}
         self.default_group = 'default'  # todo: getter/setter for self.default_lr, wenn key nicht existiert  mindestens warning ...
 
@@ -133,6 +130,7 @@ class generic(baseSVG):
     """
 
     def __init__(self):
+        log.debug("Instantiating class 'generic'.")
         super(generic, self).__init__()
 
         # lists of paths to template layers
@@ -224,6 +222,7 @@ class generic(baseSVG):
             In most cases it is convenient to skip the arguments fi and fo.
      
         """
+        log.debug("Substitute text and store to SVG file.")
         if fi == None:
             fi = self._fn
         if fo == None:
@@ -235,13 +234,13 @@ class generic(baseSVG):
         tpl = svglue.load(file=self._fn)
 
         for cpt_key, cpt_val in self.cpt_tspan.items():
-                tpl.set_text(cpt_key, cpt_val)
+            tpl.set_text(cpt_key, cpt_val)
 
         for cpt_key, cpt_val in self.cpt_flowpara.items():
-                tpl.set_flowtext(cpt_key, cpt_val)
+            tpl.set_flowtext(cpt_key, cpt_val)
 
         for cpt_key, cpt_val in self.cpt_rect.items():
-                tpl.set_image(cpt_key, file=cpt_val, mimetype='image/png')
+            tpl.set_image(cpt_key, file=cpt_val)
 
         src = tpl.__str__()  #str(tpl) #str(tpl) does not work in python3
         open(self._fn, 'wb').write(src)
