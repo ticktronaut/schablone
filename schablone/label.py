@@ -107,7 +107,7 @@ class smd_container(generic):
         # delete all layers and reset them 
         # - in save function (any time file is saved, as done here)
         # - in setter function for self.cut (any time self.cut is changed)
-        self.layer.remove_all()
+        self.layer.clear()
         self.layer.add(
             pkg_resources.resource_filename(
                 'schablone', 'templates/label/smd_container/' + self.label_type
