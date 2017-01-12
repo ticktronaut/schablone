@@ -221,7 +221,7 @@ class box(generic):
         if self.label_type == 'default':  # type "1" and type "1a" seem to have label same size
             self.height = '74mm'
         elif self.label_type == 'extended':
-            self.height = '138mm'
+            self.height = '74mm'
         else:
             raise RuntimeError('Unknown type of label: ' + self.label_type)
         #self.height = '74mm'
