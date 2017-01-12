@@ -258,7 +258,7 @@ Install all `Requirements`_ and then:
 
 ::
 
-    $ pip install schablone 
+    $ pip install git+https://github.com/ticktronaut/schablone.git@master
 
 License
 -------
