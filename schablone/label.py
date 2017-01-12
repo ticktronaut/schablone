@@ -229,6 +229,8 @@ class box(generic):
 
         super(box, self).save(fn)
 
+        self.layer.clear()
+
         self.layer.add(
             pkg_resources.resource_filename(
                 'schablone', 'templates/label/box/template_default.svg'))

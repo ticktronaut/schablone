@@ -45,7 +45,7 @@ class layer_pack(object):
 
         del self.tmpl_lr[group][nmb]
 
-    def remove_all(self, group=None):
+    def clear(self, group=None):
         if group is None:
             # remove all keys by resetting to default
             self.tmpl_lr = {'default': [layer_container] * 0}
