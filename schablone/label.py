@@ -10,7 +10,6 @@ import pyqrcode
 from lxml import etree
 import pkg_resources
 
-import uuid
 from pystrich.datamatrix import DataMatrixEncoder
 from .generic import *
 
