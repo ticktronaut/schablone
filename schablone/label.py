@@ -37,7 +37,6 @@ class smd_container(generic):
             self.tmpl_path = pkg_resources.resource_filename('schablone', 'templates') + '/label/smd_container'
         else:
             self.tmpl_path = tmpl_path
-            print(self.tmpl_path)
             self.content._is_custom_template = True
 
         log.debug("tmpl_path: " + str(self.tmpl_path))
@@ -47,8 +46,6 @@ class smd_container(generic):
         log.debug("Label type from init(): " + str(label_type))
         log.debug("Label type: " + self.label_type)
         self.cut = False  #todo getter setter: remove all layers, reset layers
-
-        print(self.tmpl_path)
 
         if size is not None:
             if len(size) != 2:
