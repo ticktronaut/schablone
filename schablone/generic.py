@@ -240,7 +240,7 @@ class generic(baseSVG):
             tpl.set_flowtext(cpt_key, cpt_val)
 
         for cpt_key, cpt_val in self.cpt_rect.items():
-            tpl.set_image(cpt_key, file=cpt_val)
+            tpl.set_image(cpt_key, file=cpt_val, mimetype='image/png')
 
         src = tpl.__str__()  #str(tpl) #str(tpl) does not work in python3
         open(self._fn, 'wb').write(src)
