@@ -19,7 +19,7 @@ import logging
 log = logging.getLogger("schablone.label")
 
 class smd_content_container(object):
-    def __init__(self):
+    def __init__(self): # set template path
         log.debug("Instantiating class 'smd_content_container'.")
         self.title = ''
         self.value = ''
@@ -28,18 +28,26 @@ class smd_content_container(object):
         self.temperature_coefficient = ''
         self.power = ''
         self.tmpl_path = 'templates/label/smd_container/'
+        log.debug("Template Path: " + self.tmpl_path) # will this ever be used?
 
 
 class smd_container(generic):
-    def __init__(self):
-        log.debug("Instantiating class 'smd_content'.")
+    def __init__(self, label_type=None):
+        log.debug("Instantiating class 'smd_container'.")
         super(smd_container, self).__init__()
 
         #self.qr_content = "http://www.sappz.de"
 
         self.content = smd_content_container()
+        self.tmpl_path = 'templates/label/smd_container/'
 
-        self.label_type = "mira_1"  #todo: link zu quelle #getter setter: remove all layers, reset layers
+        self.label_types = ('mira_1', 'licefa_n1')
+        if label_type is None:
+            self.label_type = "mira_1"  #todo: link zu quelle #getter setter: remove all layers, reset layers
+        else:
+            self.label_type = label_type
+        log.debug("Label type from init(): " + str(label_type))
+        log.debug("Label type: " + self.label_type)
         self.cut = False  #todo getter setter: remove all layers, reset layers
         #self.__cut_list = []
 
@@ -62,8 +70,9 @@ class smd_container(generic):
     def save(self, fn=None):
 
         # set width and height (reconfigure everytime time save is called)
+        log.info("Check for valid label_type")
         self.width = '15mm'
-        if self.label_type == 'mira_1' or 'mira_1a':  # type "1" and type "1a" seem to have label same size
+        if self.label_type is 'mira_1' or self.label_type is 'mira_1a':  # type "1" and type "1a" seem to have the same label size
             self.width = '15mm'
             self.height = '20mm'
         elif self.label_type == 'mira_2':
@@ -72,9 +81,20 @@ class smd_container(generic):
             raise RuntimeError('Label type mira_3 not supported, yet.')
         elif self.label_type == "mira_4":
             raise RuntimeError('Label type mira_4 not supported, yet.')
+        elif self.label_type == 'licefa_n1': # SMD-Box N1
+            self.width = '22mm'
+            self.height = '29mm'
+        elif self.label_type == 'licefa_n2': # SMD-Box N2
+            raise RuntimeError('Label type licefa_n2 not supported, yet.')
+            self.width = '29mm'
+            self.height = '42mm'
+        elif self.label_type == 'licefa_n3': # SMD-Box N3
+            raise RuntimeError('Label type licefa_n2 not supported, yet.')
+            self.width = '42mm'
+            self.height = '56mm'
         else:
-            raise RuntimeError('Unknown type of label: ' + self.label_type)
-        log.debug("Label Type is " + self.label_type + " with size w=" + self.width + ", h=" + self.height)
+            raise RuntimeError("Unknown label type: '" + self.label_type + "'")
+        log.debug("Label type is " + self.label_type + " with size w=" + self.width + ", h=" + self.height)
 
         # self.fn is set after this point 
         # todo: think about better solution for self._fn (explicit is better than implicit) 
@@ -108,15 +128,15 @@ class smd_container(generic):
         # - in save function (any time file is saved, as done here)
         # - in setter function for self.cut (any time self.cut is changed)
         self.layer.remove_all()
+        log.debug("Add layers")
         self.layer.add(
             pkg_resources.resource_filename(
-                'schablone', 'templates/label/smd_container/' + self.label_type
-                + '/font.svg'))
+                'schablone', self.tmpl_path + self.label_type + '/font.svg'))
 
         if not self.cut:
             self.layer.add(
                 pkg_resources.resource_filename(
-                    'schablone', 'templates/label/smd_container/' +
+                    'schablone', self.tmpl_path +
                     self.label_type + '/frame.svg'))
         else:
             #			self.layer.default_lr = 'cut'
@@ -124,7 +144,7 @@ class smd_container(generic):
                                                                   "_cut")
             self.layer.add(
                 pkg_resources.resource_filename(
-                    'schablone', 'templates/label/smd_container/' +
+                    'schablone', self.tmpl_path +
                     self.label_type + '/frame_cut.svg'), 0.0, 0.0, 1.0, 'cut')
             super(smd_container, self).save_layers(self._fn_cut, self._fn,
                                                    'cut')
