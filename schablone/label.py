@@ -10,7 +10,6 @@ import pyqrcode
 from lxml import etree
 import pkg_resources
 
-import uuid
 from pystrich.datamatrix import DataMatrixEncoder
 from .generic import *
 
@@ -127,8 +126,7 @@ class smd_container(generic):
         # delete all layers and reset them 
         # - in save function (any time file is saved, as done here)
         # - in setter function for self.cut (any time self.cut is changed)
-        self.layer.remove_all()
-        log.debug("Add layers")
+        self.layer.clear()
         self.layer.add(
             pkg_resources.resource_filename(
                 'schablone', self.tmpl_path + self.label_type + '/font.svg'))
@@ -241,13 +239,15 @@ class box(generic):
         if self.label_type == 'default':  # type "1" and type "1a" seem to have label same size
             self.height = '74mm'
         elif self.label_type == 'extended':
-            self.height = '138mm'
+            self.height = '74mm'
         else:
             raise RuntimeError('Unknown type of label: ' + self.label_type)
         #self.height = '74mm'
         #self.label_type = 'default'
 
         super(box, self).save(fn)
+
+        self.layer.clear()
 
         self.layer.add(
             pkg_resources.resource_filename(
@@ -256,7 +256,7 @@ class box(generic):
         if self.label_type == 'extended':
             # save data matrix code with unique id (using bash)
             fn_qr = self._fn_sub_str(fn, '_qr')
-            super(box, self).create_qr('http://www.sappz.de', fn_qr, 280, 20)
+            super(box, self).create_qr(self.content.qr, fn_qr, 280, 220)
 
             self.layer.add(
                 pkg_resources.resource_filename(

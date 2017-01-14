@@ -84,5 +84,5 @@ boxLabel.content.brief_content = 'Einige Dinge die sich in der Box befinden ...'
 fn = box_label_dir + '/' + 'default_label.svg'
 boxLabel.save(fn)
 boxLabel.label_type = 'extended'
-vn = box_label_dir + '/' + 'extended_label.svg'
+fn = box_label_dir + '/' + 'extended_label.svg'
 boxLabel.save(fn)

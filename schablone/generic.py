@@ -45,7 +45,7 @@ class layer_pack(object):
 
         del self.tmpl_lr[group][nmb]
 
-    def remove_all(self, group=None):
+    def clear(self, group=None):
         if group is None:
             # remove all keys by resetting to default
             self.tmpl_lr = {'default': [layer_container] * 0}
@@ -69,7 +69,6 @@ class layer_pack(object):
             #print 'todo: raise warning, key does not exist'
 
 
-        # Ueberlegung anstatt template-id evtl. direkt id verwenden
 class generic(baseSVG):
     """Stack layers svg file templates and replace text.
 
@@ -240,7 +239,7 @@ class generic(baseSVG):
             tpl.set_flowtext(cpt_key, cpt_val)
 
         for cpt_key, cpt_val in self.cpt_rect.items():
-            tpl.set_image(cpt_key, file=cpt_val)
+            tpl.set_image(cpt_key, file=cpt_val, mimetype='image/png')
 
         src = tpl.__str__()  #str(tpl) #str(tpl) does not work in python3
         open(self._fn, 'wb').write(src)
