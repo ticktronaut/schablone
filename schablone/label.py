@@ -6,10 +6,8 @@ import svgutils.transform as sg
 import svglue
 import uuid
 import pyqrcode
-
 from lxml import etree
 import pkg_resources
-
 from pystrich.datamatrix import DataMatrixEncoder
 from .generic import *
 
@@ -27,7 +25,7 @@ class smd_content_container(object):
         self.temperature_coefficient = ''
         self.power = ''
         self.tmpl_path = ''
-        self._is_user_template = False
+        self._is_custom_template = False
 
 
 class smd_container(generic):
@@ -35,13 +33,13 @@ class smd_container(generic):
     def __init__(self, label_type=None, tmpl_path=None):
         log.debug("Instantiating class 'smd_container'.")
         super(smd_container, self).__init__()
-
         self.content = smd_content_container()
+
         if tmpl_path is None: # set default template path
             self.content.tmpl_path = 'templates/label/smd_container/'
         else:
             self.content.tmpl_path = tmpl_path
-            self.content._is_user_template = True
+            self.content._is_custom_template = True
 
         log.debug("tmpl_path: " + str(self.content.tmpl_path))
 
@@ -53,7 +51,6 @@ class smd_container(generic):
         log.debug("Label type from init(): " + str(label_type))
         log.debug("Label type: " + self.label_type)
         self.cut = False  #todo getter setter: remove all layers, reset layers
-        #self.__cut_list = []
 
         self.cpt_tspan = {
             'title': '',
@@ -64,7 +61,6 @@ class smd_container(generic):
             'power': ''
             # FixMe: Add voltage
         }
-        #		self.cpt_flowpara = {}
         self.cpt_rect = {'matrix': ''}
         # todo: self.cut_list
 
@@ -86,6 +82,7 @@ class smd_container(generic):
         elif self.label_type == "mira_4":
             raise RuntimeError('Label type mira_4 not supported, yet.')
         elif self.label_type == 'licefa_n1': # SMD-Box N1
+            raise RuntimeError('Label type licefa_n1 not supported, yet.')
             self.width = '22mm'
             self.height = '29mm'
         elif self.label_type == 'licefa_n2': # SMD-Box N2
@@ -97,8 +94,15 @@ class smd_container(generic):
             self.width = '42mm'
             self.height = '56mm'
         else:
-            raise RuntimeError("Unknown label type: '" + self.label_type + "'")
-        log.debug("Label type is " + self.label_type + " with size w=" + self.width + ", h=" + self.height)
+            # No standard label type found, so must be custom type.
+            # Check if a custom template path is specified, otherwise raise error.
+            log.debug("Attempt to use custom label type '" + self.label_type + "'")
+            if not self.content._is_custom_template:
+                log.error("Please specify template path to custom label type.")
+                raise RuntimeError("Please specify template path to custom label type.")
+            self.width = '0mm'
+            self.height = '0mm'
+        log.debug("Label type is '" + self.label_type + "' with size w=" + self.width + ", h=" + self.height)
 
         # self.fn is set after this point 
         # todo: think about better solution for self._fn (explicit is better than implicit) 
@@ -125,7 +129,7 @@ class smd_container(generic):
         # - in setter function for self.cut (any time self.cut is changed)
         self.layer.clear()
 
-        if self.content._is_user_template is True:
+        if self.content._is_custom_template is True:
             log.info("Attempt to use template path from user...")
             path = self.content.tmpl_path + self.label_type
             self.layer.add(path+ '/font.svg') # better use path add func?
@@ -154,9 +158,6 @@ class smd_container(generic):
         self.cpt_tspan['temperature_coefficient'] = self.content.temperature_coefficient
         self.cpt_tspan['power'] = self.content.power
         super(smd_container, self).save_substitutes()
-
-        #from cairosvg.surface import PDFSurface
-        #PDFSurface.convert(src, write_to=open('output.pdf', 'w'))
 
     def saveAx(self, fn=None, ax='a4', svg_list=None):
         if svg_list is None:

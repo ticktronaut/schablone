@@ -28,10 +28,9 @@ single_dir = base_dir + '/' + 'smd_container'
 if not os.path.exists(single_dir):
     os.makedirs(single_dir)
 
-# get valid label_types
-logger.debug("Setting a template folder specified by user.")
+logger.debug("Setting a custom template folder specified by user.")
 user_tmpl_path = '/path/to/schablone/examples/tmpl_layer/' # FixMe: currently works only with absolute path
-smdLabel = schablone.label.smd_container('licefa_n1', user_tmpl_path)
+smdLabel = schablone.label.smd_container('my_custom_label', custom_tmpl_path)
 smdLabel.overwrite = True
 smdLabel.cut = False
 smdLabel.content.title = 'SMD-Wid.'
