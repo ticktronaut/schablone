@@ -10,25 +10,12 @@ import os
 import schablone
 import schablone.label
 
-# Setup logger
-import logging
-logger = logging.getLogger('schablone')
-logger.setLevel(logging.DEBUG)
-ch = logging.StreamHandler()
-formatter = logging.Formatter('%(asctime)s %(name)s:%(levelname)s: %(funcName)s() - %(message)s')
-ch.setFormatter(formatter)
-logger.addHandler(ch)
-
-logger.info("schablone version: " + schablone.__version__)
-logger.info("Start generating SMD container label...")
-
 base_dir = 'samples'
 single_dir = base_dir + '/' + 'smd_container'
 
 if not os.path.exists(single_dir):
     os.makedirs(single_dir)
 
-logger.debug("Setting a custom template folder specified by user.")
 user_tmpl_path = '/path/to/schablone/examples/tmpl_layer/' # FixMe: currently works only with absolute path
 smdLabel = schablone.label.smd_container('my_custom_label', custom_tmpl_path)
 smdLabel.overwrite = True
@@ -41,5 +28,3 @@ smdLabel.power = '1/8W'
 smdLabel.content.value = '120k'
 fn = single_dir + '/' + 'smd_caption_' + smdLabel.content.value + '.svg'
 smdLabel.save(fn)
-
-logger.info("Done")
