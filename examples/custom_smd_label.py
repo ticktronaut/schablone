@@ -2,7 +2,7 @@
 #coding=utf-8
 
 """
-This example shows how to generate labels for SMD container with
+This example shows how to generate custom labels for SMD container with
 a user specified template path.
 """
 
