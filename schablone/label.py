@@ -30,7 +30,7 @@ class smd_content_container(object):
 
 class smd_container(generic):
 
-    def __init__(self, label_type=None, tmpl_path=None):
+    def __init__(self, label_type='mira_1', tmpl_path=None, size=None):
         log.debug("Instantiating class 'smd_container'.")
         super(smd_container, self).__init__()
         self.content = smd_content_container()
@@ -44,13 +44,16 @@ class smd_container(generic):
         log.debug("tmpl_path: " + str(self.content.tmpl_path))
 
         self.label_types = ('mira_1', 'licefa_n1') # tuple with valid label types (create getter?)
-        if label_type is None:
-            self.label_type = "mira_1"  #todo: link zu quelle #getter setter: remove all layers, reset layers
-        else:
-            self.label_type = label_type
+        self.label_type = label_type  #todo: link zu quelle #getter setter: remove all layers, reset layers
         log.debug("Label type from init(): " + str(label_type))
         log.debug("Label type: " + self.label_type)
         self.cut = False  #todo getter setter: remove all layers, reset layers
+
+        if size is not None:
+            if len(size) != 2:
+                raise RuntimeError("list of len 2 required (x,y)")
+            self._custom_width = size(0)
+            self._custom_width = size(1)
 
         self.cpt_tspan = {
             'title': '',
@@ -68,10 +71,10 @@ class smd_container(generic):
     # die Hoehe und Breite zu setzen ueberschrieben
     # Achtung ist überschreibend
     def save(self, fn=None):
+        # Currently all other parameters are set in __init__()
 
         # set width and height (reconfigure everytime time save is called)
         log.info("Check for valid label_type")
-        self.width = '15mm'
         if self.label_type is 'mira_1' or self.label_type is 'mira_1a':  # type "1" and type "1a" seem to have the same label size
             self.width = '15mm'
             self.height = '20mm'
@@ -100,8 +103,9 @@ class smd_container(generic):
             if not self.content._is_custom_template:
                 log.error("Please specify template path to custom label type.")
                 raise RuntimeError("Please specify template path to custom label type.")
-            self.width = '0mm'
-            self.height = '0mm'
+            # FixMe: use size from parameter
+            self.width = '15mm' # self._custom_width
+            self.height = '20mm' # self._custom_height
         log.debug("Label type is '" + self.label_type + "' with size w=" + self.width + ", h=" + self.height)
 
         # self.fn is set after this point 
@@ -129,9 +133,10 @@ class smd_container(generic):
         # - in setter function for self.cut (any time self.cut is changed)
         self.layer.clear()
 
+        path = self.content.tmpl_path + self.label_type
+
         if self.content._is_custom_template is True:
             log.info("Attempt to use template path from user...")
-            path = self.content.tmpl_path + self.label_type
             self.layer.add(path+ '/font.svg') # better use path add func?
             if not self.cut:
                 self.layer.add(path + '/frame.svg')
