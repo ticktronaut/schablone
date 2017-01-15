@@ -158,6 +158,9 @@ There are also some specialized applications of schablone. One of them is to cre
     fn = single_dir + '/' + 'smd_caption_' + '180k' + '.svg'
     smdLabel.save(fn)
 
+In the case you want to generate a custom smd container label you must give it a name with its absolute template path::
+
+    smdLabel = schablone.label.smd_container('my_custom_label', '/path/to/custom_tmpl_path/')
 
 Create a box label 
 ``````````````````
