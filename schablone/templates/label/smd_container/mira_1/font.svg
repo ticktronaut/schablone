@@ -14,7 +14,7 @@
    id="svg7714"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="mira_font_small.svg">
+   sodipodi:docname="font.svg">
   <defs
      id="defs7716" />
   <sodipodi:namedview
@@ -144,14 +144,6 @@
            id="power"
            template-id="power"
            sodipodi:role="line">1/8W</tspan></text>
-      <rect
-         style="fill:#ffcc00;fill-opacity:1;stroke:none"
-         id="matrix"
-         template-id="matrix"
-         width="23"
-         height="23"
-         x="28.174458"
-         y="1024.5605" />
     </g>
   </g>
 </svg>

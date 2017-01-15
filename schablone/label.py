@@ -42,6 +42,8 @@ class smd_container(generic):
         self.cut = False  #todo getter setter: remove all layers, reset layers
         #self.__cut_list = []
 
+        self._matrix = True
+
         self.cpt_tspan = {
             'title': '',
             'value': '',
@@ -51,9 +53,38 @@ class smd_container(generic):
             'power': ''
             # FixMe: Add voltage
         }
-        #		self.cpt_flowpara = {}
-        self.cpt_rect = {'matrix': ''}
+        #self.cpt_flowpara = {}
+        if self.matrix:
+            self.cpt_rect = {'matrix': ''}
         # todo: self.cut_list
+
+#todo:
+# - es wird auswaehlbar ob man datamatrix will oder nicht
+# - es besteht die Möglichkeit custom Templates in der layer gruppe custom anzugeben,
+# die mit aufgenommen werden
+# - alle anderen layers werden strikt in der Gruppe smd_container gehalten
+# - auch Gruppen in box einführen
+# - vorsicht: custom layers sind dann imutable und bestehen fort, es muss also in der Doku darauf hingewiesen werden, dass diese nach deren Nutzung gelöscht werden müssen
+
+# todo: getter/setter for self.matrix
+    # getter/setter for self.matrix
+    @property
+    def matrix(self):
+        return self._matrix
+
+    @matrix.setter
+    def matrix(self, value):
+        if value:
+            if not 'matrix' in self.cpt_rect.keys():
+               self.cpt_rect = {'matrix': ''}
+        else:
+            del self.cpt_rect['matrix']
+               
+        self._matrix = value
+
+    @matrix.deleter
+    def matrix(self):
+        del self._matrix
 
     # hier wird die einzige Moeglichkeit der Basisklasse 
     # die Hoehe und Breite zu setzen ueberschrieben
@@ -97,8 +128,10 @@ class smd_container(generic):
 
         encoder = DataMatrixEncoder(uuid_str)
         encoder.save(fn_qr)
-        
-        self.cpt_rect['matrix'] = fn_qr
+
+        if self.matrix:
+            print('matrix_2')
+            self.cpt_rect['matrix'] = fn_qr
         
 
         # todo: rethink the following ...
@@ -112,13 +145,20 @@ class smd_container(generic):
                 'schablone', 'templates/label/smd_container/' + self.label_type
                 + '/font.svg'))
 
+        if self.matrix:
+            self.layer.add(
+                pkg_resources.resource_filename(
+                    'schablone', 'templates/label/smd_container/' +
+                    self.label_type + '/matrix.svg'))
+
         if not self.cut:
             self.layer.add(
                 pkg_resources.resource_filename(
                     'schablone', 'templates/label/smd_container/' +
                     self.label_type + '/frame.svg'))
+
         else:
-            #			self.layer.default_lr = 'cut'
+            #self.layer.default_lr = 'cut'
             self._fn_cut = super(smd_container, self)._fn_sub_str(self._fn,
                                                                   "_cut")
             self.layer.add(
