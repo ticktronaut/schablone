@@ -250,6 +250,13 @@ Occasionally also the library **Rsvg** (gi.repository) is utilized. Installation
     $ [sudo] pip install pyqrcode
     $ [sudo] apt-get install gir1.2-rsvg-2.0 python3-cairo
 
+When using virtual environments handling Rsvg from gi.repository can be tedious.
+One solution is to install PyGObject system-wide with your package manager (or compile it manually) and link it in your virtualenv.
+For an Arch Linux with Python 3.5.2 and pyenv for example this will be::
+
+    $ [sudo] pacman -S python-gobject
+    $ ln -s /usr/lib/python3.5/site-packages/gi* ~/.pyenv/versions/3.5.2/lib/python3.5/site-packages
+
 Until its newest commits are published on PyPi prefer to install svglue from its github repository: ::
 
     $ [sudo] pip install git+https://github.com/mbr/svglue.git@master
