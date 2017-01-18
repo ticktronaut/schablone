@@ -11,6 +11,8 @@ from .base import baseSVG
 
 import logging
 
+import warnings
+
 log = logging.getLogger('schablone.generic')
 
 class layer_container(object):
@@ -233,13 +235,35 @@ class generic(baseSVG):
         tpl = svglue.load(file=self._fn)
 
         for cpt_key, cpt_val in self.cpt_tspan.items():
-            tpl.set_text(cpt_key, cpt_val)
+            try:
+                tpl.set_text(cpt_key, cpt_val)
+            except:
+                warnings.warn(
+                    'Something went wrong setting the key \'' + cpt_key + '\'',
+                    RuntimeWarning
+                )
+                # think about self.strict
 
         for cpt_key, cpt_val in self.cpt_flowpara.items():
-            tpl.set_flowtext(cpt_key, cpt_val)
+            try: 
+                tpl.set_flowtext(cpt_key, cpt_val)
+            except:
+                warnings.warn(
+                    'Something went wrong setting the key ' + cpt_key + '\'',
+                    RuntimeWarning
+                )
+                # think about self.strict
 
         for cpt_key, cpt_val in self.cpt_rect.items():
-            tpl.set_image(cpt_key, file=cpt_val, mimetype='image/png')
+            try:
+                tpl.set_image(cpt_key, file=cpt_val, mimetype='image/png')
+            except:
+                warnings.warn(
+                    'Something went wrong setting the key \'' + cpt_key + '\'',
+                    RuntimeWarning
+                )
+                # think about self.strict
+
 
         src = tpl.__str__()  #str(tpl) #str(tpl) does not work in python3
         open(self._fn, 'wb').write(src)
