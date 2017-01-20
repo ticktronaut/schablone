@@ -78,7 +78,8 @@ class smd_container(generic):
             if not 'matrix' in self.cpt_rect.keys():
                self.cpt_rect = {'matrix': ''}
         else:
-            del self.cpt_rect['matrix']
+            if 'matrix' in self.cpt_rect:
+                del self.cpt_rect['matrix']
                
         self._matrix = value
 
