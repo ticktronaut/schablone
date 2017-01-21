@@ -9,6 +9,8 @@ import pyqrcode
 import pkg_resources
 from .base import baseSVG
 
+import warnings
+
 import logging
 
 log = logging.getLogger('schablone.generic')
@@ -43,14 +45,21 @@ class layer_pack(object):
             pass
             #print 'reset all layers'
 
-        del self.tmpl_lr[group][nmb]
+        if group in self.tmpl_lr.keys(): 
+            del self.tmpl_lr[group][nmb]
+        else:
+            warnings.warn('Group ' + group + ' does not exist.', RuntimeWarning)
 
     def clear(self, group=None):
         if group is None:
             # remove all keys by resetting to default
             self.tmpl_lr = {'default': [layer_container] * 0}
         else:
-            del self.tmpl_lr[group]
+            if group in self.tmpl_lr.keys(): 
+                del self.tmpl_lr[group]
+            else:
+                warnings.warn('Group ' + group + ' does not exist.', RuntimeWarning)
+          
 
     def show(self, group=None):
         if group is None:
@@ -64,9 +73,7 @@ class layer_pack(object):
 
             return lrs
         else:
-            pass
-            # raise warning
-            #print 'todo: raise warning, key does not exist'
+            warnings.warn('Group ' + group + ' does not exist.', RuntimeWarning)
 
 
 class generic(baseSVG):
