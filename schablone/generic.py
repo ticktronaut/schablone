@@ -213,11 +213,13 @@ class generic(baseSVG):
 
         # combine svg-files 
         svg_label = sg.fromfile(fi)
-        for layer in self.layer.tmpl_lr[group]:
-            anker = sg.fromfile(layer.path).getroot()
-            anker.moveto(layer.x_pos, layer.y_pos, layer.scale)
-            svg_label.append(anker)
-
+        if group in self.layer.tmpl_lr.keys():
+            for layer in self.layer.tmpl_lr[group]:
+                anker = sg.fromfile(layer.path).getroot()
+                anker.moveto(layer.x_pos, layer.y_pos, layer.scale)
+                svg_label.append(anker)
+        else:
+            warnings.warn('Group ' + group + ' does not exist.', RuntimeWarning)
         svg_label.save(fo)
 
     def save_substitutes(self, fo=None, fi=None, group=None):
