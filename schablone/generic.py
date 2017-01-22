@@ -59,7 +59,6 @@ class layer_pack(object):
                 del self.tmpl_lr[group]
             else:
                 warnings.warn('Group ' + group + ' does not exist.', RuntimeWarning)
-          
 
     def show(self, group=None):
         if group is None:
