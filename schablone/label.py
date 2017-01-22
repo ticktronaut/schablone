@@ -78,23 +78,25 @@ class smd_container(generic):
         if cut is None:
             cut=True
 
-        self.layer.clear('smd_container')
+        self.layer.clear('smd_container_font')
+        self.layer.clear('smd_container_matrix')
+        self.layer.clear('smd_container_frame')
         self.layer.clear('smd_container_cut')
 
         self.layer.add(
             pkg_resources.resource_filename(
                 'schablone', self.tmpl_path + label_type
-                + '/font.svg'), group='smd_container')
+                + '/font.svg'), group='smd_container_font')
 
         self.layer.add(
             pkg_resources.resource_filename(
                 'schablone', self.tmpl_path + label_type
-                + '/matrix.svg'), group='smd_container')
+                + '/matrix.svg'), group='smd_container_matrix')
 
         if not cut:
             self.layer.add(
                 pkg_resources.resource_filename(
-                    'schablone', self.tmpl_path + label_type + '/frame.svg'), group='smd_container')
+                    'schablone', self.tmpl_path + label_type + '/frame.svg'), group='smd_container_frame')
         else:
             self.layer.add(
                 pkg_resources.resource_filename(
@@ -138,8 +140,14 @@ class smd_container(generic):
         
         self.cpt_rect['matrix'] = fn_qr
 
-        super(smd_container, self).save_layers(self._fn_cut, self._fn, 'smd_container_cut')
-        super(smd_container, self).save_layers(group='smd_container')
+        # save layers
+        for group in self.layer.tmpl_lr.keys():
+            if group == 'smd_container_cut':
+                super(smd_container, self).save_layers(self._fn_cut, self._fn, 'smd_container_cut')
+            else:
+                super(smd_container, self).save_layers(group=group)
+
+        # save substitutions
         super(smd_container, self).save_substitutes()
 
         #from cairosvg.surface import PDFSurface
