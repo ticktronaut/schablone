@@ -57,16 +57,17 @@ class smd_container(generic):
         if cut is None:
             cut = False
 
+        #layers are set here
         self.set_layers(label_type, cut) 
 
-        if label_type is 'mira_1' or 'mira_1a':  # type "1" and type "1a" seem to have label same size
+        if label_type == 'mira_1' or label_type == 'mira_1a':  # type "1" and type "1a" seem to have label same size
             self.width = '15mm'
             self.height = '20mm'
-        elif label_type is 'mira_2':
+        elif label_type == 'mira_2':
             raise RuntimeError('Label type mira_2 not supported, yet.')
-        elif label_type is 'mira_3':
+        elif label_type == 'mira_3':
             raise RuntimeError('Label type mira_3 not supported, yet.')
-        elif label_type is "mira_4":
+        elif label_type == "mira_4":
             raise RuntimeError('Label type mira_4 not supported, yet.')
         else:
             raise RuntimeError('Unknown type of label: ' + self.label_type)
