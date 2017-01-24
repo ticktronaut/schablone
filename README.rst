@@ -5,17 +5,17 @@ schablone
 What it is?
 -----------
 
-schablone is a library to create structured printed forms (svg format) and fill them with information. Its main purpose is to create labels for boxes in a storage system (for instance your local hacker space). Beyond that it is flexible enough to create many other structured documents, like for example resumes or business cards. Schablone broadly exploits the flexibility the xml formats, especially svg. In future development also other xml formats like html might be deployed. It relies on the libraries svglue, svgutils and lxml (currently indirectly). Occasionally also the library Rsvg (gi.repository) is utilized.
+schablone is a library to create structured printed forms (svg format) and fill them with information. Its main purpose is to create labels for boxes in a storage system (for instance your local hacker space). Beyond that it is flexible enough to create many other structured documents, like for example resumes or business cards. Schablone broadly exploits the flexibility of the xml formats, especially svg. In future development also other xml formats like html might be deployed. It relies on the libraries svglue, svgutils and lxml (currently indirectly). Occasionally also the library Rsvg (gi.repository) is utilized.
 
 What can I use it for?
 ----------------------
 
-schablone is a very flexible library to create structured svg files. The user must specify -template layers- of svg files with fields of images and text to fill in. The library stacks these layers and fills in the wished texts and images. The library might, for instance, be used to automize the creation of address labels in a django based e-commerce system.
+schablone is a very flexible library to create structured svg files. The user must specify -template layers- of svg files with fields of images and text to fill in. The library stacks these layers and fills in the desired texts and images. The library might, for instance, be used to automize the creation of address labels in a django based e-commerce system.
 
 .. figure:: images/smd_container.png
    :scale: 100 %
 
-The library also can be used for some special tasks like creating box labels or labels of smd containers (as seen in the image above).
+The library also can be used for some special tasks like creating box labels or labels for smd containers (as seen in the image above).
 
 .. - create some of the schablone templates like
     - image samples box label
@@ -30,7 +30,7 @@ The library also can be used for some special tasks like creating box labels or 
 Why should I use it?
 --------------------
 
-schablone simplifies the process of automatically creating labels and fill them in. Whenever structured documents should be created and filled in by python, schablone is a good workflow. This might for instance be helpful in a Django application. Also the inclusion of qr-codes is supported (using the library pyqrcode_). The basic procedure is a three steps process:
+schablone simplifies the process of automatically creating labels and fill them in. Whenever structured documents should be created and filled in by python, schablone offers a good workflow. This might for instance be helpful in a Django application. Also the inclusion of qr-codes is supported (using the library pyqrcode_). The basic procedure is a three steps process:
 
 1. `store frame SVG file which has the wished size`_
 2. `stack layers of svg file templates`_
@@ -73,7 +73,7 @@ The procedure may also be
 Examples
 --------
 
-The following examples show the basic usage of schablone's key features. A more detailed example, concluding all these features can be found in sample.py. The examples imply, that the schablone library has bin installed as decribed in `Installation`_.
+The following examples show the basic usage of schablone's key features. A more detailed example, concluding all these features can be found in sample.py. The examples imply that the schablone library has been installed as decribed in `Installation`_.
    
 Create a generic label
 ``````````````````````
@@ -158,6 +158,9 @@ There are also some specialized applications of schablone. One of them is to cre
     fn = single_dir + '/' + 'smd_caption_' + '180k' + '.svg'
     smdLabel.save(fn)
 
+In the case you want to generate a custom smd container label you must give it a name with its absolute template path::
+
+    smdLabel = schablone.label.smd_container('my_custom_label', '/path/to/custom_tmpl_path/')
 
 Create a box label 
 ``````````````````
@@ -246,6 +249,13 @@ Occasionally also the library **Rsvg** (gi.repository) is utilized. Installation
     $ [sudo] pip install svgutils lxml 
     $ [sudo] pip install pyqrcode
     $ [sudo] apt-get install gir1.2-rsvg-2.0 python3-cairo
+
+When using virtual environments handling Rsvg from gi.repository can be tedious.
+One solution is to install PyGObject system-wide with your package manager (or compile it manually) and link it in your virtualenv.
+For an Arch Linux with Python 3.5.2 and pyenv for example this will be::
+
+    $ [sudo] pacman -S python-gobject
+    $ ln -s /usr/lib/python3.5/site-packages/gi* ~/.pyenv/versions/3.5.2/lib/python3.5/site-packages
 
 Until its newest commits are published on PyPi prefer to install svglue from its github repository: ::
 
