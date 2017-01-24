@@ -75,7 +75,7 @@ class smd_container(generic):
 
         # set width and height (reconfigure everytime time save is called)
         log.info("Check for valid label_type")
-        if self.label_type is 'mira_1' or self.label_type is 'mira_1a':  # type "1" and type "1a" seem to have the same label size
+        if self.label_type == 'mira_1' or self.label_type == 'mira_1a':  # type "1" and type "1a" seem to have the same label size
             self.width = '15mm'
             self.height = '20mm'
         elif self.label_type == 'mira_2':
@@ -135,7 +135,7 @@ class smd_container(generic):
 
         path = self.content.tmpl_path + self.label_type
 
-        if self.content._is_custom_template is True:
+        if self.content._is_custom_template:
             log.info("Attempt to use template path from user...")
             self.layer.add(path+ '/font.svg') # better use path add func?
             if not self.cut:
