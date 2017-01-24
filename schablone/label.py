@@ -111,6 +111,7 @@ class smd_container(generic):
         if fn is not None:
             self._fn = fn
 
+        # todo check if ... in self.cpt_tspan.keys():
         self.cpt_tspan['title'] = self.content.title
         self.cpt_tspan['value'] = self.content.value
         self.cpt_tspan['package'] = self.content.package
@@ -137,8 +138,9 @@ class smd_container(generic):
 
         encoder = DataMatrixEncoder(uuid_str)
         encoder.save(fn_qr)
-        
-        self.cpt_rect['matrix'] = fn_qr
+       
+        if 'matrix' in self.cpt_rect.keys(): 
+            self.cpt_rect['matrix'] = fn_qr
 
         # save layers
         for group in self.layer.tmpl_lr.keys():
