@@ -15,7 +15,7 @@ import logging
 
 log = logging.getLogger("schablone.label")
 
-class smd_content_container(object):
+class smd_content_container(object): #FixMe cap_content_container | res_content_container support
     def __init__(self):
         log.debug("Instantiating class 'smd_content_container'.")
         self.title = ''
