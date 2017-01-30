@@ -32,22 +32,22 @@ Why should I use it?
 
 schablone simplifies the process of automatically creating labels and fill them in. Whenever structured documents should be created and filled in by python, schablone offers a good workflow. This might for instance be helpful in a Django application. Also the inclusion of qr-codes is supported (using the library pyqrcode_). The basic procedure is a three steps process:
 
-1. `store frame SVG file which has the wished size`_
+1. `store frame SVG file which has the desired size`_
 2. `stack layers of svg file templates`_
 3. `fill in texts and images`_
 
 .. figure:: images/layers.png
    :scale: 70 %
 
-Layers are served as SVG-files and may be created by hand-coding or by vector programs like inkscape_. If it is wished to `fill in texts and images`_ in a layer, the according tags in the svg-file must contain a unique *template-id*. The creation of own templates is documented in Chapter `create templates`_.
+Layers are served as SVG-files and may be created by hand-coding or by vector programs like inkscape_. If it is desired to `fill in texts and images`_ in a layer, the according tags in the svg-file must contain a unique *template-id*. The creation of own templates is documented in Chapter `create templates`_.
 
 .. _inkscape: https://inkscape.org
 
 Usage
 -----
 
-store frame SVG file which has the wished size
-``````````````````````````````````````````````
+store frame SVG file which has the desired size
+```````````````````````````````````````````````
    
 tbc
    
