@@ -24,6 +24,10 @@ class layer_container(object):
         self.path = path
 
 
+# FixMe: 
+# support:
+# layer_up(self, nmb_lvl)
+# layer_down(self, nmb_lvl)
 class layer_pack(object):
     def __init__(self):
         log.debug("Instantiating class 'layer_pack'.")
@@ -213,6 +217,7 @@ class generic(baseSVG):
             group = self.layer.default_group
 
         # combine svg-files 
+        svg_label = sg.fromfile(fi)
         if group in self.layer.tmpl_lr.keys():
             for layer in self.layer.tmpl_lr[group]:
                 anker = sg.fromfile(layer.path).getroot()
