@@ -11,13 +11,14 @@ import schablone
 import schablone.label
 
 base_dir = 'samples'
-single_dir = base_dir + '/' + 'smd_container'
+single_dir = base_dir + '/smd_container/custom_smd_label/' + 'smd_container'
 
 if not os.path.exists(single_dir):
     os.makedirs(single_dir)
 
-user_tmpl_path = '/path/to/schablone/examples/tmpl_layer/' # FixMe: currently works only with absolute path
-smdLabel = schablone.label.smd_container('my_custom_label', custom_tmpl_path)
+user_tmpl_path = '/path/to/schablone/examples/tmpl_layer' # FixMe: currently works only with absolute path
+custom_tmpl_path = '/home/usappz/make/code_projects/schablone/examples/tmpl_layer' # FixMe: currently works only with absolute path
+smdLabel = schablone.label.smd_container(label_type='my_custom_label', tmpl_path=custom_tmpl_path, size=['15mm','20mm'] )
 smdLabel.overwrite = True
 smdLabel.cut = False
 smdLabel.content.title = 'SMD-Wid.'

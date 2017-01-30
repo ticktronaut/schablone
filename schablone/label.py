@@ -96,9 +96,6 @@ class smd_container(generic):
             if not self.content._is_custom_template:
                 log.error("Please specify template path to custom label type.")
                 raise RuntimeError("Please specify template path to custom label type.")
-            # FixMe: use size from parameter
-            print(self.width)
-            print(self.height)
 
 
     def _set_layers(self, label_type, cut=None):
@@ -220,8 +217,12 @@ class box_content_container(object):
 
 
 class box(generic):
-    def __init__(self):
+    def __init__(self, label_type='default'):
         log.debug("Instantiating class 'box'.")
+
+        self._label_type = label_type
+        self._fn_qr = ''
+
         super(box, self).__init__()
 
         self.content = box_content_container()
@@ -231,53 +232,38 @@ class box(generic):
         self.fn_template_extended = pkg_resources.resource_filename(
             'schablone', 'templates/label/box/template_extended.svg')
 
-        self.label_type = 'default'
-        #self.strict = False
+        # set width and height (reconfigure everytime time save is called)
+        self.width = '88mm'
+        if label_type == 'default':  # type "1" and type "1a" seem to have label same size
+            self.height = '74mm'
+        elif label_type == 'extended':
+            self.height = '74mm'
+        else:
+            raise RuntimeError('Unknown type of label: ' + label_type)
+
+        self._set_layers(label_type)
+
+
+    def _set_layers(self, label_type, cut=None):
+
+        # FixMe: use groups for layers
+        # FixMe: use self.tmpl_path
+        self.layer.clear()
+        self.layer.add( self.fn_template_default )
+
+        if label_type == 'extended':
+            self.layer.add( self.fn_template_extended )
 
     # hier wird die einzige Moeglichkeit der Basisklasse 
     # die Hoehe und Breite zu setzen ueberschrieben
     # Achtung ist überschreibend
-
     def save(self, fn=None):
 
         if fn == None:
             if self._fn == None:
-                fn = "label_" + self.label_type + ".svg"
+                fn = "label_" + self._label_type + ".svg"
             else:
                 fn = self._fn
-
-        self._fn = fn
-
-        # set width and height (reconfigure everytime time save is called)
-        self.width = '88mm'
-        if self.label_type == 'default':  # type "1" and type "1a" seem to have label same size
-            self.height = '74mm'
-        elif self.label_type == 'extended':
-            self.height = '74mm'
-        else:
-            raise RuntimeError('Unknown type of label: ' + self.label_type)
-        #self.height = '74mm'
-        #self.label_type = 'default'
-
-        super(box, self).save(fn)
-
-        self.layer.clear()
-
-        self.layer.add(
-            pkg_resources.resource_filename(
-                'schablone', 'templates/label/box/template_default.svg'))
-
-        if self.label_type == 'extended':
-            # save data matrix code with unique id (using bash)
-            fn_qr = self._fn_sub_str(fn, '_qr')
-            super(box, self).create_qr(self.content.qr, fn_qr, 280, 220)
-
-            self.layer.add(
-                pkg_resources.resource_filename(
-                    'schablone', 'templates/label/box/template_extended.svg'))
-
-            #self.cpt_tspan['qr'] = self.content.qr
-            self.cpt_tspan['id'] = self.content.qr
 
         self.cpt_tspan['title'] = self.content.title
         self.cpt_tspan['project'] = self.content.project
@@ -285,4 +271,13 @@ class box(generic):
         self.cpt_tspan['location'] = self.content.location
         self.cpt_flowpara['brief_content'] = self.content.brief_content
 
-        super(box, self).save(fn)
+        self._fn = fn
+        self._fn_qr = self._fn_sub_str(self._fn, '_qr')
+        
+        if self._label_type == 'extended': 
+            # save data matrix code
+            super(box, self).create_qr(self.content.qr, self._fn_qr, 280, 220)
+            self.cpt_tspan['id'] = self.content.qr
+
+        # save box
+        super(box, self).save(self._fn)

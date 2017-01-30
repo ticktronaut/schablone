@@ -74,15 +74,24 @@ din = 'a4'
 fn_Ax = Ax_dir + '/' + din + '.svg'
 smdLabel.saveAx(fn_Ax, din)
 
-boxLabel = schablone.label.box()
-boxLabel.overwrite = True
-boxLabel.content.title = 'Ein Box Label'
-boxLabel.content.project = 'Projekt A'
-boxLabel.content.editor = 'A.G.'
-boxLabel.content.location = 'Regal A, Reihe A'
-boxLabel.content.brief_content = 'Einige Dinge die sich in der Box befinden ...'
+boxLabel_default = schablone.label.box(label_type='default')
+boxLabel_default.overwrite = True
+boxLabel_default.content.title = 'Ein Box Label'
+boxLabel_default.content.project = 'Projekt A'
+boxLabel_default.content.editor = 'A.G.'
+boxLabel_default.content.location = 'Regal A, Reihe A'
+boxLabel_default.content.brief_content = 'Einige Dinge die sich in der Box befinden ...'
 fn = box_label_dir + '/' + 'default_label.svg'
-boxLabel.save(fn)
-boxLabel.label_type = 'extended'
+boxLabel_default.save(fn)
+
+
+boxLabel_extended = schablone.label.box(label_type='extended')
+boxLabel_extended.overwrite = True
+boxLabel_extended.content.title = 'Ein Box Label'
+boxLabel_extended.content.project = 'Projekt A'
+boxLabel_extended.content.editor = 'A.G.'
+boxLabel_extended.content.location = 'Regal A, Reihe A'
+boxLabel_extended.content.brief_content = 'Einige Dinge die sich in der Box befinden ...'
+boxLabel_extended.content.qr = 'test'
 fn = box_label_dir + '/' + 'extended_label.svg'
-boxLabel.save(fn)
+boxLabel_extended.save(fn)
