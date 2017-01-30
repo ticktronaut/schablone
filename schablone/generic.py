@@ -9,6 +9,8 @@ import pyqrcode
 import pkg_resources
 from .base import baseSVG
 
+import warnings
+
 import logging
 
 log = logging.getLogger('schablone.generic')
@@ -43,14 +45,20 @@ class layer_pack(object):
             pass
             #print 'reset all layers'
 
-        del self.tmpl_lr[group][nmb]
+        if group in self.tmpl_lr.keys():
+            del self.tmpl_lr[group][nmb]
+        else:
+            warnings.warn('Group ' + group + ' does not exists.', RuntimeWarning)
 
     def clear(self, group=None):
         if group is None:
             # remove all keys by resetting to default
             self.tmpl_lr = {'default': [layer_container] * 0}
         else:
-            del self.tmpl_lr[group]
+            if group in self.tmpl_lr.keys():
+                del self.tmpl_lr[group]
+            else:
+                warings.warn('Group ' + group + ' does not exist.', RuntimeWarning) 
 
     def show(self, group=None):
         if group is None:
@@ -64,7 +72,7 @@ class layer_pack(object):
 
             return lrs
         else:
-            pass
+            warnings.warn('Group ' + group + ' does not exist.', RuntimeWarning)
             # raise warning
             #print 'todo: raise warning, key does not exist'
 
@@ -205,11 +213,13 @@ class generic(baseSVG):
             group = self.layer.default_group
 
         # combine svg-files 
-        svg_label = sg.fromfile(fi)
-        for layer in self.layer.tmpl_lr[group]:
-            anker = sg.fromfile(layer.path).getroot()
-            anker.moveto(layer.x_pos, layer.y_pos, layer.scale)
-            svg_label.append(anker)
+        if group in self.layer.tmpl_lr.keys():
+            for layer in self.layer.tmpl_lr[group]:
+                anker = sg.fromfile(layer.path).getroot()
+                anker.moveto(layer.x_pos, layer.y_pos, layer.scale)
+                svg_label.append(anker)
+        else:
+            warnings.warn('Group ' + group + ' does not exist.', RuntimeWarning)
 
         svg_label.save(fo)
 
