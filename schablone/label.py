@@ -97,7 +97,6 @@ class smd_container(generic):
                 log.error("Please specify template path to custom label type.")
                 raise RuntimeError("Please specify template path to custom label type.")
 
-
     def _set_layers(self, label_type, cut=None):
 
         if cut is None:
@@ -118,8 +117,6 @@ class smd_container(generic):
             #self._fn_cut = super(smd_container, self)._fn_sub_str(self._fn, "_cut")
             self.layer.add(path + '/frame_cut.svg', group='smd_container_cut')
             #super(smd_container, self).save_layers(self._fn_cut, self._fn, 'cut')
-
-
 
     # hier wird die einzige Moeglichkeit der Basisklasse 
     # die Hoehe und Breite zu setzen ueberschrieben
@@ -217,6 +214,7 @@ class box_content_container(object):
 
 
 class box(generic):
+
     def __init__(self, label_type='default'):
         log.debug("Instantiating class 'box'.")
 
@@ -242,7 +240,6 @@ class box(generic):
             raise RuntimeError('Unknown type of label: ' + label_type)
 
         self._set_layers(label_type)
-
 
     def _set_layers(self, label_type, cut=None):
 
