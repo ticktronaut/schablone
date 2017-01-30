@@ -62,7 +62,7 @@ class layer_pack(object):
             if group in self.tmpl_lr.keys():
                 del self.tmpl_lr[group]
             else:
-                warings.warn('Group ' + group + ' does not exist.', RuntimeWarning) 
+                warnings.warn('Group ' + group + ' does not exist.', RuntimeWarning) 
 
     def show(self, group=None):
         if group is None:
