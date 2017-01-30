@@ -49,6 +49,9 @@ class smd_container(generic):
         log.debug("Label type: " + self.label_type)
         self.cut = False  #todo getter setter: remove all layers, reset layers
 
+        self.tmpl_path = pkg_resources.resource_filename('schablone', 'templates')
+        print(self.tmpl_path)
+
         if size is not None:
             if len(size) != 2:
                 raise RuntimeError("list of len 2 required (x,y)")
