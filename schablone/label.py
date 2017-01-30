@@ -44,13 +44,14 @@ class smd_container(generic):
 #        self.label_type = label_type  #todo: link zu quelle #getter setter: remove all layers, reset layers
 #        self.cut = False  #todo getter setter: remove all layers, reset layers
 
+        # todo: Ueber Funktion nachdenken
         self.label_types = ('mira_1', 'licefa_n1') # tuple with valid label types (create getter?) 
 
         if size is not None:
             if len(size) != 2:
                 raise RuntimeError("list of len 2 required (x,y)")
-            self._custom_width = size(0)
-            self._custom_width = size(1)
+            self.width = size[0]
+            self.height = size[1]
 
         self.cpt_tspan = {
             'title': '',
@@ -96,9 +97,8 @@ class smd_container(generic):
                 log.error("Please specify template path to custom label type.")
                 raise RuntimeError("Please specify template path to custom label type.")
             # FixMe: use size from parameter
-            self.width = '15mm' # self._custom_width
-            self.height = '20mm' # self._custom_height
-
+            print(self.width)
+            print(self.height)
 
 
     def _set_layers(self, label_type, cut=None):
@@ -110,25 +110,6 @@ class smd_container(generic):
         self.layer.clear('smd_container_matrix')
         self.layer.clear('smd_container_frame')
         self.layer.clear('smd_container_cut')
-
-#        self.layer.add(
-#            pkg_resources.resource_filename(
-#                'schablone', self.tmpl_path + label_type
-#                + '/font.svg'), group='smd_container_font')
-#
-#        self.layer.add(
-#            pkg_resources.resource_filename(
-#                'schablone', self.tmpl_path + label_type
-#                + '/matrix.svg'), group='smd_container_matrix')
-#
-#        if not cut:
-#            self.layer.add(
-#                pkg_resources.resource_filename(
-#                    'schablone', self.tmpl_path + label_type + '/frame.svg'), group='smd_container_frame')
-#        else:
-#            self.layer.add(
-#                pkg_resources.resource_filename(
-#                    'schablone', self.tmpl_path + label_type + '/frame_cut.svg'), group='smd_container_cut')
 
         path = self.tmpl_path + '/' + label_type
 
