@@ -24,8 +24,6 @@ class smd_content_container(object): #FixMe cap_content_container | res_content_
         self.tolerance = ''
         self.temperature_coefficient = ''
         self.power = ''
-        self.tmpl_path = ''
-        self._is_custom_template = False
 
 
 class smd_container(generic):
@@ -36,12 +34,13 @@ class smd_container(generic):
         self.content = smd_content_container()
 
         if tmpl_path is None: # set default template path
-            self.content.tmpl_path = 'templates/label/smd_container/'
+            self.tmpl_path = pkg_resources.resource_filename('schablone', 'templates') + '/label/smd_container'
         else:
-            self.content.tmpl_path = tmpl_path
+            self.tmpl_path = tmpl_path
+            print(self.tmpl_path)
             self.content._is_custom_template = True
 
-        log.debug("tmpl_path: " + str(self.content.tmpl_path))
+        log.debug("tmpl_path: " + str(self.tmpl_path))
 
         self.label_types = ('mira_1', 'licefa_n1') # tuple with valid label types (create getter?)
         self.label_type = label_type  #todo: link zu quelle #getter setter: remove all layers, reset layers
@@ -49,7 +48,6 @@ class smd_container(generic):
         log.debug("Label type: " + self.label_type)
         self.cut = False  #todo getter setter: remove all layers, reset layers
 
-        self.tmpl_path = pkg_resources.resource_filename('schablone', 'templates')
         print(self.tmpl_path)
 
         if size is not None:
@@ -136,26 +134,34 @@ class smd_container(generic):
         # - in setter function for self.cut (any time self.cut is changed)
         self.layer.clear()
 
-        path = self.content.tmpl_path + self.label_type
+        path = self.tmpl_path + '/' + self.label_type
 
-        if self.content._is_custom_template:
-            log.info("Attempt to use template path from user...")
-            self.layer.add(path+ '/font.svg') # better use path add func?
-            if not self.cut:
-                self.layer.add(path + '/frame.svg')
-            else:
-                self._fn_cut = super(smd_container, self)._fn_sub_str(self._fn, "_cut")
-                self.layer.add(path + '/frame_cut.svg', 0.0, 0.0, 1.0, 'cut')
-                super(smd_container, self).save_layers(self._fn_cut, self._fn, 'cut')
+        self.layer.add(path + '/font.svg')
+        if not self.cut:
+            self.layer.add(path + '/frame.svg')
         else:
-            log.info("Use templates from package resource...")
-            self.layer.add(pkg_resources.resource_filename('schablone', path + '/font.svg'))
-            if not self.cut:
-                self.layer.add(pkg_resources.resource_filename('schablone', path + '/frame.svg'))
-            else:
-                self._fn_cut = super(smd_container, self)._fn_sub_str(self._fn, "_cut")
-                self.layer.add(pkg_resources.resource_filename('schablone', path + '/frame_cut.svg'), 0.0, 0.0, 1.0, 'cut')
-                super(smd_container, self).save_layers(self._fn_cut, self._fn, 'cut')
+            self._fn_cut = super(smd_container, self)._fn_sub_str(self._fn, "_cut")
+            self.layer.add(path + '/frame_cut.svg', 0.0, 0.0, 1.0, 'cut')
+            super(smd_container, self).save_layers(self._fn_cut, self._fn, 'cut')
+
+#        if self.content._is_custom_template:
+#            log.info("Attempt to use template path from user...")
+#            self.layer.add(path+ '/font.svg') # better use path add func?
+#            if not self.cut:
+#                self.layer.add(path + '/frame.svg')
+#            else:
+#                self._fn_cut = super(smd_container, self)._fn_sub_str(self._fn, "_cut")
+#                self.layer.add(path + '/frame_cut.svg', 0.0, 0.0, 1.0, 'cut')
+#                super(smd_container, self).save_layers(self._fn_cut, self._fn, 'cut')
+#        else:
+#            log.info("Use templates from package resource...")
+#            self.layer.add(pkg_resources.resource_filename('schablone', path + '/font.svg'))
+#            if not self.cut:
+#                self.layer.add(pkg_resources.resource_filename('schablone', path + '/frame.svg'))
+#            else:
+#                self._fn_cut = super(smd_container, self)._fn_sub_str(self._fn, "_cut")
+#                self.layer.add(pkg_resources.resource_filename('schablone', path + '/frame_cut.svg'), 0.0, 0.0, 1.0, 'cut')
+#                super(smd_container, self).save_layers(self._fn_cut, self._fn, 'cut')
 
         super(smd_container, self).save_layers()
 
