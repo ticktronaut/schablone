@@ -27,6 +27,44 @@ class smd_content_container(object): #FixMe cap_content_container | res_content_
 
 
 class smd_container(generic):
+    """SMD container template
+
+    The **smd_container** is derived from generic.py. It is intended to label
+    smd container containing capacitors, resistors or other electronic parts.
+    Also a data matrix code with uuid is provided. 
+
+    Example
+    -------
+    ::    
+
+        import schablone.label
+  
+        smdLabel = schablone.label.smd_container()
+        smdLabel.overwrite = True
+        smdLabel.cut = True
+        smdLabel.content.title = 'SMD-Wid.'
+        smdLabel.content.package = '0805'
+        smdLabel.content.tolerance = '1%'
+        smdLabel.content.temperature_coefficient = 'TK100'
+        smdLabel.power = '1/8W'
+        smdLabel.content.value = '120k'
+        smdLabel.save('sample.svg')
+ 
+
+    Note
+    ----
+    Labels may be customized by using the basic functions of generic.py. Also 
+    generic templates may be used by setting the variable tmpl_path.
+   
+
+    Attributes
+    ----------
+    content : smd_content_container()
+        Container class to set input data like type or value.  
+    tmpl_path : string 
+        Path to the templates (if variable is set a custom template is expected.
+
+    """
 
     def __init__(self, label_type='mira_1', tmpl_path=None, size=None, cut=False):
         
@@ -41,8 +79,8 @@ class smd_container(generic):
             self.tmpl_path = tmpl_path
             self.content._is_custom_template = True
 
-#        self.label_type = label_type  #todo: link zu quelle #getter setter: remove all layers, reset layers
-#        self.cut = False  #todo getter setter: remove all layers, reset layers
+        self._label_type = label_type
+        self._cut = cut 
 
         # todo: Ueber Funktion nachdenken
         self.label_types = ('mira_1', 'licefa_n1') # tuple with valid label types (create getter?) 
@@ -111,17 +149,25 @@ class smd_container(generic):
 
         self.layer.add(path + '/font.svg', group='smd_container_font')
         self.layer.add(path + '/matrix.svg', group='smd_container_matrix')
+
         if not cut:
             self.layer.add(path + '/frame.svg', group='smd_container_frame')
         else:
-            #self._fn_cut = super(smd_container, self)._fn_sub_str(self._fn, "_cut")
             self.layer.add(path + '/frame_cut.svg', group='smd_container_cut')
-            #super(smd_container, self).save_layers(self._fn_cut, self._fn, 'cut')
 
     # hier wird die einzige Moeglichkeit der Basisklasse 
     # die Hoehe und Breite zu setzen ueberschrieben
     # Achtung ist überschreibend
     def save(self, fn=None):
+        """Save the SVG-file.
+
+        Parameters
+        ----------
+        fn
+            Optional filename
+        
+        """
+
         # Currently all other parameters are set in __init__()
  
         if fn is not None:
@@ -158,10 +204,12 @@ class smd_container(generic):
             self.cpt_rect['matrix'] = fn_qr
 
         # save layers
-        for group in self.layer.tmpl_lr.keys():
+        print( sorted( self.layer.tmpl_lr.keys() ) )
+        for group in sorted( self.layer.tmpl_lr.keys() ):
             if group == 'smd_container_cut':
-                super(smd_container, self).save_layers(self._fn_cut, self._fn, 'smd_container_cut')
+                super(smd_container, self).save_layers(self._fn_cut, self._fn, group='smd_container_cut')
             else:
+                print(group)
                 super(smd_container, self).save_layers(group=group)
 
         # save substitutes
@@ -172,6 +220,28 @@ class smd_container(generic):
         #PDFSurface.convert(src, write_to=open('output.pdf', 'w'))
 
     def saveAx(self, fn=None, ax='a4', svg_list=None):
+        """Store history of previously files in a DIN-format file.
+
+        Note
+        ----
+        In the optional parameter svg_list, a custom list of file paths may be used instead of the 
+        history of previously stored files.
+
+        Parameters
+        ----------
+        fn
+            Filename of the saved file. If left blank, the filename defaults to the existing filename 
+            saved in the class members. If there is no filename, it defaults to default_Ax.svg. 
+            The filename will be stored in the _fnAx class member.
+        ax
+            String to define the size of the DIN format document. Allowed is 'a0', 'a1', ..., 'a10'.
+        svg_list
+            Custom list of paths to files, which should be aranged to the DIN format svg file. By default 
+            the history of paths to all files stored by the save() function, stored in the class member 
+            _fn_list is stored.
+        
+        """
+
         if svg_list is None:
             if self._fn_list == []:
                 svg_list = []
@@ -200,6 +270,7 @@ class smd_container(generic):
         super(smd_container, self).saveAx(fn, ax, sans_cut)
         super(smd_container, self).saveAx(fn_cut, ax, cut_frame)
         super(smd_container, self).saveAx(fn_font, ax, cut)
+        # FixMe: print Ref-Points for laser-cutter
 
 
 class box_content_container(object):
@@ -214,7 +285,33 @@ class box_content_container(object):
 
 
 class box(generic):
+    """box label template
 
+    The **box** is derived from generic.py. It is intended to label
+    boxes with informations like the content of the box or its location
+    in the shelf. The extended box-type additionaly contains an id and
+    a qr-code.  
+
+    Example
+    -------
+    ::    
+
+        import schablone.box
+  
+        boxLabel = tbc
+
+    Note
+    ----
+    tbc
+
+    Attributes
+    ----------
+    tbc : tbc 
+        tbc  
+    tbc : tbc 
+        tbc 
+
+    """
     def __init__(self, label_type='default'):
         log.debug("Instantiating class 'box'.")
 
