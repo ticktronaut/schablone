@@ -90,9 +90,10 @@
 <li class="toctree-l2"><a class="reference internal" href="#what-can-i-use-it-for">What can I use it for?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#why-should-i-use-it">Why should I use it?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#store-frame-svg-file-which-has-the-wished-size">store frame SVG file which has the wished size</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#store-frame-svg-file">store frame SVG file</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#stack-layers-of-svg-file-templates">stack layers of svg file templates</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#fill-in-texts-and-images">fill in texts and images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create-templates">create templates</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a><ul>
@@ -159,33 +160,35 @@
 <h1>schablone<a class="headerlink" href="#schablone" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="what-it-is">
 <h2>What it is?<a class="headerlink" href="#what-it-is" title="Permalink to this headline">¶</a></h2>
-<p>schablone is a library to create structured printed forms (svg format) and fill them with information. Its main purpose is to create labels for boxes in a storage system (for instance your local hacker space). Beyond that it is flexible enough to create many other structured documents, like for example resumes or business cards. Schablone broadly exploits the flexibility the xml formats, especially svg. In future development also other xml formats like html might be deployed. It relies on the libraries svglue, svgutils and lxml (currently indirectly). Occasionally also the library Rsvg (gi.repository) is utilized.</p>
+<p>schablone is a library to create structured printed forms (svg format) and fill them with information. Its main purpose is to create labels for boxes in a storage system (for instance your local hacker space). Beyond that it is flexible enough to create many other structured documents, like for example resumes or business cards. Schablone broadly exploits the flexibility of xml formats, especially svg. In future development also other xml formats like html might be deployed. It relies on the libraries svglue, svgutils and lxml (currently indirectly). Occasionally also the library Rsvg (gi.repository) is utilized.</p>
 </div>
 <div class="section" id="what-can-i-use-it-for">
 <h2>What can I use it for?<a class="headerlink" href="#what-can-i-use-it-for" title="Permalink to this headline">¶</a></h2>
-<p>schablone is a very flexible library to create structured svg files. The user must specify -template layers- of svg files with fields of images and text to fill in. The library stacks these layers and fills in the wished texts and images. The library might, for instance, be used to automize the creation of address labels in a django based e-commerce system.</p>
+<p>schablone is a very flexible library to create structured svg files. The user must specify -template layers- of svg files with fields of images and text to fill in. The library stacks these layers and fills in the desired texts and images. The library might, for instance, be used to automize the creation of address labels in a django based e-commerce system.</p>
 <div class="figure">
 <a class="reference internal image-reference" href="_images/smd_container.png"><img alt="_images/smd_container.png" src="_images/smd_container.png" style="width: 200.0px; height: 252.0px;" /></a>
 </div>
-<p>The library also can be used for some special tasks like creating box labels or labels of smd containers (as seen in the image above).</p>
+<p>The library also can be used for some special tasks like creating box labels or labels for smd containers (as seen in the image above).</p>
 </div>
 <div class="section" id="why-should-i-use-it">
 <h2>Why should I use it?<a class="headerlink" href="#why-should-i-use-it" title="Permalink to this headline">¶</a></h2>
-<p>schablone simplifies the process of automatically creating labels and fill them in. Whenever structured documents should be created and filled in by python, schablone is a good workflow. Also the inclusion of qr-codes is supported (using the library <a class="reference external" href="https://pypi.python.org/pypi/PyQRCode/1.2.1">pyqrcode</a>). The basic procedure is a three steps process:</p>
+<p>schablone simplifies the process of automatically creating labels and fill them in. Whenever structured documents should be created and filled in by python, schablone offers a good workflow. This might for instance be helpful in a Django application. Also the inclusion of qr-codes is supported (using the library <a class="reference external" href="https://pypi.python.org/pypi/PyQRCode/1.2.1">pyqrcode</a>). The basic procedure is a three steps process:</p>
 <ol class="arabic simple">
-<li><a class="reference internal" href="#store-frame-svg-file-which-has-the-wished-size">store frame SVG file which has the wished size</a></li>
+<li><a class="reference internal" href="#store-frame-svg-file">store frame SVG file</a></li>
 <li><a class="reference internal" href="#stack-layers-of-svg-file-templates">stack layers of svg file templates</a></li>
 <li><a class="reference internal" href="#fill-in-texts-and-images">fill in texts and images</a></li>
 </ol>
 <div class="figure">
 <a class="reference internal image-reference" href="_images/layers.png"><img alt="_images/layers.png" src="_images/layers.png" style="width: 6533.099999999999px; height: 2800.0px;" /></a>
 </div>
+<p>Layers are served as SVG-files and may be created by hand-coding or by vector programs like <a class="reference external" href="https://inkscape.org">inkscape</a>. If it is desired to <a class="reference internal" href="#fill-in-texts-and-images">fill in texts and images</a> in a layer, the according tags in the svg-file must contain a unique <em>template-id</em>. The creation of own templates is documented in Chapter <a class="reference internal" href="#create-templates">create templates</a>.</p>
 </div>
 <div class="section" id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="store-frame-svg-file-which-has-the-wished-size">
-<h3>store frame SVG file which has the wished size<a class="headerlink" href="#store-frame-svg-file-which-has-the-wished-size" title="Permalink to this headline">¶</a></h3>
-<p>tbc</p>
+<div class="section" id="store-frame-svg-file">
+<h3>store frame SVG file<a class="headerlink" href="#store-frame-svg-file" title="Permalink to this headline">¶</a></h3>
+<p>desired size
+tbc</p>
 </div>
 <div class="section" id="stack-layers-of-svg-file-templates">
 <h3>stack layers of svg file templates<a class="headerlink" href="#stack-layers-of-svg-file-templates" title="Permalink to this headline">¶</a></h3>
@@ -196,10 +199,15 @@
 <p>tbc
 save A4</p>
 </div>
+<div class="section" id="create-templates">
+<h3>create templates<a class="headerlink" href="#create-templates" title="Permalink to this headline">¶</a></h3>
+<p>tbc</p>
+<p>The procedure may also be</p>
+</div>
 </div>
 <div class="section" id="examples">
 <h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
-<p>The following examples show the basic usage of schablone&#8217;s key features. A more detailed example, concluding all these features can be found in sample.py. The examples imply, that the schablone library has bin installed as decribed in <a class="reference internal" href="#installation">Installation</a>.</p>
+<p>The following examples show the basic usage of schablone&#8217;s key features. A more detailed example, concluding all these features can be found in sample.py. The examples imply that the schablone library has been installed as decribed in <a class="reference internal" href="#installation">Installation</a>.</p>
 <div class="section" id="create-a-generic-label">
 <h3>Create a generic label<a class="headerlink" href="#create-a-generic-label" title="Permalink to this headline">¶</a></h3>
 <p>schablone can create generic templates. The result can be seen in samples/generic/generic.svg.</p>
@@ -270,6 +278,10 @@ save A4</p>
 <span class="n">smdLabel</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;180k&#39;</span>
 <span class="n">fn</span> <span class="o">=</span> <span class="n">single_dir</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="s1">&#39;smd_caption_&#39;</span> <span class="o">+</span> <span class="s1">&#39;180k&#39;</span> <span class="o">+</span> <span class="s1">&#39;.svg&#39;</span>
 <span class="n">smdLabel</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In the case you want to generate a custom smd container label you must give it a name with its absolute template path:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">smdLabel</span> <span class="o">=</span> <span class="n">schablone</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">smd_container</span><span class="p">(</span><span class="s1">&#39;my_custom_label&#39;</span><span class="p">,</span> <span class="s1">&#39;/path/to/custom_tmpl_path/&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -348,16 +360,27 @@ save A4</p>
 <li>and <a class="reference external" href="https://pypi.python.org/pypi/lxml/3.7.1">lxml</a> (currently indirectly).</li>
 </ul>
 <p>Occasionally also the library <strong>Rsvg</strong> (gi.repository) is utilized. Installation using pip and aptitude (tested on Ubuntu 14.04):</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>$ pip install svglue svgutils lxml
-$ pip install pyqrcode
-$ apt-get install gir1.2-rsvg-2.0 python3-cairo
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ [sudo] pip install svgutils lxml
+$ [sudo] pip install pyqrcode
+$ [sudo] apt-get install gir1.2-rsvg-2.0 python3-cairo
+</pre></div>
+</div>
+<p>When using virtual environments handling Rsvg from gi.repository can be tedious.
+One solution is to install PyGObject system-wide with your package manager (or compile it manually) and link it in your virtualenv.
+For an Arch Linux with Python 3.5.2 and pyenv for example this will be:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ [sudo] pacman -S python-gobject
+$ ln -s /usr/lib/python3.5/site-packages/gi* ~/.pyenv/versions/3.5.2/lib/python3.5/site-packages
+</pre></div>
+</div>
+<p>Until its newest commits are published on PyPi prefer to install svglue from its github repository:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ [sudo] pip install git+https://github.com/mbr/svglue.git@master
 </pre></div>
 </div>
 </div>
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
 <p>Install all <a class="reference internal" href="#requirements">Requirements</a> and then:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>$ pip install schablone
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ [sudo] pip install git+https://github.com/ticktronaut/schablone.git@master
 </pre></div>
 </div>
 </div>

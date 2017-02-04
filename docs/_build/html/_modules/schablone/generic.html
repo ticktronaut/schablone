@@ -137,33 +137,36 @@
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1">#coding=utf-8</span>
 
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">svgutils.transform</span> <span class="k">as</span> <span class="nn">sg</span>
 <span class="kn">import</span> <span class="nn">svglue</span>
-<span class="c1">#from svglue import svglue</span>
-<span class="c1">#import svgwrite</span>
-<span class="c1">#import pysvg</span>
-
 <span class="kn">from</span> <span class="nn">lxml</span> <span class="k">import</span> <span class="n">etree</span>
-
-<span class="kn">import</span> <span class="nn">os</span>
-
 <span class="kn">import</span> <span class="nn">pyqrcode</span>
-
 <span class="kn">import</span> <span class="nn">pkg_resources</span>
-
 <span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">baseSVG</span>
 
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;schablone.generic&#39;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="layer_container"><a class="viewcode-back" href="../../source/schablone.html#schablone.generic.layer_container">[docs]</a><span class="k">class</span> <span class="nc">layer_container</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Instantiating class &#39;layer_container&#39;.&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">x_pos</span> <span class="o">=</span> <span class="n">x</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">y_pos</span> <span class="o">=</span> <span class="n">y</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">scale</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">path</span></div>
 
 
+<span class="c1"># FixMe: </span>
+<span class="c1"># support:</span>
+<span class="c1"># layer_up(self, nmb_lvl)</span>
+<span class="c1"># layer_down(self, nmb_lvl)</span>
 <div class="viewcode-block" id="layer_pack"><a class="viewcode-back" href="../../source/schablone.html#schablone.generic.layer_pack">[docs]</a><span class="k">class</span> <span class="nc">layer_pack</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Instantiating class &#39;layer_pack&#39;.&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tmpl_lr</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;default&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">layer_container</span><span class="p">]</span> <span class="o">*</span> <span class="mi">0</span><span class="p">}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">default_group</span> <span class="o">=</span> <span class="s1">&#39;default&#39;</span>  <span class="c1"># todo: getter/setter for self.default_lr, wenn key nicht existiert  mindestens warning ...</span>
 
@@ -182,14 +185,20 @@
             <span class="k">pass</span>
             <span class="c1">#print &#39;reset all layers&#39;</span>
 
-        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">tmpl_lr</span><span class="p">[</span><span class="n">group</span><span class="p">][</span><span class="n">nmb</span><span class="p">]</span></div>
+        <span class="k">if</span> <span class="n">group</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tmpl_lr</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">tmpl_lr</span><span class="p">[</span><span class="n">group</span><span class="p">][</span><span class="n">nmb</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Group &#39;</span> <span class="o">+</span> <span class="n">group</span> <span class="o">+</span> <span class="s1">&#39; does not exists.&#39;</span><span class="p">,</span> <span class="ne">RuntimeWarning</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="layer_pack.remove_all"><a class="viewcode-back" href="../../source/schablone.html#schablone.generic.layer_pack.remove_all">[docs]</a>    <span class="k">def</span> <span class="nf">remove_all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="layer_pack.clear"><a class="viewcode-back" href="../../source/schablone.html#schablone.generic.layer_pack.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">group</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># remove all keys by resetting to default</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">tmpl_lr</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;default&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">layer_container</span><span class="p">]</span> <span class="o">*</span> <span class="mi">0</span><span class="p">}</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">tmpl_lr</span><span class="p">[</span><span class="n">group</span><span class="p">]</span></div>
+            <span class="k">if</span> <span class="n">group</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tmpl_lr</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">tmpl_lr</span><span class="p">[</span><span class="n">group</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Group &#39;</span> <span class="o">+</span> <span class="n">group</span> <span class="o">+</span> <span class="s1">&#39; does not exist.&#39;</span><span class="p">,</span> <span class="ne">RuntimeWarning</span><span class="p">)</span> </div>
 
 <div class="viewcode-block" id="layer_pack.show"><a class="viewcode-back" href="../../source/schablone.html#schablone.generic.layer_pack.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">group</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -203,12 +212,11 @@
 
             <span class="k">return</span> <span class="n">lrs</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">pass</span></div></div>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Group &#39;</span> <span class="o">+</span> <span class="n">group</span> <span class="o">+</span> <span class="s1">&#39; does not exist.&#39;</span><span class="p">,</span> <span class="ne">RuntimeWarning</span><span class="p">)</span></div></div>
             <span class="c1"># raise warning</span>
             <span class="c1">#print &#39;todo: raise warning, key does not exist&#39;</span>
 
 
-        <span class="c1"># Ueberlegung anstatt template-id evtl. direkt id verwenden</span>
 <div class="viewcode-block" id="generic"><a class="viewcode-back" href="../../source/schablone.html#schablone.generic.generic">[docs]</a><span class="k">class</span> <span class="nc">generic</span><span class="p">(</span><span class="n">baseSVG</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Stack layers svg file templates and replace text.</span>
 
@@ -269,6 +277,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Instantiating class &#39;generic&#39;.&quot;</span><span class="p">)</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">generic</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
 
         <span class="c1"># lists of paths to template layers</span>
@@ -345,10 +354,13 @@
 
         <span class="c1"># combine svg-files </span>
         <span class="n">svg_label</span> <span class="o">=</span> <span class="n">sg</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="n">fi</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">tmpl_lr</span><span class="p">[</span><span class="n">group</span><span class="p">]:</span>
-            <span class="n">anker</span> <span class="o">=</span> <span class="n">sg</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
-            <span class="n">anker</span><span class="o">.</span><span class="n">moveto</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">x_pos</span><span class="p">,</span> <span class="n">layer</span><span class="o">.</span><span class="n">y_pos</span><span class="p">,</span> <span class="n">layer</span><span class="o">.</span><span class="n">scale</span><span class="p">)</span>
-            <span class="n">svg_label</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">anker</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">group</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">tmpl_lr</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">tmpl_lr</span><span class="p">[</span><span class="n">group</span><span class="p">]:</span>
+                <span class="n">anker</span> <span class="o">=</span> <span class="n">sg</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
+                <span class="n">anker</span><span class="o">.</span><span class="n">moveto</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">x_pos</span><span class="p">,</span> <span class="n">layer</span><span class="o">.</span><span class="n">y_pos</span><span class="p">,</span> <span class="n">layer</span><span class="o">.</span><span class="n">scale</span><span class="p">)</span>
+                <span class="n">svg_label</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">anker</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Group &#39;</span> <span class="o">+</span> <span class="n">group</span> <span class="o">+</span> <span class="s1">&#39; does not exist.&#39;</span><span class="p">,</span> <span class="ne">RuntimeWarning</span><span class="p">)</span>
 
         <span class="n">svg_label</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">fo</span><span class="p">)</span></div>
 
@@ -360,6 +372,7 @@
 <span class="sd">            In most cases it is convenient to skip the arguments fi and fo.</span>
 <span class="sd">     </span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Substitute text and store to SVG file.&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">fi</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">fi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fn</span>
         <span class="k">if</span> <span class="n">fo</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
@@ -371,13 +384,13 @@
         <span class="n">tpl</span> <span class="o">=</span> <span class="n">svglue</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_fn</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">cpt_key</span><span class="p">,</span> <span class="n">cpt_val</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cpt_tspan</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="n">tpl</span><span class="o">.</span><span class="n">set_text</span><span class="p">(</span><span class="n">cpt_key</span><span class="p">,</span> <span class="n">cpt_val</span><span class="p">)</span>
+            <span class="n">tpl</span><span class="o">.</span><span class="n">set_text</span><span class="p">(</span><span class="n">cpt_key</span><span class="p">,</span> <span class="n">cpt_val</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">cpt_key</span><span class="p">,</span> <span class="n">cpt_val</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cpt_flowpara</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="n">tpl</span><span class="o">.</span><span class="n">set_flowtext</span><span class="p">(</span><span class="n">cpt_key</span><span class="p">,</span> <span class="n">cpt_val</span><span class="p">)</span>
+            <span class="n">tpl</span><span class="o">.</span><span class="n">set_flowtext</span><span class="p">(</span><span class="n">cpt_key</span><span class="p">,</span> <span class="n">cpt_val</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">cpt_key</span><span class="p">,</span> <span class="n">cpt_val</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cpt_rect</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="n">tpl</span><span class="o">.</span><span class="n">set_image</span><span class="p">(</span><span class="n">cpt_key</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">cpt_val</span><span class="p">,</span> <span class="n">mimetype</span><span class="o">=</span><span class="s1">&#39;image/png&#39;</span><span class="p">)</span>
+            <span class="n">tpl</span><span class="o">.</span><span class="n">set_image</span><span class="p">(</span><span class="n">cpt_key</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">cpt_val</span><span class="p">,</span> <span class="n">mimetype</span><span class="o">=</span><span class="s1">&#39;image/png&#39;</span><span class="p">)</span>
 
         <span class="n">src</span> <span class="o">=</span> <span class="n">tpl</span><span class="o">.</span><span class="n">__str__</span><span class="p">()</span>  <span class="c1">#str(tpl) #str(tpl) does not work in python3</span>
         <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fn</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">src</span><span class="p">)</span></div>

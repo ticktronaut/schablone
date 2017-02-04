@@ -2,13 +2,15 @@
 label
 =====
 
-box label
----------
-
-.. automodule:: schablone.label.box
-    :members:
-
 smd container
 -------------
 
-tbc
+.. autoclass:: schablone.label.smd_container
+    :members:
+
+box label
+---------
+
+.. autoclass:: schablone.label.box
+    :members:
+

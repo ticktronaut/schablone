@@ -93,8 +93,8 @@
 <li class="toctree-l2"><a class="reference internal" href="base.html">baseSVG</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generic.html">generic</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">label</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#box-label">box label</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#smd-container">smd container</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#box-label">box label</a></li>
 </ul>
 </li>
 </ul>
@@ -148,12 +148,123 @@
             
   <div class="section" id="label">
 <h1>label<a class="headerlink" href="#label" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="box-label">
-<h2>box label<a class="headerlink" href="#box-label" title="Permalink to this headline">¶</a></h2>
-</div>
 <div class="section" id="smd-container">
 <h2>smd container<a class="headerlink" href="#smd-container" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="schablone.label.smd_container">
+<em class="property">class </em><code class="descclassname">schablone.label.</code><code class="descname">smd_container</code><span class="sig-paren">(</span><em>label_type='mira_1'</em>, <em>tmpl_path=None</em>, <em>size=None</em>, <em>cut=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/schablone/label.html#smd_container"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schablone.label.smd_container" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stack layers svg file templates and replace text.</p>
+<p>The <strong>smd_container</strong> is derived from generic.py. It is intended to label
+smd container containing capacitors, resistors or other electronic parts.
+Also a data matrix code with uuid is provided.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">schablone.label</span>
+
+<span class="n">smdLabel</span> <span class="o">=</span> <span class="n">schablone</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">smd_container</span><span class="p">()</span>
+<span class="n">smdLabel</span><span class="o">.</span><span class="n">overwrite</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">smdLabel</span><span class="o">.</span><span class="n">cut</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">smdLabel</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;SMD-Wid.&#39;</span>
+<span class="n">smdLabel</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">package</span> <span class="o">=</span> <span class="s1">&#39;0805&#39;</span>
+<span class="n">smdLabel</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">tolerance</span> <span class="o">=</span> <span class="s1">&#39;1%&#39;</span>
+<span class="n">smdLabel</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">temperature_coefficient</span> <span class="o">=</span> <span class="s1">&#39;TK100&#39;</span>
+<span class="n">smdLabel</span><span class="o">.</span><span class="n">power</span> <span class="o">=</span> <span class="s1">&#39;1/8W&#39;</span>
+<span class="n">smdLabel</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;120k&#39;</span>
+<span class="n">smdLabel</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;sample.svg&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Labels may be customized by using the basic functions of generic.py. Also
+generic templates may be used by setting the variable tmpl_path.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>content</strong> (<a class="reference internal" href="../source/schablone.html#schablone.label.smd_content_container" title="schablone.label.smd_content_container"><em>smd_content_container</em></a><em>(</em><em></em><em>)</em><em></em>) &#8211; Container class to set input data like type or value.</li>
+<li><strong>tmpl_path</strong> (<em>string</em>) &#8211; Path to the templates (if variable is set a custom template is expected.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="schablone.label.smd_container.save">
+<code class="descname">save</code><span class="sig-paren">(</span><em>fn=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/schablone/label.html#smd_container.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schablone.label.smd_container.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the SVG-file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fn</strong> &#8211; Optional filename</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="schablone.label.smd_container.saveAx">
+<code class="descname">saveAx</code><span class="sig-paren">(</span><em>fn=None</em>, <em>ax='a4'</em>, <em>svg_list=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/schablone/label.html#smd_container.saveAx"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schablone.label.smd_container.saveAx" title="Permalink to this definition">¶</a></dt>
+<dd><p>Store history of previously files in a DIN-format file.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In the optional parameter svg_list, a custom list of file paths may be used instead of the
+history of previously stored files.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>fn</strong> &#8211; Filename of the saved file. If left blank, the filename defaults to the existing filename
+saved in the class members. If there is no filename, it defaults to default_Ax.svg.
+The filename will be stored in the _fnAx class member.</li>
+<li><strong>ax</strong> &#8211; String to define the size of the DIN format document. Allowed is &#8216;a0&#8217;, &#8216;a1&#8217;, ..., &#8216;a10&#8217;.</li>
+<li><strong>svg_list</strong> &#8211; Custom list of paths to files, which should be aranged to the DIN format svg file. By default
+the history of paths to all files stored by the save() function, stored in the class member
+_fn_list is stored.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="box-label">
+<h2>box label<a class="headerlink" href="#box-label" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="schablone.label.box">
+<em class="property">class </em><code class="descclassname">schablone.label.</code><code class="descname">box</code><span class="sig-paren">(</span><em>label_type='default'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/schablone/label.html#box"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schablone.label.box" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stack layers svg file templates and replace text.</p>
 <p>tbc</p>
+<p class="rubric">Example</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">schablone.box</span>
+
+<span class="n">boxLabel</span> <span class="o">=</span> <span class="n">tbc</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">tbc</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>tbc</strong> (<em>tbc</em>) &#8211; tbc</li>
+<li><strong>tbc</strong> &#8211; tbc</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </div>
 </div>
 

@@ -137,27 +137,23 @@
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1">#coding=utf-8</span>
 
-<span class="c1">#import svgutils</span>
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">svgutils.transform</span> <span class="k">as</span> <span class="nn">sg</span>
 <span class="kn">import</span> <span class="nn">svglue</span>
-<span class="c1">#import svgwrite</span>
-<span class="c1">#import pysvg</span>
-
+<span class="kn">import</span> <span class="nn">uuid</span>
+<span class="kn">import</span> <span class="nn">pyqrcode</span>
 <span class="kn">from</span> <span class="nn">lxml</span> <span class="k">import</span> <span class="n">etree</span>
-
-<span class="c1">#import warnings</span>
-<span class="kn">import</span> <span class="nn">os</span>
-
-<span class="c1">#import pyqrcode</span>
-
 <span class="kn">import</span> <span class="nn">pkg_resources</span>
-
-<span class="c1">#from .base import</span>
+<span class="kn">from</span> <span class="nn">pystrich.datamatrix</span> <span class="k">import</span> <span class="n">DataMatrixEncoder</span>
 <span class="kn">from</span> <span class="nn">.generic</span> <span class="k">import</span> <span class="o">*</span>
 
+<span class="kn">import</span> <span class="nn">logging</span>
 
-<div class="viewcode-block" id="smd_content_container"><a class="viewcode-back" href="../../source/schablone.html#schablone.label.smd_content_container">[docs]</a><span class="k">class</span> <span class="nc">smd_content_container</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;schablone.label&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="smd_content_container"><a class="viewcode-back" href="../../source/schablone.html#schablone.label.smd_content_container">[docs]</a><span class="k">class</span> <span class="nc">smd_content_container</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span> <span class="c1">#FixMe cap_content_container | res_content_container support</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Instantiating class &#39;smd_content_container&#39;.&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">package</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
@@ -167,16 +163,69 @@
 
 
 <div class="viewcode-block" id="smd_container"><a class="viewcode-back" href="../../source/schablone.html#schablone.label.smd_container">[docs]</a><span class="k">class</span> <span class="nc">smd_container</span><span class="p">(</span><span class="n">generic</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Stack layers svg file templates and replace text.</span>
+
+<span class="sd">    The **smd_container** is derived from generic.py. It is intended to label</span>
+<span class="sd">    smd container containing capacitors, resistors or other electronic parts.</span>
+<span class="sd">    Also a data matrix code with uuid is provided. </span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    ::    </span>
+
+<span class="sd">        import schablone.label</span>
+<span class="sd">  </span>
+<span class="sd">        smdLabel = schablone.label.smd_container()</span>
+<span class="sd">        smdLabel.overwrite = True</span>
+<span class="sd">        smdLabel.cut = True</span>
+<span class="sd">        smdLabel.content.title = &#39;SMD-Wid.&#39;</span>
+<span class="sd">        smdLabel.content.package = &#39;0805&#39;</span>
+<span class="sd">        smdLabel.content.tolerance = &#39;1%&#39;</span>
+<span class="sd">        smdLabel.content.temperature_coefficient = &#39;TK100&#39;</span>
+<span class="sd">        smdLabel.power = &#39;1/8W&#39;</span>
+<span class="sd">        smdLabel.content.value = &#39;120k&#39;</span>
+<span class="sd">        smdLabel.save(&#39;sample.svg&#39;)</span>
+<span class="sd"> </span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    Labels may be customized by using the basic functions of generic.py. Also </span>
+<span class="sd">    generic templates may be used by setting the variable tmpl_path.</span>
+<span class="sd">   </span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    content : smd_content_container()</span>
+<span class="sd">        Container class to set input data like type or value.  </span>
+<span class="sd">    tmpl_path : string </span>
+<span class="sd">        Path to the templates (if variable is set a custom template is expected.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label_type</span><span class="o">=</span><span class="s1">&#39;mira_1&#39;</span><span class="p">,</span> <span class="n">tmpl_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cut</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        
         <span class="nb">super</span><span class="p">(</span><span class="n">smd_container</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
-
-        <span class="c1">#self.qr_content = &quot;http://www.sappz.de&quot;</span>
-
+ 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fn_cut</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="n">smd_content_container</span><span class="p">()</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">label_type</span> <span class="o">=</span> <span class="s2">&quot;mira_1&quot;</span>  <span class="c1">#todo: link zu quelle #getter setter: remove all layers, reset layers</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cut</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1">#todo getter setter: remove all layers, reset layers</span>
-        <span class="c1">#self.__cut_list = []</span>
+        <span class="k">if</span> <span class="n">tmpl_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="c1"># set default template path</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tmpl_path</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s1">&#39;schablone&#39;</span><span class="p">,</span> <span class="s1">&#39;templates&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;/label/smd_container&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tmpl_path</span> <span class="o">=</span> <span class="n">tmpl_path</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">_is_custom_template</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="c1">#        self.label_type = label_type  #todo: link zu quelle #getter setter: remove all layers, reset layers</span>
+<span class="c1">#        self.cut = False  #todo getter setter: remove all layers, reset layers</span>
+
+        <span class="c1"># todo: Ueber Funktion nachdenken</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_types</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;mira_1&#39;</span><span class="p">,</span> <span class="s1">&#39;licefa_n1&#39;</span><span class="p">)</span> <span class="c1"># tuple with valid label types (create getter?) </span>
+
+        <span class="k">if</span> <span class="n">size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">size</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;list of len 2 required (x,y)&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">cpt_tspan</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
@@ -185,93 +234,155 @@
             <span class="s1">&#39;tolerance&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
             <span class="s1">&#39;temperature_coefficient&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
             <span class="s1">&#39;power&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span>
+            <span class="c1"># FixMe: Add voltage</span>
         <span class="p">}</span>
-        <span class="c1">#		self.cpt_flowpara = {}</span>
+        <span class="c1">#self.cpt_flowpara = {}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cpt_rect</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;matrix&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">}</span>
-        <span class="c1"># todo: self.cut_list</span>
+
+        <span class="c1"># layers are set here</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_layers</span><span class="p">(</span><span class="n">label_type</span><span class="p">,</span> <span class="n">cut</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">label_type</span> <span class="o">==</span> <span class="s1">&#39;mira_1&#39;</span> <span class="ow">or</span> <span class="n">label_type</span> <span class="o">==</span> <span class="s1">&#39;mira_1a&#39;</span><span class="p">:</span>  <span class="c1"># type &quot;1&quot; and type &quot;1a&quot; seem to have the same label size</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="s1">&#39;15mm&#39;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="s1">&#39;20mm&#39;</span>
+        <span class="k">elif</span> <span class="n">label_type</span> <span class="o">==</span> <span class="s1">&#39;mira_2&#39;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Label type mira_2 not supported, yet.&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">label_type</span> <span class="o">==</span> <span class="s1">&#39;mira_3&#39;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Label type mira_3 not supported, yet.&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">label_type</span> <span class="o">==</span> <span class="s2">&quot;mira_4&quot;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Label type mira_4 not supported, yet.&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">label_type</span> <span class="o">==</span> <span class="s1">&#39;licefa_n1&#39;</span><span class="p">:</span> <span class="c1"># SMD-Box N1</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Label type licefa_n1 not supported, yet.&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="s1">&#39;22mm&#39;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="s1">&#39;29mm&#39;</span>
+        <span class="k">elif</span> <span class="n">label_type</span> <span class="o">==</span> <span class="s1">&#39;licefa_n2&#39;</span><span class="p">:</span> <span class="c1"># SMD-Box N2</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Label type licefa_n2 not supported, yet.&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="s1">&#39;29mm&#39;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="s1">&#39;42mm&#39;</span>
+        <span class="k">elif</span> <span class="n">label_type</span> <span class="o">==</span> <span class="s1">&#39;licefa_n3&#39;</span><span class="p">:</span> <span class="c1"># SMD-Box N3</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Label type licefa_n2 not supported, yet.&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="s1">&#39;42mm&#39;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="s1">&#39;56mm&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># No standard label type found, so must be custom type.</span>
+            <span class="c1"># Check if a custom template path is specified, otherwise raise error.</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Attempt to use custom label type &#39;&quot;</span> <span class="o">+</span> <span class="n">label_type</span> <span class="o">+</span> <span class="s2">&quot;&#39;&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">_is_custom_template</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Please specify template path to custom label type.&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Please specify template path to custom label type.&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_set_layers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label_type</span><span class="p">,</span> <span class="n">cut</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">cut</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">cut</span><span class="o">=</span><span class="kc">True</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">clear</span><span class="p">(</span><span class="s1">&#39;smd_container_font&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">clear</span><span class="p">(</span><span class="s1">&#39;smd_container_matrix&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">clear</span><span class="p">(</span><span class="s1">&#39;smd_container_frame&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">clear</span><span class="p">(</span><span class="s1">&#39;smd_container_cut&#39;</span><span class="p">)</span>
+
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tmpl_path</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">label_type</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;/font.svg&#39;</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="s1">&#39;smd_container_font&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;/matrix.svg&#39;</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="s1">&#39;smd_container_matrix&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">cut</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;/frame.svg&#39;</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="s1">&#39;smd_container_frame&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1">#self._fn_cut = super(smd_container, self)._fn_sub_str(self._fn, &quot;_cut&quot;)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;/frame_cut.svg&#39;</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="s1">&#39;smd_container_cut&#39;</span><span class="p">)</span>
+            <span class="c1">#super(smd_container, self).save_layers(self._fn_cut, self._fn, &#39;cut&#39;)</span>
 
     <span class="c1"># hier wird die einzige Moeglichkeit der Basisklasse </span>
     <span class="c1"># die Hoehe und Breite zu setzen ueberschrieben</span>
     <span class="c1"># Achtung ist überschreibend</span>
-
 <div class="viewcode-block" id="smd_container.save"><a class="viewcode-back" href="../../source/schablone.html#schablone.label.smd_container.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Save the SVG-file.</span>
 
-        <span class="c1"># set width and height (reconfigure everytime time save is called)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="s1">&#39;15mm&#39;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_type</span> <span class="o">==</span> <span class="s1">&#39;mira_1&#39;</span> <span class="ow">or</span> <span class="s1">&#39;mira_1a&#39;</span><span class="p">:</span>  <span class="c1"># type &quot;1&quot; and type &quot;1a&quot; seem to have label same size</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="s1">&#39;15mm&#39;</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="s1">&#39;20mm&#39;</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_type</span> <span class="o">==</span> <span class="s1">&#39;mira_2&#39;</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Label type mira_2 not supported, yet.&#39;</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_type</span> <span class="o">==</span> <span class="s1">&#39;mira_3&#39;</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Label type mira_3 not supported, yet.&#39;</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_type</span> <span class="o">==</span> <span class="s2">&quot;mira_4&quot;</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Label type mira_4 not supported, yet.&#39;</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Unknown type of label: &#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_type</span><span class="p">)</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        fn</span>
+<span class="sd">            Optional filename</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Currently all other parameters are set in __init__()</span>
+ 
+        <span class="k">if</span> <span class="n">fn</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_fn</span> <span class="o">=</span> <span class="n">fn</span>
+
+        <span class="c1"># todo check if ... in self.cpt_tspan.keys():</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cpt_tspan</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">title</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cpt_tspan</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cpt_tspan</span><span class="p">[</span><span class="s1">&#39;package&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">package</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cpt_tspan</span><span class="p">[</span><span class="s1">&#39;tolerance&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">tolerance</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cpt_tspan</span><span class="p">[</span><span class="s1">&#39;temperature_coefficient&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">temperature_coefficient</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cpt_tspan</span><span class="p">[</span><span class="s1">&#39;power&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">power</span>
 
         <span class="c1"># self.fn is set after this point </span>
         <span class="c1"># todo: think about better solution for self._fn (explicit is better than implicit) </span>
         <span class="nb">super</span><span class="p">(</span><span class="n">smd_container</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">save_frame</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
 
-        <span class="c1"># save data matrix code with unique id (using bash)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fn_cut</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">smd_container</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">_fn_sub_str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fn</span><span class="p">,</span>
+                                                              <span class="s1">&#39;_cut&#39;</span><span class="p">)</span>
+
+        <span class="c1"># save data matrix code with unique id (python3 solution)</span>
         <span class="n">fn</span><span class="p">,</span> <span class="n">fext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fn</span><span class="p">)</span>
         <span class="n">fn_qr</span> <span class="o">=</span> <span class="n">fn</span> <span class="o">+</span> <span class="s1">&#39;_qr&#39;</span> <span class="o">+</span> <span class="s1">&#39;.png&#39;</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span>
-            <span class="s1">&#39;uuidgen | tr [[:upper:]] [[:lower:]] | tr -d </span><span class="se">\&#39;</span><span class="s1">-</span><span class="se">\&#39;</span><span class="s1">  | sed -e </span><span class="se">\&#39;</span><span class="s1">s/\(.\{12\}\).*/</span><span class="se">\\</span><span class="s1">1/</span><span class="se">\&#39;</span><span class="s1"> | dmtxwrite -s 16x16 -o &#39;</span>
-            <span class="o">+</span> <span class="n">fn_qr</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cpt_rect</span><span class="p">[</span><span class="s1">&#39;matrix&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fn_qr</span>
 
-        <span class="c1"># todo: rethink the following ...</span>
-        <span class="c1"># two ways to organize addition of layers</span>
-        <span class="c1"># delete all layers and reset them </span>
-        <span class="c1"># - in save function (any time file is saved, as done here)</span>
-        <span class="c1"># - in setter function for self.cut (any time self.cut is changed)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">remove_all</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
-            <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span>
-                <span class="s1">&#39;schablone&#39;</span><span class="p">,</span> <span class="s1">&#39;templates/label/smd_container/&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_type</span>
-                <span class="o">+</span> <span class="s1">&#39;/font.svg&#39;</span><span class="p">))</span>
+        <span class="n">uuid_str</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span> <span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()</span> <span class="p">)</span>
+        <span class="n">uuid_str</span> <span class="o">=</span> <span class="n">uuid_str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="c1"># remove &#39;-&#39; from uuid</span>
+        <span class="n">uuid_str</span> <span class="o">=</span> <span class="n">uuid_str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="c1"># make uuid lower case</span>
+        <span class="n">uuid_str</span> <span class="o">=</span> <span class="n">uuid_str</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">12</span><span class="p">]</span> <span class="c1"># first 12 bytes of uuid</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">cut</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
-                <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span>
-                    <span class="s1">&#39;schablone&#39;</span><span class="p">,</span> <span class="s1">&#39;templates/label/smd_container/&#39;</span> <span class="o">+</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">label_type</span> <span class="o">+</span> <span class="s1">&#39;/frame.svg&#39;</span><span class="p">))</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="c1">#			self.layer.default_lr = &#39;cut&#39;</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_fn_cut</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">smd_container</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">_fn_sub_str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fn</span><span class="p">,</span>
-                                                                  <span class="s2">&quot;_cut&quot;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
-                <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span>
-                    <span class="s1">&#39;schablone&#39;</span><span class="p">,</span> <span class="s1">&#39;templates/label/smd_container/&#39;</span> <span class="o">+</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">label_type</span> <span class="o">+</span> <span class="s1">&#39;/frame_cut.svg&#39;</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;cut&#39;</span><span class="p">)</span>
-            <span class="nb">super</span><span class="p">(</span><span class="n">smd_container</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">save_layers</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fn_cut</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fn</span><span class="p">,</span>
-                                                   <span class="s1">&#39;cut&#39;</span><span class="p">)</span>
+        <span class="n">encoder</span> <span class="o">=</span> <span class="n">DataMatrixEncoder</span><span class="p">(</span><span class="n">uuid_str</span><span class="p">)</span>
+        <span class="n">encoder</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">fn_qr</span><span class="p">)</span>
 
-        <span class="nb">super</span><span class="p">(</span><span class="n">smd_container</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">save_layers</span><span class="p">()</span>
+        <span class="k">if</span> <span class="s1">&#39;matrix&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cpt_rect</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cpt_rect</span><span class="p">[</span><span class="s1">&#39;matrix&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fn_qr</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">cpt_tspan</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">title</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cpt_tspan</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">value</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cpt_tspan</span><span class="p">[</span><span class="s1">&#39;package&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">package</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cpt_tspan</span><span class="p">[</span><span class="s1">&#39;tolerance&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">tolerance</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cpt_tspan</span><span class="p">[</span>
-            <span class="s1">&#39;temperature_coefficient&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">temperature_coefficient</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cpt_tspan</span><span class="p">[</span><span class="s1">&#39;power&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">power</span>
+        <span class="c1"># save layers</span>
+        <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">tmpl_lr</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">group</span> <span class="o">==</span> <span class="s1">&#39;smd_container_cut&#39;</span><span class="p">:</span>
+                <span class="nb">super</span><span class="p">(</span><span class="n">smd_container</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">save_layers</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fn_cut</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fn</span><span class="p">,</span> <span class="s1">&#39;smd_container_cut&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">super</span><span class="p">(</span><span class="n">smd_container</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">save_layers</span><span class="p">(</span><span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">)</span>
+
+        <span class="c1"># save substitutes</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">smd_container</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">save_substitutes</span><span class="p">()</span></div>
 
+        <span class="c1"># FixMe: park following code in script or documentation</span>
         <span class="c1">#from cairosvg.surface import PDFSurface</span>
         <span class="c1">#PDFSurface.convert(src, write_to=open(&#39;output.pdf&#39;, &#39;w&#39;))</span>
 
 <div class="viewcode-block" id="smd_container.saveAx"><a class="viewcode-back" href="../../source/schablone.html#schablone.label.smd_container.saveAx">[docs]</a>    <span class="k">def</span> <span class="nf">saveAx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="s1">&#39;a4&#39;</span><span class="p">,</span> <span class="n">svg_list</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Store history of previously files in a DIN-format file.</span>
+
+<span class="sd">        Note</span>
+<span class="sd">        ----</span>
+<span class="sd">        In the optional parameter svg_list, a custom list of file paths may be used instead of the </span>
+<span class="sd">        history of previously stored files.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        fn</span>
+<span class="sd">            Filename of the saved file. If left blank, the filename defaults to the existing filename </span>
+<span class="sd">            saved in the class members. If there is no filename, it defaults to default_Ax.svg. </span>
+<span class="sd">            The filename will be stored in the _fnAx class member.</span>
+<span class="sd">        ax</span>
+<span class="sd">            String to define the size of the DIN format document. Allowed is &#39;a0&#39;, &#39;a1&#39;, ..., &#39;a10&#39;.</span>
+<span class="sd">        svg_list</span>
+<span class="sd">            Custom list of paths to files, which should be aranged to the DIN format svg file. By default </span>
+<span class="sd">            the history of paths to all files stored by the save() function, stored in the class member </span>
+<span class="sd">            _fn_list is stored.</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="k">if</span> <span class="n">svg_list</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fn_list</span> <span class="o">==</span> <span class="p">[]:</span>
                 <span class="n">svg_list</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;List of svg_list is empty&#39;</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">svg_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fn_list</span>
-
-<span class="c1">#todo: raise error</span>
 
         <span class="k">if</span> <span class="n">fn</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">fn</span> <span class="o">=</span> <span class="s2">&quot;default_Ax.svg&quot;</span>
@@ -298,6 +409,7 @@
 
 <div class="viewcode-block" id="box_content_container"><a class="viewcode-back" href="../../source/schablone.html#schablone.label.box_content_container">[docs]</a><span class="k">class</span> <span class="nc">box_content_container</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Instantiating class &#39;box_content_container&#39;.&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">qr</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">project</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
@@ -307,7 +419,36 @@
 
 
 <div class="viewcode-block" id="box"><a class="viewcode-back" href="../../source/schablone.html#schablone.label.box">[docs]</a><span class="k">class</span> <span class="nc">box</span><span class="p">(</span><span class="n">generic</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Stack layers svg file templates and replace text.</span>
+
+<span class="sd">    tbc</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    ::    </span>
+
+<span class="sd">        import schablone.box</span>
+<span class="sd">  </span>
+<span class="sd">        boxLabel = tbc</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    tbc</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tbc : tbc </span>
+<span class="sd">        tbc  </span>
+<span class="sd">    tbc : tbc </span>
+<span class="sd">        tbc </span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label_type</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">):</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Instantiating class &#39;box&#39;.&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_label_type</span> <span class="o">=</span> <span class="n">label_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fn_qr</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
         <span class="nb">super</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="n">box_content_container</span><span class="p">()</span>
@@ -317,51 +458,37 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">fn_template_extended</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span>
             <span class="s1">&#39;schablone&#39;</span><span class="p">,</span> <span class="s1">&#39;templates/label/box/template_extended.svg&#39;</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">label_type</span> <span class="o">=</span> <span class="s1">&#39;default&#39;</span>
-        <span class="c1">#self.strict = False</span>
+        <span class="c1"># set width and height (reconfigure everytime time save is called)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="s1">&#39;88mm&#39;</span>
+        <span class="k">if</span> <span class="n">label_type</span> <span class="o">==</span> <span class="s1">&#39;default&#39;</span><span class="p">:</span>  <span class="c1"># type &quot;1&quot; and type &quot;1a&quot; seem to have label same size</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="s1">&#39;74mm&#39;</span>
+        <span class="k">elif</span> <span class="n">label_type</span> <span class="o">==</span> <span class="s1">&#39;extended&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="s1">&#39;74mm&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Unknown type of label: &#39;</span> <span class="o">+</span> <span class="n">label_type</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_layers</span><span class="p">(</span><span class="n">label_type</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_set_layers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label_type</span><span class="p">,</span> <span class="n">cut</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+        <span class="c1"># FixMe: use groups for layers</span>
+        <span class="c1"># FixMe: use self.tmpl_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">add</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">fn_template_default</span> <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">label_type</span> <span class="o">==</span> <span class="s1">&#39;extended&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">add</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">fn_template_extended</span> <span class="p">)</span>
 
     <span class="c1"># hier wird die einzige Moeglichkeit der Basisklasse </span>
     <span class="c1"># die Hoehe und Breite zu setzen ueberschrieben</span>
     <span class="c1"># Achtung ist überschreibend</span>
-
 <div class="viewcode-block" id="box.save"><a class="viewcode-back" href="../../source/schablone.html#schablone.label.box.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
         <span class="k">if</span> <span class="n">fn</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fn</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">fn</span> <span class="o">=</span> <span class="s2">&quot;label_&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_type</span> <span class="o">+</span> <span class="s2">&quot;.svg&quot;</span>
+                <span class="n">fn</span> <span class="o">=</span> <span class="s2">&quot;label_&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_label_type</span> <span class="o">+</span> <span class="s2">&quot;.svg&quot;</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">fn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fn</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_fn</span> <span class="o">=</span> <span class="n">fn</span>
-
-        <span class="c1"># set width and height (reconfigure everytime time save is called)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="s1">&#39;88mm&#39;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_type</span> <span class="o">==</span> <span class="s1">&#39;default&#39;</span><span class="p">:</span>  <span class="c1"># type &quot;1&quot; and type &quot;1a&quot; seem to have label same size</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="s1">&#39;74mm&#39;</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_type</span> <span class="o">==</span> <span class="s1">&#39;extended&#39;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="s1">&#39;138mm&#39;</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Unknown type of label: &#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_type</span><span class="p">)</span>
-        <span class="c1">#self.height = &#39;74mm&#39;</span>
-        <span class="c1">#self.label_type = &#39;default&#39;</span>
-
-        <span class="nb">super</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
-            <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span>
-                <span class="s1">&#39;schablone&#39;</span><span class="p">,</span> <span class="s1">&#39;templates/label/box/template_default.svg&#39;</span><span class="p">))</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_type</span> <span class="o">==</span> <span class="s1">&#39;extended&#39;</span><span class="p">:</span>
-            <span class="c1"># save data matrix code with unique id (using bash)</span>
-            <span class="n">fn_qr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fn_sub_str</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="s1">&#39;_qr&#39;</span><span class="p">)</span>
-            <span class="nb">super</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">create_qr</span><span class="p">(</span><span class="s1">&#39;http://www.sappz.de&#39;</span><span class="p">,</span> <span class="n">fn_qr</span><span class="p">,</span> <span class="mi">280</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
-
-            <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
-                <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span>
-                    <span class="s1">&#39;schablone&#39;</span><span class="p">,</span> <span class="s1">&#39;templates/label/box/template_extended.svg&#39;</span><span class="p">))</span>
-
-            <span class="c1">#self.cpt_tspan[&#39;qr&#39;] = self.content.qr</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">cpt_tspan</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">qr</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">cpt_tspan</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">title</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cpt_tspan</span><span class="p">[</span><span class="s1">&#39;project&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">project</span>
@@ -369,7 +496,16 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">cpt_tspan</span><span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">location</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cpt_flowpara</span><span class="p">[</span><span class="s1">&#39;brief_content&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">brief_content</span>
 
-        <span class="nb">super</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fn</span> <span class="o">=</span> <span class="n">fn</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fn_qr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fn_sub_str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fn</span><span class="p">,</span> <span class="s1">&#39;_qr&#39;</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_label_type</span> <span class="o">==</span> <span class="s1">&#39;extended&#39;</span><span class="p">:</span> 
+            <span class="c1"># save data matrix code</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">create_qr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">qr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fn_qr</span><span class="p">,</span> <span class="mi">280</span><span class="p">,</span> <span class="mi">220</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cpt_tspan</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">qr</span>
+
+        <span class="c1"># save box</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fn</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>
