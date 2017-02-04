@@ -137,6 +137,7 @@ class smd_container(generic):
 
     def _set_layers(self, label_type, cut=None):
 
+        #FixMe: python dictionaries are not ordered. Use OrderedDict instead
         if cut is None:
             cut=True
 
@@ -209,7 +210,6 @@ class smd_container(generic):
             if group == 'smd_container_cut':
                 super(smd_container, self).save_layers(self._fn_cut, self._fn, group='smd_container_cut')
             else:
-                print(group)
                 super(smd_container, self).save_layers(group=group)
 
         # save substitutes
