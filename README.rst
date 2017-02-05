@@ -194,7 +194,7 @@ Save history of stored files in one A4 file
 
 The function ----todo: link to function reference----- saves the history of all stored svg files in one DIN format file. The following example shows this on smd containers.
 
-::
+.. code-block:: python
 
     import schablone.label
 
