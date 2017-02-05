@@ -238,12 +238,14 @@ It relies on the libraries
 
 * svglue_,
 * svgutils_,
-* pyqrcode_ (if you wish to include qr-codes),
+* pyqrcode_ (if it is desired to include qr-codes),
+* pystrich_ (for datamatrix code in smd container labels),
 * and lxml_ (currently indirectly). 
 
 .. _svglue: https://pypi.python.org/pypi/svglue/0.2.1
 .. _svgutils: https://pypi.python.org/pypi/svgutils/0.2.0
-.. _lxml: https://pypi.python.org/pypi/lxml/3.7.1 
+.. _lxml: https://pypi.python.org/pypi/lxml/3.7.1
+.. _pystrich: https://pypi.python.org/pypi/pyStrich/0.8
 
 Occasionally also the library **Rsvg** (gi.repository) is utilized. Installation using pip and aptitude (tested on Ubuntu 14.04): ::
 
@@ -258,7 +260,7 @@ For an Arch Linux with Python 3.5.2 and pyenv for example this will be::
     $ [sudo] pacman -S python-gobject
     $ ln -s /usr/lib/python3.5/site-packages/gi* ~/.pyenv/versions/3.5.2/lib/python3.5/site-packages
 
-Until its newest commits are published on PyPi prefer to install svglue from its github repository: ::
+Until the latest version of svglue on github is published on PyPi prefer to install svglue from its github repository: ::
 
     $ [sudo] pip install git+https://github.com/mbr/svglue.git@master
 
