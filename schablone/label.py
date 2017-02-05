@@ -60,7 +60,7 @@ class smd_container(generic):
     Attributes
     ----------
     content : smd_content_container()
-        Container class to set input data like type or value.  
+        Container class to set input data like type or value.
     tmpl_path : string 
         Path to the templates (if variable is set a custom template is expected.
 
@@ -205,7 +205,6 @@ class smd_container(generic):
             self.cpt_rect['matrix'] = fn_qr
 
         # save layers
-        print(  self.layer.tmpl_lr.keys() )
         for group in self.layer.tmpl_lr.keys():
             if group == 'smd_container_cut':
                 super(smd_container, self).save_layers(self._fn_cut, self._fn, group='smd_container_cut')
@@ -297,19 +296,33 @@ class box(generic):
     ::    
 
         import schablone.box
-  
-        boxLabel = tbc
+
+        boxLabel_extended = schablone.label.box(label_type='extended')
+        boxLabel_extended.overwrite = True
+        boxLabel_extended.content.title = 'Ein Box Label'
+        boxLabel_extended.content.project = 'Projekt A'
+        boxLabel_extended.content.editor = 'A.G.'
+        boxLabel_extended.content.location = 'Regal A, Reihe A'
+        boxLabel_extended.content.brief_content = 'Einige Dinge die sich in der Box befinden ...'
+        boxLabel_extended.content.qr = 'test'
+        fn = box_label_dir + '/' + 'extended_label.svg'
+        boxLabel_extended.save(fn)
 
     Note
     ----
-    tbc
+    This label is a first approach for storing systems. 
 
     Attributes
     ----------
-    tbc : tbc 
-        tbc  
-    tbc : tbc 
-        tbc 
+    content : box_content_container() 
+        Container class to set input data (strings of captions).
+    label_typel : string 
+        Type of the box label (default or extended). The extended type 
+        additionally adds qr code and id.
+    width : string
+        width of the label (string which is supported by svg-format, f.e. '200mm' or '200px' or '200') 
+    height : string
+        height of the label (string which is supported by svg-format, f.e. '200mm' or '200px' or '200') 
 
     """
     def __init__(self, label_type='default'):
@@ -352,7 +365,14 @@ class box(generic):
     # die Hoehe und Breite zu setzen ueberschrieben
     # Achtung ist überschreibend
     def save(self, fn=None):
+        """Save the SVG-file.
 
+        Parameters
+        ----------
+        fn
+            optional filename
+        
+        """
         if fn == None:
             if self._fn == None:
                 fn = "label_" + self._label_type + ".svg"
