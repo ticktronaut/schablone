@@ -13,6 +13,8 @@ import warnings
 
 import logging
 
+import collections#.OrderedDict as od
+
 log = logging.getLogger('schablone.generic')
 
 class layer_container(object):
@@ -26,12 +28,14 @@ class layer_container(object):
 
 # FixMe: 
 # support:
-# layer_up(self, nmb_lvl)
-# layer_down(self, nmb_lvl)
+# ordered dictionary
+# up(self, nmb_lvl)
+# down(self, nmb_lvl)
 class layer_pack(object):
     def __init__(self):
         log.debug("Instantiating class 'layer_pack'.")
-        self.tmpl_lr = {'default': [layer_container] * 0}
+#        self.tmpl_lr = {'default': [layer_container] * 0}
+        self.tmpl_lr = collections.OrderedDict([ ('default', [layer_container] * 0) ])
         self.default_group = 'default'  # todo: getter/setter for self.default_lr, wenn key nicht existiert  mindestens warning ...
 
     def add(self, path, x_pos=0.0, y_pos=0.0, scale=1.0, group=None):
