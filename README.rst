@@ -81,7 +81,7 @@ Create a generic label
 
 schablone can create generic templates. The result can be seen in samples/generic/generic.svg.
 
-::
+.. code-block:: python
 
     import schablone.generic
     import os
@@ -132,7 +132,7 @@ Create smd container labels
 
 There are also some specialized applications of schablone. One of them is to create labels for **mira** smd containers. Exemplary outputs can be found in the image in chapter `What can I use it for?`_.
 
-::
+.. code-block:: python
 
     import schablone.label
     import os
@@ -168,7 +168,7 @@ Create a box label
 
 Another special application is the creation of box labels. The exemplary result can be seen in samples/box_label/default_label.svg.
 
-::
+.. code-bock:: python
 
     import schablone.label
     import os
