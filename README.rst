@@ -48,20 +48,50 @@ Usage
 
 store frame SVG file
 ````````````````````
+desired size
 
-desired size 
-tbc
+.. code-block:: python
+    genLabel = schablone.generic.generic('generic_svg_file.svg')
+    genLabel.width = '200'
+    genLabel.height = '200'
+
+save tbc
+
+.. code-block:: python 
+    genLabel.save_frame()
    
 stack layers of svg file templates
 ``````````````````````````````````
 
-tbc   
+desired label templates
+
+.. code-block:: python
+    genLabel.layer.add('tmpl_layer/tmpl_layer_1.svg')
+    genLabel.layer.add('tmpl_layer/tmpl_layer_2.svg')
+
+save tbc
+   
+.. code-block:: python 
+    genLabel.save_layers('generic_svg_file.svg')
    
    
 fill in texts and images 
 ````````````````````````
 
-tbc
+desired substitutions for exisiting template-id-tags tbc
+
+.. code-block:: python
+    genLabel.cpt_tspan['static_txt'] = u'Replace some text here.'
+    genLabel.cpt_flowpara['flow_txt'] = u'Also flow text may be replaced.'
+
+    genLabel.layer.add('tmpl_layer/tmpl_layer_1.svg')
+    genLabel.layer.add('tmpl_layer/tmpl_layer_2.svg')
+
+save tbc 
+
+.. code-block:: python 
+    genLabel.save_substitutes()
+
 save A4
 
 create templates
