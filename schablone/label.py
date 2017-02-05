@@ -205,8 +205,8 @@ class smd_container(generic):
             self.cpt_rect['matrix'] = fn_qr
 
         # save layers
-        print( sorted( self.layer.tmpl_lr.keys() ) )
-        for group in sorted( self.layer.tmpl_lr.keys() ):
+        print(  self.layer.tmpl_lr.keys() )
+        for group in self.layer.tmpl_lr.keys():
             if group == 'smd_container_cut':
                 super(smd_container, self).save_layers(self._fn_cut, self._fn, group='smd_container_cut')
             else:
